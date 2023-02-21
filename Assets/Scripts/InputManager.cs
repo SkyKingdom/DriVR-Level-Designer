@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using Unity.Splines.Examples;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
+using UnityEngine.Splines;
 
 public class InputManager : MonoBehaviour
 {
@@ -16,12 +17,21 @@ public class InputManager : MonoBehaviour
     
     [Header("Debugging")]
     public List<Vector3> points = new();
+    [Range(0f, 1f)]
+    public float textureScaleToLength = 0.9f;
+    public SplineContainer currentSpline;
+    public LoftRoadBehaviour roadBehaviour;
 
     private void Awake()
     {
         _lmb = actionAsset.FindActionMap("Default").FindAction("LMB");
         
         _lmb.performed += OnPointerClick;
+    }
+
+    private void Start()
+    {
+        currentSpline.Spline.SetTangentMode(TangentMode.AutoSmooth);
     }
 
     private void OnEnable()
@@ -39,13 +49,17 @@ public class InputManager : MonoBehaviour
         RectTransformUtility.ScreenPointToLocalPointInRectangle(cameraRenderRectTransform, Mouse.current.position.ReadValue(), null, out var localPoint);
         Debug.Log(localPoint);
         var rect = cameraRenderRectTransform.rect;
-        localPoint.x += cameraRenderRectTransform.pivot.x;
-        localPoint.y += cameraRenderRectTransform.pivot.x;
+        var pivot = cameraRenderRectTransform.pivot;
+        localPoint.x = ( localPoint.x / rect.width ) + pivot.x;
+        localPoint.y = ( localPoint.y / rect.height ) + pivot.x;
         var ray = camera.ViewportPointToRay(localPoint);
         if (Physics.Raycast(ray, out var hit))
         {
             points.Add(hit.point);
-            Debug.Log("Hit");
+            currentSpline.Spline.Add(new BezierKnot(hit.point));
+            float length = currentSpline.Spline.GetLength();
+            roadBehaviour.UpdateTextureScale(length * textureScaleToLength);
+            
         }
     }
 
