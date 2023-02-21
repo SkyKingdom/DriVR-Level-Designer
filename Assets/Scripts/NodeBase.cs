@@ -11,4 +11,9 @@ public class ObjectNode : NodeBase
     public GameObject Object { get; set; }
 }
 
+public class WaypointNode : NodeBase
+{
+    public float Speed { get; set; }
+}
+
 
