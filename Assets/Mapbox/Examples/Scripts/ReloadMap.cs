@@ -11,7 +11,7 @@
 	{
 		[SerializeField] Camera _camera;
 		Vector3 _cameraStartPos;
-		AbstractMap _map;
+		[SerializeField] AbstractMap _map;
 
 		[SerializeField]
 		ForwardGeocodeUserInput _forwardGeocoder;
@@ -28,7 +28,6 @@
 		void Awake()
 		{
 			_cameraStartPos = _camera.transform.position;
-			_map = FindObjectOfType<AbstractMap>();
 			if(_map == null)
 			{
 				Debug.LogError("Error: No Abstract Map component found in scene.");
@@ -52,6 +51,12 @@
 				}
 			}
 			_wait = new WaitForSeconds(.3f);
+		}
+
+		private void OnValidate()
+		{
+			if (_map == null) return;
+			_zoomSlider.value = _map.Zoom;
 		}
 
 		void ForwardGeocoder_OnGeocoderResponse(ForwardGeocodeResponse response)

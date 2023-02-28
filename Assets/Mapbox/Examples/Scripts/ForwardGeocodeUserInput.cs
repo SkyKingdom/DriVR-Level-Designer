@@ -76,5 +76,6 @@ namespace Mapbox.Examples
 			Response = res;
 			OnGeocoderResponse(res);
 		}
+		
 	}
 }
