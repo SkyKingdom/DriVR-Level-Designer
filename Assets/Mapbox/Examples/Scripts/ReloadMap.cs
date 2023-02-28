@@ -9,7 +9,7 @@
 
 	public class ReloadMap : MonoBehaviour
 	{
-		Camera _camera;
+		[SerializeField] Camera _camera;
 		Vector3 _cameraStartPos;
 		AbstractMap _map;
 
@@ -27,7 +27,6 @@
 
 		void Awake()
 		{
-			_camera = Camera.main;
 			_cameraStartPos = _camera.transform.position;
 			_map = FindObjectOfType<AbstractMap>();
 			if(_map == null)
