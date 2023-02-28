@@ -25,10 +25,13 @@ public class UiNavigation : MonoBehaviour
     public GameObject activesPnl;
     public GameObject propsPnl;
     public Transform eventContainer;
+    public GameObject mapModePnl;
+    public GameObject exploreModePnl;
+    public GameObject editModePnl;
     
     public void SwitchToEvents()
     {
-        SetOpacity(settingsBtn, 0.3f, 0.2f);
+        SetOpacity(settingsBtn, 0.8f, 0.2f);
         SetOpacity(eventsBtn, 1f, 0.2f);
 
         MoveObj(settingsPnl, new Vector2(460 , 0), 0.3f);
@@ -68,6 +71,10 @@ public class UiNavigation : MonoBehaviour
         SetOpacity(exploreViewBtn, 1f, 0.2f);
         SetOpacity(editViewBtn, 0.7f, 0.2f);
         SetOpacity(mapViewBtn, 0.7f, 0.2f);
+        
+        MoveObj(mapModePnl, new Vector2(0, -1840), 0.3f);
+        MoveObj(editModePnl, new Vector2(0, -920), 0.3f);
+        MoveObj(exploreModePnl, new Vector2(0, 0), 0.3f);
     }
     
     public void SwitchToEditMode()
@@ -75,6 +82,10 @@ public class UiNavigation : MonoBehaviour
         SetOpacity(exploreViewBtn, 0.7f, 0.2f);
         SetOpacity(editViewBtn, 1f, 0.2f);
         SetOpacity(mapViewBtn, 0.7f, 0.2f);
+        
+        MoveObj(mapModePnl, new Vector2(0, -920), 0.3f);
+        MoveObj(editModePnl, new Vector2(0, 0), 0.3f);
+        MoveObj(exploreModePnl, new Vector2(0, 920), 0.3f);
     }
     
     public void SwitchToMapMode()
@@ -82,6 +93,10 @@ public class UiNavigation : MonoBehaviour
         SetOpacity(exploreViewBtn, 0.7f, 0.2f);
         SetOpacity(editViewBtn, 0.7f, 0.2f);
         SetOpacity(mapViewBtn, 1f, 0.2f);
+        
+        MoveObj(mapModePnl, new Vector2(0, 0), 0.3f);
+        MoveObj(editModePnl, new Vector2(0, 920), 0.3f);
+        MoveObj(exploreModePnl, new Vector2(0, 1840), 0.3f);
     }
 
     private void SetOpacity(GameObject element, float opacity, float time)
@@ -89,7 +104,7 @@ public class UiNavigation : MonoBehaviour
         element.GetComponent<Image>().DOFade(opacity, time);
     }
 
-    private void MoveObj(GameObject element, Vector2 destination ,float time)
+    private void MoveObj(GameObject element, Vector2 destination, float time)
     {
         element.GetComponent<RectTransform>().DOAnchorPos(destination, time);
     }
