@@ -1,12 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
 public class UiNavigation : MonoBehaviour
 {
+    [SerializeField] private int activeMode;
+    [SerializeField] private float panelSize = 920f;
+    public Color activeButtonBackgroundColor;
+    public Color inactiveButtonBackgroundColor;
     [Header("Tab Buttons")]
     public GameObject eventsBtn;
     public GameObject settingsBtn;
@@ -15,9 +22,7 @@ public class UiNavigation : MonoBehaviour
     public GameObject eventPrefab;
     
     [Header("Map Mode Buttons")]
-    public GameObject exploreViewBtn;
-    public GameObject editViewBtn;
-    public GameObject mapViewBtn;
+    public List<Button> modeButtons;
 
     [Header("Panels")] 
     public GameObject eventsPnl;
@@ -25,10 +30,23 @@ public class UiNavigation : MonoBehaviour
     public GameObject activesPnl;
     public GameObject propsPnl;
     public Transform eventContainer;
-    public GameObject mapModePnl;
-    public GameObject exploreModePnl;
-    public GameObject editModePnl;
-    
+    public List<GameObject> modePanels;
+
+    private void Start()
+    {
+        for (int i = 0; i < modeButtons.Count; i++)
+        {
+            if (activeMode == i)
+            {
+                modeButtons[i].GetComponent<Image>().color = activeButtonBackgroundColor;
+            }
+            else
+            {
+                modeButtons[i].GetComponent<Image>().color = inactiveButtonBackgroundColor;
+            }
+        }
+    }
+
     public void SwitchToEvents()
     {
         SetOpacity(settingsBtn, 0.8f, 0.2f);
@@ -66,37 +84,22 @@ public class UiNavigation : MonoBehaviour
     }
     
     //Map Modes
-    public void SwitchToExploreMode()
-    {
-        SetOpacity(exploreViewBtn, 1f, 0.2f);
-        SetOpacity(editViewBtn, 0.7f, 0.2f);
-        SetOpacity(mapViewBtn, 0.7f, 0.2f);
-        
-        MoveObj(mapModePnl, new Vector2(0, -1840), 0.3f);
-        MoveObj(editModePnl, new Vector2(0, -920), 0.3f);
-        MoveObj(exploreModePnl, new Vector2(0, 0), 0.3f);
-    }
     
-    public void SwitchToEditMode()
+    public void SwitchToMode(int target)
     {
-        SetOpacity(exploreViewBtn, 0.7f, 0.2f);
-        SetOpacity(editViewBtn, 1f, 0.2f);
-        SetOpacity(mapViewBtn, 0.7f, 0.2f);
+        var move = target - activeMode;
         
-        MoveObj(mapModePnl, new Vector2(0, -920), 0.3f);
-        MoveObj(editModePnl, new Vector2(0, 0), 0.3f);
-        MoveObj(exploreModePnl, new Vector2(0, 920), 0.3f);
-    }
-    
-    public void SwitchToMapMode()
-    {
-        SetOpacity(exploreViewBtn, 0.7f, 0.2f);
-        SetOpacity(editViewBtn, 0.7f, 0.2f);
-        SetOpacity(mapViewBtn, 1f, 0.2f);
+        foreach (var p in modePanels)
+        {
+            var rect = p.GetComponent<RectTransform>();
+            MoveObj(p, new Vector2(0, rect.anchoredPosition.y + (panelSize * move)), 0.3f);
+        }
         
-        MoveObj(mapModePnl, new Vector2(0, 0), 0.3f);
-        MoveObj(editModePnl, new Vector2(0, 920), 0.3f);
-        MoveObj(exploreModePnl, new Vector2(0, 1840), 0.3f);
+        modeButtons[activeMode].GetComponent<Image>().color = inactiveButtonBackgroundColor; 
+        modeButtons[target].GetComponent<Image>().color = activeButtonBackgroundColor; 
+        activeMode = target;
+        
+
     }
 
     private void SetOpacity(GameObject element, float opacity, float time)
@@ -106,7 +109,17 @@ public class UiNavigation : MonoBehaviour
 
     private void MoveObj(GameObject element, Vector2 destination, float time)
     {
-        element.GetComponent<RectTransform>().DOAnchorPos(destination, time);
+        foreach (var b in modeButtons)
+        {
+            b.interactable = false;
+        }
+        element.GetComponent<RectTransform>().DOAnchorPos(destination, time).onComplete += () =>
+        {
+            foreach (var b in modeButtons)
+            {
+                b.interactable = true;
+            }
+        };
     }
     
     //Instantiate event button prefab

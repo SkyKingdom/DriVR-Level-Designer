@@ -3,16 +3,29 @@ using Mapbox.Unity.Map;
 using UnityEngine;
 using Utilities;
 
+[Serializable]
+public enum Mode
+{
+    View = 0,
+    Edit = 1,
+    Map = 2
+}
+
 public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
 {
-    [property: SerializeField] public ModeBase Mode { get; private set; }
+    public ModeBase CurrentMode { get; private set; }
+    [SerializeField] private Mode mode = Mode.View;
+    public Mode Mode => mode;
     [SerializeField] private bool mapEnabled;
+    public bool MapEnabled => mapEnabled;
     
     // Modes
-    [SerializeField] private MapMode _mapMode;
+    private MapMode _mapMode;
     public MapMode MapMode => _mapMode;
-    [SerializeField] private EditMode _editMode;
-    [SerializeField] private ViewMode _viewMode;
+    private EditMode _editMode;
+    public EditMode EditMode => _editMode;
+    private ViewMode _viewMode;
+    public ViewMode ViewMode => _viewMode;
 
     protected override void Awake()
     {
@@ -32,10 +45,35 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
         mapEnabled = value;
     }
     
-    public void ChangeMode(ModeBase mode)
+    private void ChangeMode(ModeBase mode)
     {
-        Mode?.OnExit();
-        Mode = mode;
-        Mode?.OnEnter();
+        CurrentMode?.OnExit();
+        CurrentMode = mode;
+        CurrentMode?.OnEnter();
+    }
+
+    public void SetMode(int modeIndex)
+    {
+        switch ((Mode)modeIndex)
+        {
+            case Mode.Map:
+                if (MapEnabled)
+                {
+                    ChangeMode(_mapMode);
+                }
+                else
+                {
+                    Debug.Log("Map is disabled");
+                }
+                break;
+            case Mode.Edit:
+                ChangeMode(_editMode);
+                break;
+            case Mode.View:
+                ChangeMode(_viewMode);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(modeIndex), modeIndex, null);
+        }
     }
 }

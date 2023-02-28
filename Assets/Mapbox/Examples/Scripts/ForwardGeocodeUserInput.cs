@@ -4,6 +4,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using TMPro;
+
 namespace Mapbox.Examples
 {
 	using Mapbox.Unity;
@@ -13,10 +15,10 @@ namespace Mapbox.Examples
 	using Mapbox.Geocoding;
 	using Mapbox.Utils;
 
-	[RequireComponent(typeof(InputField))]
+	[RequireComponent(typeof(TMP_InputField))]
 	public class ForwardGeocodeUserInput : MonoBehaviour
 	{
-		InputField _inputField;
+		TMP_InputField _inputField;
 
 		ForwardGeocodeResource _resource;
 
@@ -44,7 +46,7 @@ namespace Mapbox.Examples
 
 		void Awake()
 		{
-			_inputField = GetComponent<InputField>();
+			_inputField = GetComponent<TMP_InputField>();
 			_inputField.onEndEdit.AddListener(HandleUserInput);
 			_resource = new ForwardGeocodeResource("");
 		}
