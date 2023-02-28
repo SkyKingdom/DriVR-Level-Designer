@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -17,5 +15,10 @@ public class CameraController : MonoBehaviour
 
         // Set the camera's position to the new position.
         transform.position = newPosition;
+    }
+    
+    public void OnSpeedChanged(float value)
+    {
+        moveSpeed = value;
     }
 }
