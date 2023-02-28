@@ -19,6 +19,8 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
     [SerializeField] private bool mapEnabled;
     public bool MapEnabled => mapEnabled;
     
+    [SerializeField] UiNavigation uiNavigation;
+    
     // Modes
     private MapMode _mapMode;
     public MapMode MapMode => _mapMode;
@@ -43,8 +45,15 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
     public void OnMapEnabledValueChange(bool value)
     {
         mapEnabled = value;
+        if (!value && CurrentMode == _mapMode)
+        {
+            ChangeMode(_viewMode);
+            uiNavigation.SwitchToMode((int)Mode.View);
+        }
+        uiNavigation.modeButtons[(int)Mode.Map].interactable = value;
+        MapMode.ToggleMap(value);
     }
-    
+
     private void ChangeMode(ModeBase mode)
     {
         CurrentMode?.OnExit();

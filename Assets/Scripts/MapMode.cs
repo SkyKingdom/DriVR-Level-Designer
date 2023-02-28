@@ -23,8 +23,8 @@ public class MapMode : ModeBase
         CameraController.enabled = false;
     }
     
-    public void Search(string query)
+    public void ToggleMap(bool value)
     {
-        
+        Map.gameObject.SetActive(value);
     }
 }

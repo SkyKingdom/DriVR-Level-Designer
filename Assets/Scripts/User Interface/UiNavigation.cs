@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
@@ -14,6 +11,7 @@ public class UiNavigation : MonoBehaviour
     [SerializeField] private float panelSize = 920f;
     public Color activeButtonBackgroundColor;
     public Color inactiveButtonBackgroundColor;
+    public Toggle mapToggle;
     [Header("Tab Buttons")]
     public GameObject eventsBtn;
     public GameObject settingsBtn;
@@ -45,6 +43,7 @@ public class UiNavigation : MonoBehaviour
                 modeButtons[i].GetComponent<Image>().color = inactiveButtonBackgroundColor;
             }
         }
+        mapToggle.isOn = LevelGeneratorManager.Instance.MapEnabled;
     }
 
     public void SwitchToEvents()
@@ -113,12 +112,17 @@ public class UiNavigation : MonoBehaviour
         {
             b.interactable = false;
         }
+
         element.GetComponent<RectTransform>().DOAnchorPos(destination, time).onComplete += () =>
         {
-            foreach (var b in modeButtons)
-            {
-                b.interactable = true;
-            }
+            
+                for (int i = 0; i < modeButtons.Count; i++)
+                {
+                    if (!LevelGeneratorManager.Instance.MapEnabled && i == (int)Mode.Map)
+                        continue;
+
+                    modeButtons[i].interactable = true;
+                }
         };
     }
     
