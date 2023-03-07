@@ -1,37 +1,31 @@
-using System.Collections.Generic;
-using Unity.Splines.Examples;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Splines;
+using User_Interface;
+using Utilities;
+using Logger = Utilities.Logger;
 
-public class InputManager : MonoBehaviour
+public class InputManager : StaticInstance<InputManager>
 {
-    [Header("Ray casting")]
+    [Header("Ray Casting")]
     [SerializeField] private RectTransform cameraRenderRectTransform;
-    [SerializeField] private Camera camera;
+    [SerializeField] private Camera cam;
+    [SerializeField] private OverCanvasCheck overCanvasCheck;
     
     [Header("Input")]
     [SerializeField] private InputActionAsset actionAsset;
-
     private InputAction _lmb;
+
+    [SerializeField] private Logger logger;
     
-    [Header("Debugging")]
-    public List<Vector3> points = new();
-    [Range(0f, 1f)]
-    public float textureScaleToLength = 0.9f;
-    public SplineContainer currentSpline;
-    public LoftRoadBehaviour roadBehaviour;
+    public event Action<Vector3> OnRaycastHit;
 
-    private void Awake()
+    protected override void Awake()
     {
-        _lmb = actionAsset.FindActionMap("Default").FindAction("LMB");
+        base.Awake();
         
+        _lmb = actionAsset.FindActionMap("Default").FindAction("LMB");
         _lmb.performed += OnPointerClick;
-    }
-
-    private void Start()
-    {
-        currentSpline.Spline.SetTangentMode(TangentMode.AutoSmooth);
     }
 
     private void OnEnable()
@@ -46,30 +40,18 @@ public class InputManager : MonoBehaviour
 
     private void OnPointerClick(InputAction.CallbackContext callbackContext)
     {
+        if (!overCanvasCheck.IsOverCanvas) return;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(cameraRenderRectTransform, Mouse.current.position.ReadValue(), null, out var localPoint);
-        Debug.Log(localPoint);
         var rect = cameraRenderRectTransform.rect;
         var pivot = cameraRenderRectTransform.pivot;
         localPoint.x = ( localPoint.x / rect.width ) + pivot.x;
         localPoint.y = ( localPoint.y / rect.height ) + pivot.x;
-        var ray = camera.ViewportPointToRay(localPoint);
+        var ray = cam.ViewportPointToRay(localPoint);
         if (Physics.Raycast(ray, out var hit))
         {
-            points.Add(hit.point);
-            currentSpline.Spline.Add(new BezierKnot(hit.point));
-            float length = currentSpline.Spline.GetLength();
-            roadBehaviour.UpdateTextureScale(length * textureScaleToLength);
-            
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (points.Count == 0) return;
-        Gizmos.color = Color.red;
-        foreach (var point in points)
-        {
-            Gizmos.DrawSphere(point, 0.1f);
+            OnRaycastHit?.Invoke(hit.point);
+            logger.Log($"Raycast hit at {hit.point}", this);
         }
     }
 }
+

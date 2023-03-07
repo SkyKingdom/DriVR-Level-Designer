@@ -20,8 +20,3 @@ public abstract class ModeBase
 public class ViewMode : ModeBase
 {
 }
-
-public class EditMode : ModeBase
-{
-    
-}

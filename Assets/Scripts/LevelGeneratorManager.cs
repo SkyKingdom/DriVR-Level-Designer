@@ -29,17 +29,12 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
     private ViewMode _viewMode;
     public ViewMode ViewMode => _viewMode;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        _mapMode = new MapMode(FindObjectOfType<AbstractMap>() , FindObjectOfType<CameraController>());
-        _editMode = new EditMode();
-        _viewMode = new ViewMode();
-    }
-
     private void Start()
     {
-        ChangeMode(_viewMode);
+        _mapMode = new MapMode(FindObjectOfType<AbstractMap>() , FindObjectOfType<CameraController>());
+        _editMode = new EditMode(FindObjectOfType<ObjectManager>());
+        _viewMode = new ViewMode();
+        ChangeMode(_editMode);
     }
 
     public void OnMapEnabledValueChange(bool value)

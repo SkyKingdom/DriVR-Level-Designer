@@ -26,5 +26,6 @@ public class MapMode : ModeBase
     public void ToggleMap(bool value)
     {
         Map.gameObject.SetActive(value);
+        Map.Terrain.EnableCollider(value);
     }
 }
