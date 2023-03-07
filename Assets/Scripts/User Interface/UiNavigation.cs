@@ -12,6 +12,7 @@ public class UiNavigation : MonoBehaviour
     public Color activeButtonBackgroundColor;
     public Color inactiveButtonBackgroundColor;
     public Toggle mapToggle;
+    
     [Header("Tab Buttons")]
     public GameObject eventsBtn;
     public GameObject settingsBtn;
