@@ -304,6 +304,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 894832162}
+  - {fileID: 585650403}
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -336,6 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 495935df75de41b7a5fd0abf61e0e0c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  logger: {fileID: 585650402}
 --- !u!4 &54256345
 Transform:
   m_ObjectHideFlags: 0
@@ -2692,6 +2694,11 @@ MonoBehaviour:
   overCanvasCheck: {fileID: 930018701}
   actionAsset: {fileID: -944628639613478452, guid: bc87c2a060bf3134aadc12cd1e3caf69,
     type: 3}
+  dragThreshold: 0.1
+  dragObject: {fileID: 0}
+  objectInitialPosition: {x: 0, y: 0, z: 0}
+  objectInitialRotation: {x: 0, y: 0, z: 0}
+  rotationSpeed: 3
   logger: {fileID: 894832163}
 --- !u!4 &274622514
 Transform:
@@ -5744,6 +5751,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 566216379}
   m_CullTransparentMesh: 1
+--- !u!1 &585650401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 585650403}
+  - component: {fileID: 585650402}
+  m_Layer: 0
+  m_Name: ActionRecorderLogger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &585650402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585650401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 991bcfcf7533f8c45817bb8336f44d95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showLogs: 1
+  prefix: ActionRecorder
+  prefixColor: {r: 1, g: 0.15566039, b: 0.20625027, a: 1}
+--- !u!4 &585650403
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585650401}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 37843311}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &586667180
 GameObject:
   m_ObjectHideFlags: 0
@@ -9877,7 +9931,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1023536296}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 54256344}
+        m_TargetAssemblyTypeName: Actions.ActionRecorder, Assembly-CSharp
+        m_MethodName: Undo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1023536296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15005,7 +15071,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff3465e741840ccb5512bdc790b1b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefabToSpawn: {fileID: 0}
+  prefabToSpawn: {fileID: 0}
 --- !u!4 &1660685787
 Transform:
   m_ObjectHideFlags: 0
