@@ -6,6 +6,7 @@ using Utilities;
 public class ObjectManager : StaticInstance<ObjectManager>
 {
     [SerializeField] private ObjectBase prefabToSpawn;
+    public ObjectBase PrefabToSpawn => prefabToSpawn;
     private InputManager _inputManager;
     
     public void SelectObject(ObjectBase prefab)
@@ -21,6 +22,7 @@ public class ObjectManager : StaticInstance<ObjectManager>
     public ObjectBase Spawn(Vector3 position)
     {
         var spawnedObject = Instantiate(prefabToSpawn, position, Quaternion.identity);
+        spawnedObject.objectName = spawnedObject.gameObject.name;
         spawnedObject.Select();
         ClearObject();
         return spawnedObject;

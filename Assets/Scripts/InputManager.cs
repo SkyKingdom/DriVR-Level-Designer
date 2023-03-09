@@ -2,6 +2,7 @@ using System;
 using Actions;
 using Objects;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.InputSystem;
 using User_Interface;
 using Utilities;
@@ -18,21 +19,24 @@ public class InputManager : StaticInstance<InputManager>
     [SerializeField] private InputActionAsset actionAsset;
     private InputAction _lmb;
     private InputAction _rmb;
-
-    [Header("Dragging")]
-    private Vector2 _startPosition;
-    private Vector2 _endPosition;
     private bool _isLmbDown;
     private bool _isRmbDown;
+    private Vector2 _mouseStartPosition;
+    private Vector2 _mouseEndPosition;
+    
+    [Header("Object Manipulation")]
     [SerializeField] private float dragThreshold = 1f;
+    [SerializeField] [Range(0f, 5f)] private float rotationSpeed = 1f;
+    
+    [Header("Debugging")]
+    [SerializeField] private Logger logger;
     [SerializeField] private Transform dragObject;
     [SerializeField] private Vector3 objectInitialPosition;
     [SerializeField] private Vector3 objectInitialRotation;
-    [SerializeField] [Range(0f, 5f)] private float rotationSpeed = 1f;
-
-    [SerializeField] private Logger logger;
     
     public event Action<Vector3> OnMapClick;
+    public event Action<ObjectBase> OnObjectSelect;
+    public event Action OnObjectDeselect;
 
     protected override void Awake()
     {
@@ -60,33 +64,46 @@ public class InputManager : StaticInstance<InputManager>
 
     private void Update()
     {
-        if (_isLmbDown && overCanvasCheck.IsOverCanvas && dragObject)
+        if (!overCanvasCheck.IsOverCanvas) return; // Check if mouse is over canvas/map
+        if (!dragObject) return; // Check if there is an object to drag
+        
+        var currentPos = Mouse.current.position.ReadValue(); // Get current mouse position
+        
+        // Handle left mouse button
+        if (_isLmbDown)
         {
-            var currentPos = Mouse.current.position.ReadValue();
-            var distance = Vector2.Distance(_startPosition, currentPos);
-            if (distance > dragThreshold)
-            {
-                dragObject.transform.position = GetRaycastPosition(currentPos);
-            }
+            // check if mouse has moved more than drag threshold
+            var distance = Vector2.Distance(_mouseStartPosition, currentPos);
+            if (distance < dragThreshold) return;
+            
+            // if mouse has moved more than drag threshold, set object position to mouse position
+            // keep the y position of the object the same;
+            var raycastPosition = GetRaycastPosition(currentPos);
+            raycastPosition.y = 1f;
+            dragObject.transform.position = raycastPosition;
+
+            return;
         }
         
-        if (_isRmbDown && overCanvasCheck.IsOverCanvas && dragObject)
+        // Handle right mouse button
+        if (_isRmbDown)
         {
-            var currentPos = Mouse.current.position.ReadValue();
-            var distance = _startPosition.x - currentPos.x;
+            // Check distance on the x axis
+            var distance = _mouseStartPosition.x - currentPos.x;
             if (Mathf.Abs(distance) > dragThreshold)
             {
-                if (distance > 0)
+                // Change rotation direction based on distance direction
+                distance = distance switch
                 {
-                    distance = rotationSpeed;
-                } else if (distance < 0)
-                {
-                    distance = -rotationSpeed;
-                }
+                    > 0 => rotationSpeed,
+                    < 0 => -rotationSpeed,
+                    _ => distance
+                };
+                // Rotate object
                 dragObject.transform.Rotate(0, distance, 0);
             }
-
-            _startPosition = currentPos;
+            // Update mouse start position to current position
+            _mouseStartPosition = currentPos;
         }
     }
 
@@ -94,7 +111,7 @@ public class InputManager : StaticInstance<InputManager>
     {
         if (!overCanvasCheck.IsOverCanvas) return;
         if (_isRmbDown) return;
-        _startPosition = Mouse.current.position.ReadValue();
+        _mouseStartPosition = Mouse.current.position.ReadValue();
         _isLmbDown = true;
         
         RectTransformUtility.ScreenPointToLocalPointInRectangle(cameraRenderRectTransform, Mouse.current.position.ReadValue(), null, out var localPoint);
@@ -103,54 +120,84 @@ public class InputManager : StaticInstance<InputManager>
         localPoint.x = ( localPoint.x / rect.width ) + pivot.x;
         localPoint.y = ( localPoint.y / rect.height ) + pivot.x;
         var ray = cam.ViewportPointToRay(localPoint);
-        if (Physics.Raycast(ray, out var hit))
-        {
-            if (hit.transform.TryGetComponent(out ObjectBase objectBase))
-            {
-                dragObject = objectBase.transform;
-                objectInitialPosition = objectBase.transform.position;
-            }
-        }
+        
+        // Raycast to check if mouse is over an object
+        if (!Physics.Raycast(ray, out var hit)) return;
+        
+        // Check if object is an ObjectBase
+        if (!hit.transform.TryGetComponent(out ObjectBase objectBase)) return;
+        
+        dragObject = objectBase.transform;
+        objectInitialPosition = dragObject.position;
+        OnObjectSelect?.Invoke(objectBase);
     }
 
     private void OnLmbRelease(InputAction.CallbackContext callbackContext)
     {
+        // Check if mouse is over canvas
         if (!overCanvasCheck.IsOverCanvas)
         {
-            if (dragObject)
-            {
-                var dragAction = new DragAction(objectInitialPosition, dragObject.position, dragObject);
-                ActionRecorder.Instance.Record(dragAction);
-                dragObject = null;
-            }
+            // Check if there is an object to drag
+            if (!dragObject) return;
+            
+            // If there is an object to drag, record the drag action
+            var dragAction = new DragAction(objectInitialPosition, dragObject.position, dragObject);
+            ActionRecorder.Instance.Record(dragAction);
+            
+            // Reset drag object
+            dragObject = null;
             return;
         }
         
-        _endPosition = Mouse.current.position.ReadValue();
-        var distance = Vector2.Distance(_startPosition, _endPosition);
+        // Get mouse end position
+        _mouseEndPosition = Mouse.current.position.ReadValue();
+        
+        // Check if mouse has moved more than drag threshold
+        var distance = Vector2.Distance(_mouseStartPosition, _mouseEndPosition);
         var isDrag = distance > dragThreshold;
+        
+        // Reset LMB down
         _isLmbDown = false;
        
-        
+        // Raycast to check if mouse is over an object
         RectTransformUtility.ScreenPointToLocalPointInRectangle(cameraRenderRectTransform, Mouse.current.position.ReadValue(), null, out var localPoint);
         var rect = cameraRenderRectTransform.rect;
         var pivot = cameraRenderRectTransform.pivot;
         localPoint.x = ( localPoint.x / rect.width ) + pivot.x;
         localPoint.y = ( localPoint.y / rect.height ) + pivot.x;
         var ray = cam.ViewportPointToRay(localPoint);
-        if (Physics.Raycast(ray, out var hit))
+
+        // Check if mouse is over an object
+        if (!Physics.Raycast(ray, out var hit)) return;
+
+        if (isDrag) // If is drag, record drag action
         {
-            if (isDrag)
-            {
-                var dragAction = new DragAction(objectInitialPosition, hit.point, dragObject);
-                ActionRecorder.Instance.Record(dragAction);
-            }
-            else
-            {
-                OnMapClick?.Invoke(hit.point);
-                logger.Log($"Raycast click at {hit.point}", this);
-            }
+            var dragAction = new DragAction(objectInitialPosition, hit.point, dragObject);
+            ActionRecorder.Instance.Record(dragAction);
+            dragObject = null;
+            return;
         }
+
+        // If click is on an ObjectBase, select the object
+        if (hit.transform.TryGetComponent(out ObjectBase objectBase))
+        {
+            if (ObjectManager.Instance.PrefabToSpawn)
+            {
+                return;
+            }
+            OnObjectSelect?.Invoke(objectBase);
+            logger.Log("Object selected", this);
+            return;
+        }
+
+        if (!ObjectManager.Instance.PrefabToSpawn)
+        {
+            OnObjectDeselect?.Invoke();
+            return;
+        }
+        OnMapClick?.Invoke(hit.point);
+        logger.Log($"Raycast click at {hit.point}", this);
+        
         dragObject = null;
     }
     
@@ -159,7 +206,7 @@ public class InputManager : StaticInstance<InputManager>
         logger.Log("RMB", this);
         if (!overCanvasCheck.IsOverCanvas) return;
         if (_isLmbDown) return;
-        _startPosition = Mouse.current.position.ReadValue();
+        _mouseStartPosition = Mouse.current.position.ReadValue();
         _isRmbDown = true;
         
         RectTransformUtility.ScreenPointToLocalPointInRectangle(cameraRenderRectTransform, Mouse.current.position.ReadValue(), null, out var localPoint);
@@ -168,26 +215,33 @@ public class InputManager : StaticInstance<InputManager>
         localPoint.x = ( localPoint.x / rect.width ) + pivot.x;
         localPoint.y = ( localPoint.y / rect.height ) + pivot.x;
         var ray = cam.ViewportPointToRay(localPoint);
-        if (Physics.Raycast(ray, out var hit))
-        {
-            if (hit.transform.TryGetComponent(out ObjectBase objectBase))
-            {
-                dragObject = objectBase.transform;
-                objectInitialRotation = objectBase.transform.rotation.eulerAngles;
-            }
-        }
+        if (!Physics.Raycast(ray, out var hit)) return;
+        if (!hit.transform.TryGetComponent(out ObjectBase objectBase)) return;
+        dragObject = objectBase.transform;
+        objectInitialRotation = dragObject.rotation.eulerAngles;
+        OnObjectSelect?.Invoke(objectBase);
     }
     
     private void OnRmbRelease(InputAction.CallbackContext callbackContext)
     {
         logger.Log("RMB release", this);
+        
+        // Reset RMB down
         _isRmbDown = false;
-        if (dragObject)
-        {
-            dragObject = null;
-        }
+        
+        // Check if there is an object to rotate
+        if (!dragObject) return;
+        
+        // Record rotate action
+        var rotateAction = new RotateAction(dragObject.transform, objectInitialRotation);
+        ActionRecorder.Instance.Record(rotateAction);
+        
+        // Reset drag object
+        dragObject = null;
     }
     
+    
+    // Get raycast position from mouse position
     private Vector3 GetRaycastPosition(Vector2 mousePosition)
     {
         RectTransformUtility.ScreenPointToLocalPointInRectangle(cameraRenderRectTransform, mousePosition, null, out var localPoint);

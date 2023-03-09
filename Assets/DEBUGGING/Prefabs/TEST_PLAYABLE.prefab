@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 2391710108587488660}
   - component: {fileID: 9031304953311678964}
   - component: {fileID: 3740745572356382443}
-  - component: {fileID: 6082912913195135487}
+  - component: {fileID: -6042809969055122573}
   m_Layer: 0
-  m_Name: TEST_OBJECT
+  m_Name: TEST_PLAYABLE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5f11cf677353246588aff284acf8781a, type: 2}
+  - {fileID: 2100000, guid: 2b67e7a88933ad040a2d8b3ad4ca41ed, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -106,7 +106,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6082912913195135487
+--- !u!114 &-6042809969055122573
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,7 +115,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5452692450897037768}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca2edf3277184b059982a172c05ecb6a, type: 3}
+  m_Script: {fileID: 11500000, guid: 8655b6874c87491b82563d0f46935b03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: NUTTING
+  objectName: 
+  isDeleted: 0
+  pathPointPrefab: {fileID: 0}
+  animateOnStart: 0
+  animationSpeed: 0
+  animationStartTime: 0
+  switchTime: 0
