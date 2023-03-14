@@ -12,6 +12,7 @@ public class ObjectManager : StaticInstance<ObjectManager>
     
     public void SelectObject(ObjectBase prefab)
     {
+        if (LevelGeneratorManager.Instance.Mode != Mode.Edit) return;
         prefabToSpawn = prefab;
     }
     

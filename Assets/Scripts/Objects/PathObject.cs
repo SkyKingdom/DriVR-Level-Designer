@@ -3,14 +3,10 @@ using UnityEngine;
 
 namespace Objects
 {
-    class PathObject : ObjectBase
+    public class PathObject : ObjectBase
     {
-        private Stack<Vector3> _pathPoints;
-
-        public Vector3[] Path => _pathPoints.ToArray();
-    
-        public GameObject pathPointPrefab;
-    
+        private Stack<Node> _pathPoints = new();
+        
         public bool AnimateOnStart { get; protected set; }
 
         public float Speed { get; protected set; }
@@ -29,5 +25,9 @@ namespace Objects
             AnimateOnStart = animateOnStart;
         }
         
+        public void AddPathPoint(Node point)
+        {
+            _pathPoints.Push(point);
+        }
     }
 }

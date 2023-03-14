@@ -19,6 +19,8 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
     [SerializeField] private bool mapEnabled;
     public bool MapEnabled => mapEnabled;
     
+    public event Action<Mode> OnModeChange;
+    
     [SerializeField] UiNavigation uiNavigation;
     
     // Modes
@@ -34,7 +36,7 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
         _mapMode = new MapMode(FindObjectOfType<AbstractMap>() , FindObjectOfType<CameraController>());
         _editMode = new EditMode(FindObjectOfType<ObjectManager>());
         _viewMode = new ViewMode();
-        ChangeMode(_editMode);
+        SetMode(1);
     }
 
     public void OnMapEnabledValueChange(bool value)
@@ -49,10 +51,10 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
         MapMode.ToggleMap(value);
     }
 
-    private void ChangeMode(ModeBase mode)
+    private void ChangeMode(ModeBase newMode)
     {
         CurrentMode?.OnExit();
-        CurrentMode = mode;
+        CurrentMode = newMode;
         CurrentMode?.OnEnter();
     }
 
@@ -64,6 +66,7 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
                 if (MapEnabled)
                 {
                     ChangeMode(_mapMode);
+                    mode = (Mode)modeIndex;
                 }
                 else
                 {
@@ -72,12 +75,15 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
                 break;
             case Mode.Edit:
                 ChangeMode(_editMode);
+                mode = (Mode)modeIndex;
                 break;
             case Mode.View:
                 ChangeMode(_viewMode);
+                mode = (Mode)modeIndex;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(modeIndex), modeIndex, null);
         }
+        OnModeChange?.Invoke(Mode);
     }
 }

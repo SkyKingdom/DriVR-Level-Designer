@@ -2,7 +2,6 @@ using System;
 using Actions;
 using Objects;
 using UnityEngine;
-using UnityEngine.Android;
 using UnityEngine.InputSystem;
 using User_Interface;
 using Utilities;
@@ -21,6 +20,8 @@ public class InputManager : StaticInstance<InputManager>
     private InputAction _rmb;
     private bool _isLmbDown;
     private bool _isRmbDown;
+    private bool _editingPath;
+    private bool _inEditMode;
     private Vector2 _mouseStartPosition;
     private Vector2 _mouseEndPosition;
     
@@ -38,6 +39,8 @@ public class InputManager : StaticInstance<InputManager>
     public event Action<ObjectBase> OnObjectSelect;
     public event Action OnObjectDeselect;
 
+    public event Action<Vector3> OnPathClick;
+
     protected override void Awake()
     {
         base.Awake();
@@ -49,7 +52,24 @@ public class InputManager : StaticInstance<InputManager>
         _rmb.started += OnRmbDown;
         _rmb.canceled += OnRmbRelease;
     }
-    
+
+    private void Start()
+    {
+        LevelGeneratorManager.Instance.OnModeChange += HandleModeChange;
+    }
+
+    private void HandleModeChange(Mode mode)
+    {
+        if (mode == Mode.Edit)
+            _inEditMode = true;
+        else
+        {
+            _inEditMode = false;
+            dragObject = null;
+            OnObjectDeselect?.Invoke();
+        }
+    }
+
     private void OnEnable()
     {
         _lmb.Enable();
@@ -62,8 +82,36 @@ public class InputManager : StaticInstance<InputManager>
         _rmb.Disable();
     }
 
+    public void TogglePathEdit()
+    {
+        _editingPath = !_editingPath;
+
+        switch (_editingPath)
+        {
+            case true:
+                _lmb.started -= OnLmbDown;
+                _lmb.canceled -= OnLmbRelease;
+                _rmb.started -= OnRmbDown;
+                _rmb.canceled -= OnRmbRelease;
+                
+                _lmb.started += OnPathLmbDown;
+                _lmb.canceled += OnPathLmbRelease;
+                break;
+            case false:
+                _lmb.started -= OnPathLmbDown;
+                _lmb.canceled -= OnPathLmbRelease;
+                
+                _lmb.started += OnLmbDown;
+                _lmb.canceled += OnLmbRelease;
+                _rmb.started += OnRmbDown;
+                _rmb.canceled += OnRmbRelease;
+                break;
+        }
+    }
+
     private void Update()
     {
+        if (!_inEditMode) return;
         if (!overCanvasCheck.IsOverCanvas) return; // Check if mouse is over canvas/map
         if (!dragObject) return; // Check if there is an object to drag
         
@@ -109,6 +157,7 @@ public class InputManager : StaticInstance<InputManager>
 
     private void OnLmbDown (InputAction.CallbackContext callbackContext)
     {
+        if (!_inEditMode) return;
         if (!overCanvasCheck.IsOverCanvas) return;
         if (_isRmbDown) return;
         _mouseStartPosition = Mouse.current.position.ReadValue();
@@ -134,6 +183,7 @@ public class InputManager : StaticInstance<InputManager>
 
     private void OnLmbRelease(InputAction.CallbackContext callbackContext)
     {
+        if (!_inEditMode) return;
         // Check if mouse is over canvas
         if (!overCanvasCheck.IsOverCanvas)
         {
@@ -204,6 +254,7 @@ public class InputManager : StaticInstance<InputManager>
     
     private void OnRmbDown(InputAction.CallbackContext callbackContext)
     {
+        if (!_inEditMode) return;
         logger.Log("RMB", this);
         if (!overCanvasCheck.IsOverCanvas) return;
         if (_isLmbDown) return;
@@ -225,7 +276,7 @@ public class InputManager : StaticInstance<InputManager>
     
     private void OnRmbRelease(InputAction.CallbackContext callbackContext)
     {
-        logger.Log("RMB release", this);
+        if (!_inEditMode) return;
         
         // Reset RMB down
         _isRmbDown = false;
@@ -239,6 +290,28 @@ public class InputManager : StaticInstance<InputManager>
         
         // Reset drag object
         dragObject = null;
+    }
+    
+    private void OnPathLmbDown(InputAction.CallbackContext callbackContext)
+    {
+        if (!_inEditMode) return;
+        _mouseStartPosition = Mouse.current.position.ReadValue();
+    }
+
+    private void OnPathLmbRelease(InputAction.CallbackContext callbackContext)
+    {
+        if (!_inEditMode) return;
+        _mouseEndPosition = Mouse.current.position.ReadValue();
+        
+        // Check if mouse has moved more than drag threshold
+        var distance = Vector2.Distance(_mouseStartPosition, _mouseEndPosition);
+        var isDrag = distance > dragThreshold;
+        
+        if (isDrag) return;
+
+        var pos = GetRaycastPosition(_mouseEndPosition);
+        
+        OnPathClick?.Invoke(pos);
     }
     
     
