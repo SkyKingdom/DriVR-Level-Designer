@@ -5,22 +5,29 @@ namespace Actions
 {
     class SpawnAction : ActionBase
     {
-        private ObjectManager _manager;
+        private ObjectManager _objectManager;
+        private SettingsManager _settingsManager;
         private ObjectBase _spawnedObject;
         private Vector3 _position;
 
-        public SpawnAction(ObjectManager manager, Vector3 position)
+        public SpawnAction(ObjectManager objectManager, SettingsManager settingsManager, Vector3 position)
         {
-            _manager = manager;
+            _objectManager = objectManager;
+            _settingsManager = settingsManager;
             _position = position;
         }
         public override void Execute()
         {
-            _spawnedObject = _manager.Spawn(_position);
+            _spawnedObject = _objectManager.Spawn(_position);
         }
 
         public override void Undo()
         {
+            if (_settingsManager.SelectedObject == _spawnedObject)
+            {
+                _settingsManager.DeselectObject();
+            }
+
             _spawnedObject.gameObject.Destroy();
         }
     }
