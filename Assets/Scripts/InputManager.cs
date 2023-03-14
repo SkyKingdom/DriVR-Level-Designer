@@ -172,6 +172,7 @@ public class InputManager : StaticInstance<InputManager>
 
         if (isDrag) // If is drag, record drag action
         {
+            if (dragObject == null) return;
             var dragAction = new DragAction(objectInitialPosition, hit.point, dragObject);
             ActionRecorder.Instance.Record(dragAction);
             dragObject = null;
