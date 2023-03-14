@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Objects;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [Serializable]
@@ -31,8 +32,9 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private TMP_InputField objectInteractionStart;
     [SerializeField] private TMP_InputField objectInteractionEnd;
     [SerializeField] private TMP_InputField objectPovStart;
-    private bool _triggerOnStart;
-    private bool _alwaysInteractable;
+    [SerializeField] private Toggle isCorrect;
+    [SerializeField] private Toggle animateOnStart;
+    [SerializeField] private Toggle alwaysInteractable;
     
 
     private void OnEnable()
@@ -50,7 +52,12 @@ public class SettingsManager : MonoBehaviour
     public void SelectObject(ObjectBase obj)
     {
         if (_selectedObject != null)
+        {
+            SaveData();
             _selectedObject.Deselect();
+            ClearData();
+        }
+
         obj.Select();
         _selectedObject = obj;
         _selectedObjectType = GetObjectType(_selectedObject);
@@ -61,7 +68,8 @@ public class SettingsManager : MonoBehaviour
     private void DeselectObject()
     {
         if (_selectedObject == null) return;
-        
+        SaveData();
+        ClearData();
         _selectedObject.Deselect();
         _selectedObject = null;
         _selectedObjectType = ObjectType.Null;
@@ -73,32 +81,73 @@ public class SettingsManager : MonoBehaviour
         objectName.text = _selectedObject.objectName;
         switch (_selectedObjectType)
         {
-            case ObjectType.Null:
-                break;
-            case ObjectType.Decorative:
-                break;
             case ObjectType.Interactable:
                 var interactableObject = _selectedObject as InteractableObject;
                 Debug.Log(interactableObject);
-                if (interactableObject != null)
-                {
-                    objectSpeed.text = interactableObject.Speed.ToString("F1");
-                    objectPathStart.text = interactableObject.AnimationStartTime.ToString("F1");
-                    objectInteractionStart.text = interactableObject.InteractionStartTime.ToString("F1");
-                    objectInteractionEnd.text = interactableObject.InteractionEndTime.ToString("F1");
-                }
-
+                if (interactableObject == null) return;
+                objectSpeed.text = interactableObject.Speed.ToString("F1");
+                objectPathStart.text = interactableObject.AnimationStartTime.ToString("F1");
+                objectInteractionStart.text = interactableObject.InteractionStartTime.ToString("F1");
+                objectInteractionEnd.text = interactableObject.InteractionEndTime.ToString("F1");
+                isCorrect.isOn = interactableObject.Answer;
+                animateOnStart.isOn = interactableObject.AnimateOnStart;
+                alwaysInteractable.isOn = interactableObject.AlwaysInteractable;
+                // TODO: load path
                 break;
             case ObjectType.Playable:
+                var playableObject = _selectedObject as PlayableObject;
+                if (playableObject == null) return;
+                objectSpeed.text = playableObject.Speed.ToString("F1");
+                objectPathStart.text = playableObject.AnimationStartTime.ToString("F1");
+                objectPovStart.text = playableObject.SwitchViewTime.ToString("F1");
+                animateOnStart.isOn = playableObject.AnimateOnStart;
+                // TODO: load path
                 break;
-            default:
-                throw new ArgumentOutOfRangeException();
         }
     }
     
     private void SaveData()
     {
-        
+        _selectedObject.objectName = objectName.text;
+        switch (_selectedObjectType)
+        {
+            case ObjectType.Interactable:
+                var interactableObject = _selectedObject as InteractableObject;
+                if (interactableObject == null) return;
+                if (alwaysInteractable.isOn)
+                {
+                    interactableObject.SetInteractionValues(isCorrect.isOn, alwaysInteractable.isOn);
+                }
+                else
+                {
+                    interactableObject.SetInteractionValues(isCorrect.isOn, float.Parse(objectInteractionStart.text),
+                        float.Parse(objectInteractionEnd.text));
+                }
+                
+                if (animateOnStart.isOn)
+                {
+                    interactableObject.SetAnimationValues(float.Parse(objectSpeed.text), animateOnStart.isOn);
+                }
+                else
+                {
+                    interactableObject.SetAnimationValues(float.Parse(objectSpeed.text), float.Parse(objectPathStart.text));
+                }
+                break;
+            case ObjectType.Playable:
+                var playableObject = _selectedObject as PlayableObject;
+                if (playableObject == null) return;
+                if (animateOnStart.isOn)
+                {
+                    playableObject.SetAnimationValues(float.Parse(objectSpeed.text), animateOnStart.isOn);
+                }
+                else
+                {
+                    playableObject.SetAnimationValues(float.Parse(objectSpeed.text), float.Parse(objectPathStart.text));
+                }
+                
+                playableObject.SetViewValues(float.Parse(objectPovStart.text));
+                break;
+        }
     }
     
     private void ClearData()
@@ -108,6 +157,10 @@ public class SettingsManager : MonoBehaviour
         objectInteractionStart.text = "";
         objectInteractionEnd.text = "";
         objectPovStart.text = "";
+        objectPathStart.text = "";
+        isCorrect.isOn = false;
+        animateOnStart.isOn = false;
+        alwaysInteractable.isOn = false;
     }
 
     private ObjectType GetObjectType(ObjectBase obj)

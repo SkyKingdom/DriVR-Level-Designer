@@ -1,27 +1,25 @@
 ﻿namespace Objects
 {
-    public enum Answer
-    {
-        Correct,
-        Incorrect
-    }
     class InteractableObject : PathObject
     {
-        public Answer answer;
-
-        public float Speed { get; private set; }
+        public bool Answer { get; private set; }
         
-        public float AnimationStartTime { get; private set; }
+        public bool AlwaysInteractable { get; private set; }
+        
         public float InteractionStartTime { get; private set; }
         public float InteractionEndTime { get; private set; }
-        
-        public void SetValues(float speed, float animationStartTime, float interactionStartTime, float interactionEndTime)
+
+        public void SetInteractionValues(bool answer, bool alwaysInteractable)
         {
-            Speed = speed;
-            AnimationStartTime = animationStartTime;
+            Answer = answer;
+            AlwaysInteractable = alwaysInteractable;
+        }
+        
+        public void SetInteractionValues(bool answer, float interactionStartTime, float interactionEndTime)
+        {
+            Answer = answer;
             InteractionStartTime = interactionStartTime;
             InteractionEndTime = interactionEndTime;
         }
-
     }
 }

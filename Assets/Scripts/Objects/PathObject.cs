@@ -11,23 +11,23 @@ namespace Objects
     
         public GameObject pathPointPrefab;
     
-        public bool animateOnStart;
+        public bool AnimateOnStart { get; protected set; }
 
-        public float animationSpeed;
-    
-        public float animationStartTime;
-
-        public void AddPoint(Vector3 point)
+        public float Speed { get; protected set; }
+        
+        public float AnimationStartTime { get; protected set; }
+        
+        public void SetAnimationValues(float speed, float animationStartTime)
         {
-            _pathPoints.Push(point);
+            Speed = speed;
+            AnimationStartTime = animationStartTime;
         }
-    
-        public void DrawPath()
+        
+        public void SetAnimationValues(float speed, bool animateOnStart)
         {
-            foreach (var point in _pathPoints)
-            {
-                Instantiate(pathPointPrefab, point, Quaternion.identity);
-            }
+            Speed = speed;
+            AnimateOnStart = animateOnStart;
         }
+        
     }
 }

@@ -6604,10 +6604,13 @@ MonoBehaviour:
   - {fileID: 692996519}
   objectName: {fileID: 619003047}
   objectSpeed: {fileID: 566216382}
-  objectPathStart: {fileID: 0}
+  objectPathStart: {fileID: 309754812}
   objectInteractionStart: {fileID: 1111331678}
   objectInteractionEnd: {fileID: 183809216}
   objectPovStart: {fileID: 2114818792}
+  isCorrect: {fileID: 398305511}
+  animateOnStart: {fileID: 1016166479}
+  alwaysInteractable: {fileID: 320331494}
 --- !u!4 &622472946
 Transform:
   m_ObjectHideFlags: 0
