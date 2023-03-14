@@ -15,9 +15,8 @@ public class UiNavigation : MonoBehaviour
     
     [Header("Tab Buttons")]
     public GameObject eventsBtn;
-    public GameObject settingsBtn;
     public GameObject activesBtn;
-    public GameObject decorationsBtn;
+    public GameObject interactableBtn;
     public GameObject propsBtn;
     public GameObject eventPrefab;
     
@@ -26,9 +25,8 @@ public class UiNavigation : MonoBehaviour
 
     [Header("Panels")] 
     public GameObject eventsPnl;
-    public GameObject settingsPnl;
-    public GameObject decorationsPnl;
     public GameObject activesPnl;
+    public GameObject interactablePnl;
     public GameObject propsPnl;
     public Transform eventContainer;
     public List<GameObject> modePanels;
@@ -49,54 +47,36 @@ public class UiNavigation : MonoBehaviour
         mapToggle.isOn = LevelGeneratorManager.Instance.MapEnabled;
     }
 
-    public void SwitchToEvents()
-    {
-        SetOpacity(settingsBtn, 0.8f, 0.2f);
-        SetOpacity(eventsBtn, 1f, 0.2f);
-
-        MoveObj(settingsPnl, new Vector2(460 , 0), 0.3f);
-        MoveObj(eventsPnl, new Vector2(0 , 0), 0.3f);
-    }
-    
-    public void SwitchToSettings()
-    {
-        SetOpacity(eventsBtn, 0.8f, 0.2f);
-        SetOpacity(settingsBtn, 1f, 0.2f);
-
-        MoveObj(settingsPnl, new Vector2(0 , 0), 0.3f);
-        MoveObj(eventsPnl, new Vector2(-460 , 0), 0.3f);
-    }
-    
     public void SwitchToActives()
     {
         SetOpacity(propsBtn, 0.3f, 0.2f);
-        SetOpacity(decorationsBtn, 0.3f, 0.2f);
+        SetOpacity(interactableBtn, 0.3f, 0.2f);
         SetOpacity(activesBtn, 1f, 0.2f);
         
         activesPnl.SetActive(true);
         propsPnl.SetActive(false);
-        decorationsPnl.SetActive(false);
+        interactablePnl.SetActive(false);
     }
     
     public void SwitchToInteractables()
     {
         SetOpacity(propsBtn, 0.3f, 0.2f);
-        SetOpacity(decorationsBtn, 1f, 0.2f);
+        SetOpacity(interactableBtn, 1f, 0.2f);
         SetOpacity(activesBtn, 0.3f, 0.2f);
         
         activesPnl.SetActive(false);
         propsPnl.SetActive(false);
-        decorationsPnl.SetActive(true);
+        interactablePnl.SetActive(true);
     }
     
     public void SwitchToProps()
     {
         SetOpacity(activesBtn, 0.3f, 0.2f);
         SetOpacity(propsBtn, 1f, 0.2f);
-        SetOpacity(decorationsPnl, 0.3f, 0.2f);
+        SetOpacity(interactablePnl, 0.3f, 0.2f);
         
         activesPnl.SetActive(false);
-        decorationsPnl.SetActive(false);
+        interactablePnl.SetActive(false);
         propsPnl.SetActive(true);
     }
     
