@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class MenuNav : MonoBehaviour
@@ -15,6 +16,12 @@ public class MenuNav : MonoBehaviour
         InvokeRepeating(nameof(HandleAnimationTrigger), 3f, 5f);
     }
 
+    public void NewLevelButton()
+    {
+        SceneManager.LoadScene(0);
+    }
+    
+    //animations
     private void HandleAnimationTrigger()
     {
         if (_animRunning)
