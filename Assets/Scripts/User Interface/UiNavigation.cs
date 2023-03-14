@@ -73,7 +73,7 @@ public class UiNavigation : MonoBehaviour
     {
         SetOpacity(activesBtn, 0.3f, 0.2f);
         SetOpacity(propsBtn, 1f, 0.2f);
-        SetOpacity(interactablePnl, 0.3f, 0.2f);
+        SetOpacity(interactableBtn, 0.3f, 0.2f);
         
         activesPnl.SetActive(false);
         interactablePnl.SetActive(false);
