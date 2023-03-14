@@ -36,8 +36,11 @@ public class ObjectManager : StaticInstance<ObjectManager>
     public void OnSpawnObject(Vector3 position)
     {
         if (prefabToSpawn == null) return;
-        
-        var action = new SpawnAction(this, position);
+        if (_settingsManager == null)
+        {
+            _settingsManager = FindObjectOfType<SettingsManager>();
+        }
+        var action = new SpawnAction(this, _settingsManager ,position);
         ActionRecorder.Instance.Record(action);
     }
 

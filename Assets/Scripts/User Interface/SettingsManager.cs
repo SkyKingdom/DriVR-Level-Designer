@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Objects;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [Serializable]
@@ -24,6 +23,7 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private List<GameObject> blankets;
     private ObjectType _selectedObjectType;
     private ObjectBase _selectedObject;
+    public ObjectBase SelectedObject => _selectedObject;
     
     [Header("Object Details")]
     [SerializeField] private TMP_InputField objectName;
@@ -65,7 +65,7 @@ public class SettingsManager : MonoBehaviour
         LoadData();
     }
 
-    private void DeselectObject()
+    public void DeselectObject()
     {
         if (_selectedObject == null) return;
         SaveData();
