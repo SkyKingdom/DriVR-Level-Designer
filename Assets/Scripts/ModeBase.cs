@@ -1,6 +1,7 @@
 ﻿
 public abstract class ModeBase
 {
+    
     public virtual void OnEnter()
     {
         

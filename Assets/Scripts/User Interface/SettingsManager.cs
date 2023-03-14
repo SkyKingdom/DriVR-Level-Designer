@@ -63,6 +63,10 @@ public class SettingsManager : MonoBehaviour
         _selectedObjectType = GetObjectType(_selectedObject);
         UpdateUIBlankets(_selectedObjectType);
         LoadData();
+        if (_selectedObjectType is ObjectType.Interactable or ObjectType.Playable)
+        {
+            PathManager.Instance.SelectObject(_selectedObject as PathObject);
+        }
     }
 
     public void DeselectObject()
@@ -74,6 +78,7 @@ public class SettingsManager : MonoBehaviour
         _selectedObject = null;
         _selectedObjectType = ObjectType.Null;
         UpdateUIBlankets(_selectedObjectType);
+        PathManager.Instance.DeselectObject();
     }
 
     private void LoadData()
