@@ -6,6 +6,7 @@ namespace Objects
     public class PathObject : ObjectBase
     {
         private Stack<Node> _pathPoints = new();
+        public Stack<Node> PathPoints => _pathPoints;
         
         public bool AnimateOnStart { get; protected set; }
 
