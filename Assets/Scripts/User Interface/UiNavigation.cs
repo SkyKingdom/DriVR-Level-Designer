@@ -17,6 +17,7 @@ public class UiNavigation : MonoBehaviour
     public GameObject eventsBtn;
     public GameObject settingsBtn;
     public GameObject activesBtn;
+    public GameObject decorationsBtn;
     public GameObject propsBtn;
     public GameObject eventPrefab;
     
@@ -26,6 +27,7 @@ public class UiNavigation : MonoBehaviour
     [Header("Panels")] 
     public GameObject eventsPnl;
     public GameObject settingsPnl;
+    public GameObject decorationsPnl;
     public GameObject activesPnl;
     public GameObject propsPnl;
     public Transform eventContainer;
@@ -68,18 +70,33 @@ public class UiNavigation : MonoBehaviour
     public void SwitchToActives()
     {
         SetOpacity(propsBtn, 0.3f, 0.2f);
+        SetOpacity(decorationsBtn, 0.3f, 0.2f);
         SetOpacity(activesBtn, 1f, 0.2f);
         
         activesPnl.SetActive(true);
         propsPnl.SetActive(false);
+        decorationsPnl.SetActive(false);
+    }
+    
+    public void SwitchToInteractables()
+    {
+        SetOpacity(propsBtn, 0.3f, 0.2f);
+        SetOpacity(decorationsBtn, 1f, 0.2f);
+        SetOpacity(activesBtn, 0.3f, 0.2f);
+        
+        activesPnl.SetActive(false);
+        propsPnl.SetActive(false);
+        decorationsPnl.SetActive(true);
     }
     
     public void SwitchToProps()
     {
         SetOpacity(activesBtn, 0.3f, 0.2f);
         SetOpacity(propsBtn, 1f, 0.2f);
+        SetOpacity(decorationsPnl, 0.3f, 0.2f);
         
         activesPnl.SetActive(false);
+        decorationsPnl.SetActive(false);
         propsPnl.SetActive(true);
     }
     
