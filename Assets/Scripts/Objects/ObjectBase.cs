@@ -7,6 +7,7 @@ namespace Objects
   {
     public string objectName;
     public bool isDeleted;
+    private Outline _outline;
     public Vector3 GetPosition()
     {
       return transform.position;
@@ -28,11 +29,21 @@ namespace Objects
 
     public void Select()
     {
+      if (_outline == null)
+      {
+        _outline = gameObject.AddComponent<Outline>();
+        _outline.OutlineColor = Color.yellow;
+        _outline.OutlineWidth = 10f;
+        _outline.OutlineMode = Outline.Mode.OutlineVisible;
+      }
+      
+      _outline.enabled = true;
       // TODO: Subscribing to events
     }
     
     public void Deselect()
     {
+      _outline.enabled = false;
       // TODO: Unsubscribing from events
     }
 

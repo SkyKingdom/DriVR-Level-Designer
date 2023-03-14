@@ -26,6 +26,13 @@ public class SettingsManager : MonoBehaviour
     
     [Header("Object Details")]
     [SerializeField] private TMP_InputField objectName;
+    [SerializeField] private TMP_InputField objectSpeed;
+    [SerializeField] private TMP_InputField objectPathStart;
+    [SerializeField] private TMP_InputField objectInteractionStart;
+    [SerializeField] private TMP_InputField objectInteractionEnd;
+    [SerializeField] private TMP_InputField objectPovStart;
+    private bool _triggerOnStart;
+    private bool _alwaysInteractable;
     
 
     private void OnEnable()
@@ -40,19 +47,67 @@ public class SettingsManager : MonoBehaviour
         InputManager.Instance.OnObjectDeselect -= DeselectObject;
     }
 
-    private void SelectObject(ObjectBase obj)
+    public void SelectObject(ObjectBase obj)
     {
+        if (_selectedObject != null)
+            _selectedObject.Deselect();
+        obj.Select();
         _selectedObject = obj;
         _selectedObjectType = GetObjectType(_selectedObject);
         UpdateUIBlankets(_selectedObjectType);
-        objectName.text = _selectedObject.objectName;
+        LoadData();
     }
 
     private void DeselectObject()
     {
+        if (_selectedObject == null) return;
+        
+        _selectedObject.Deselect();
         _selectedObject = null;
         _selectedObjectType = ObjectType.Null;
         UpdateUIBlankets(_selectedObjectType);
+    }
+
+    private void LoadData()
+    {
+        objectName.text = _selectedObject.objectName;
+        switch (_selectedObjectType)
+        {
+            case ObjectType.Null:
+                break;
+            case ObjectType.Decorative:
+                break;
+            case ObjectType.Interactable:
+                var interactableObject = _selectedObject as InteractableObject;
+                Debug.Log(interactableObject);
+                if (interactableObject != null)
+                {
+                    objectSpeed.text = interactableObject.Speed.ToString("F1");
+                    objectPathStart.text = interactableObject.AnimationStartTime.ToString("F1");
+                    objectInteractionStart.text = interactableObject.InteractionStartTime.ToString("F1");
+                    objectInteractionEnd.text = interactableObject.InteractionEndTime.ToString("F1");
+                }
+
+                break;
+            case ObjectType.Playable:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+    
+    private void SaveData()
+    {
+        
+    }
+    
+    private void ClearData()
+    {
+        objectName.text = "";
+        objectSpeed.text = "";
+        objectInteractionStart.text = "";
+        objectInteractionEnd.text = "";
+        objectPovStart.text = "";
     }
 
     private ObjectType GetObjectType(ObjectBase obj)

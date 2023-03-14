@@ -4524,7 +4524,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -6277,6 +6277,10 @@ MonoBehaviour:
   - {fileID: 596902719}
   - {fileID: 692996519}
   objectName: {fileID: 619003047}
+  objectSpeed: {fileID: 566216382}
+  objectInteractionStart: {fileID: 1111331678}
+  objectInteractionEnd: {fileID: 183809216}
+  objectPovStart: {fileID: 2114818792}
 --- !u!4 &622472946
 Transform:
   m_ObjectHideFlags: 0
@@ -7824,14 +7828,13 @@ GameObject:
   - component: {fileID: 781835114}
   - component: {fileID: 781835113}
   - component: {fileID: 781835112}
-  - component: {fileID: 781835111}
   m_Layer: 0
   m_Name: Road
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &781835110
 Transform:
   m_ObjectHideFlags: 0
@@ -7847,23 +7850,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &781835111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 781835104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a787722e962040bca5a786da5aae63f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_DefaultWidth: 0
-  m_Width:
-    m_IndexUnit: 2
-    m_DefaultValue: 0.3
-    m_DataPoints: []
 --- !u!114 &781835112
 MonoBehaviour:
   m_ObjectHideFlags: 0

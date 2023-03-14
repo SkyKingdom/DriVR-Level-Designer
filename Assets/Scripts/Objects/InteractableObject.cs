@@ -8,28 +8,20 @@
     class InteractableObject : PathObject
     {
         public Answer answer;
+
+        public float Speed { get; private set; }
         
-        public float interactionStartTime;
-        public float interactionEndTime;
+        public float AnimationStartTime { get; private set; }
+        public float InteractionStartTime { get; private set; }
+        public float InteractionEndTime { get; private set; }
         
-        public void SetInteractionStartTime(float time)
+        public void SetValues(float speed, float animationStartTime, float interactionStartTime, float interactionEndTime)
         {
-            interactionStartTime = time;
+            Speed = speed;
+            AnimationStartTime = animationStartTime;
+            InteractionStartTime = interactionStartTime;
+            InteractionEndTime = interactionEndTime;
         }
-        
-        public void SetInteractionStartTime(string time)
-        {
-            interactionStartTime = float.Parse(time);
-        }
-        
-        public void SetInteractionEndTime(float time)
-        {
-            interactionEndTime = time;
-        }
-        
-        public void SetInteractionEndTime(string time)
-        {
-            interactionEndTime = float.Parse(time);
-        }
+
     }
 }

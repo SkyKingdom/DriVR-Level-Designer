@@ -8,6 +8,7 @@ public class ObjectManager : StaticInstance<ObjectManager>
     [SerializeField] private ObjectBase prefabToSpawn;
     public ObjectBase PrefabToSpawn => prefabToSpawn;
     private InputManager _inputManager;
+    private SettingsManager _settingsManager;
     
     public void SelectObject(ObjectBase prefab)
     {
@@ -23,7 +24,11 @@ public class ObjectManager : StaticInstance<ObjectManager>
     {
         var spawnedObject = Instantiate(prefabToSpawn, position, Quaternion.identity);
         spawnedObject.objectName = spawnedObject.gameObject.name;
-        spawnedObject.Select();
+        if (_settingsManager == null)
+        {
+            _settingsManager = FindObjectOfType<SettingsManager>();
+        }
+        _settingsManager.SelectObject(spawnedObject);
         ClearObject();
         return spawnedObject;
     }
