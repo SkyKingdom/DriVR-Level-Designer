@@ -26,7 +26,7 @@ public class PathManager : StaticInstance<PathManager>
     private void HandlePathClick(Vector3 point)
     {
         var obj = Instantiate(pathPointPrefab, point, Quaternion.identity);
-        var Node = new Node(obj, point);
+        var Node = new Node(obj, point, _selectedObject);
         _selectedObject.AddPathPoint(Node);
     }
 
