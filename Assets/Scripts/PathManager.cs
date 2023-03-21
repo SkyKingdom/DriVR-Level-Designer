@@ -1,4 +1,5 @@
-﻿using Objects;
+﻿using Actions;
+using Objects;
 using UnityEngine;
 using Utilities;
 
@@ -27,7 +28,8 @@ public class PathManager : StaticInstance<PathManager>
     {
         var obj = Instantiate(pathPointPrefab, point, Quaternion.identity);
         var Node = new Node(obj, point, _selectedObject);
-        _selectedObject.AddPathPoint(Node);
+        var action = new NodeAddAction(Node, _selectedObject);
+        ActionRecorder.Instance.Record(action);
     }
 
     

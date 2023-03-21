@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Objects
@@ -97,6 +98,20 @@ namespace Objects
             _pathPoints.Push(node);
             _lineRenderer.positionCount = _pathPoints.Count;
             _lineRenderer.SetPosition(_pathPoints.Count - 1, node.Position);
+        }
+        
+        public void RemovePathPoint(Node node)
+        {
+            var points = new Stack<Node>(_pathPoints).ToList();
+            points.Remove(node);
+            node.GameObject.Destroy();
+            _lineRenderer.positionCount = points.Count;
+            _pathPoints.Clear();
+            for (int i = 0; i < points.Count; i++)
+            {
+                _pathPoints.Push(points[i]);
+                _lineRenderer.SetPosition(i, points[i].Position);
+            }
         }
     }
 }

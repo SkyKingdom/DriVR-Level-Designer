@@ -22,6 +22,7 @@ namespace Actions
         public override void Undo()
         {
             _draggedObject.position = _startPosition;
+            _draggedObject.GetComponent<ObjectBase>().OnReposition();
         }
     }
 }

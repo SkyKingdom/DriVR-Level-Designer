@@ -2547,10 +2547,11 @@ MonoBehaviour:
     type: 3}
   dragThreshold: 0.1
   rotationSpeed: 3
-  logger: {fileID: 894832163}
   dragObject: {fileID: 0}
   objectInitialPosition: {x: 0, y: 0, z: 0}
   objectInitialRotation: {x: 0, y: 0, z: 0}
+  dragNode: {fileID: 0}
+  logger: {fileID: 894832163}
 --- !u!4 &274622514
 Transform:
   m_ObjectHideFlags: 0

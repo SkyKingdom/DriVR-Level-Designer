@@ -165,7 +165,6 @@ public class InputManager : StaticInstance<InputManager>
 
     private void NodeDragUpdate(Vector2 mousePos)
     {
-        logger.Log("NodeDragUpdate", this);
         if (!dragNode) return;
         if (!_isLmbDown) return;
         // check if mouse has moved more than drag threshold

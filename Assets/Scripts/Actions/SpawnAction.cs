@@ -28,7 +28,17 @@ namespace Actions
             {
                 _settingsManager.DeselectObject();
             }
+            
+            var pathObject = _spawnedObject as PathObject;
 
+            if (pathObject)
+            {
+                foreach (var p in pathObject.PathPoints)
+                {
+                    p.GameObject.Destroy();
+                }
+            }
+            
             _spawnedObject.gameObject.Destroy();
         }
     }
