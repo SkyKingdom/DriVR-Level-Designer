@@ -11,6 +11,12 @@ public class Node
         Position = position;
     }
     
+    public void SetPosition(Vector3 position)
+    {
+        Position = position;
+        GameObject.transform.position = position;
+    }
+    
 }
 
 

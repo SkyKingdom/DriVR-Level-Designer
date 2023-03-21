@@ -41,6 +41,8 @@ public class InputManager : StaticInstance<InputManager>
 
     public event Action<Vector3> OnPathClick;
 
+    public event Action OnDragComplete;
+
     protected override void Awake()
     {
         base.Awake();
@@ -193,6 +195,7 @@ public class InputManager : StaticInstance<InputManager>
             // If there is an object to drag, record the drag action
             var dragAction = new DragAction(objectInitialPosition, dragObject.position, dragObject);
             ActionRecorder.Instance.Record(dragAction);
+            OnDragComplete?.Invoke();
             
             // Reset drag object
             dragObject = null;
@@ -225,6 +228,7 @@ public class InputManager : StaticInstance<InputManager>
             if (dragObject == null) return;
             var dragAction = new DragAction(objectInitialPosition, hit.point, dragObject);
             ActionRecorder.Instance.Record(dragAction);
+            OnDragComplete?.Invoke();
             dragObject = null;
             return;
         }
@@ -295,12 +299,14 @@ public class InputManager : StaticInstance<InputManager>
     private void OnPathLmbDown(InputAction.CallbackContext callbackContext)
     {
         if (!_inEditMode) return;
+        if (!overCanvasCheck.IsOverCanvas) return;
         _mouseStartPosition = Mouse.current.position.ReadValue();
     }
 
     private void OnPathLmbRelease(InputAction.CallbackContext callbackContext)
     {
         if (!_inEditMode) return;
+        if (!overCanvasCheck.IsOverCanvas) return;
         _mouseEndPosition = Mouse.current.position.ReadValue();
         
         // Check if mouse has moved more than drag threshold

@@ -19,6 +19,7 @@ namespace Actions
         public override void Execute()
         {
             _spawnedObject = _objectManager.Spawn(_position);
+            _spawnedObject.OnSpawn();
         }
 
         public override void Undo()

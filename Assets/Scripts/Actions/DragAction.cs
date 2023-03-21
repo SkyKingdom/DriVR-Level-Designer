@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Objects;
+using UnityEngine;
 
 namespace Actions
 {
@@ -15,7 +16,7 @@ namespace Actions
         }
         public override void Execute()
         {
-            
+            _draggedObject.GetComponent<ObjectBase>().OnReposition();
         }
 
         public override void Undo()

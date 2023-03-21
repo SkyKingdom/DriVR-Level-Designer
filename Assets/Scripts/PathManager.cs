@@ -6,13 +6,13 @@ public class PathManager : StaticInstance<PathManager>
 {
     private PathObject _selectedObject;
     public GameObject pathPointPrefab;
-    private LineRenderer _lineRenderer;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        _lineRenderer = GetComponent<LineRenderer>();
-    }
+    [SerializeField] private Material selected;
+    [SerializeField] private Material deselected;
+
+    public Material Selected => selected;
+
+    public Material Deselected => deselected;
 
     private void OnEnable()
     {
@@ -20,17 +20,15 @@ public class PathManager : StaticInstance<PathManager>
     }
     
     public void SelectObject(PathObject obj) => _selectedObject = obj;
-    
+
     public void DeselectObject() => _selectedObject = null;
-    
+
     private void HandlePathClick(Vector3 point)
     {
         var obj = Instantiate(pathPointPrefab, point, Quaternion.identity);
         var Node = new Node(obj, point);
         _selectedObject.AddPathPoint(Node);
-        _lineRenderer.positionCount++;
-        var index = _selectedObject.PathPoints.Count - 1;
-        _lineRenderer.SetPosition(index, point);
     }
+
     
 }

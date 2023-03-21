@@ -27,7 +27,17 @@ namespace Objects
       transform.rotation = rotation;
     }
 
-    public void Select()
+    public virtual void OnSpawn()
+    {
+      
+    }
+    
+    public virtual void OnReposition()
+    {
+      
+    }
+
+    public virtual void Select()
     {
       if (_outline == null)
       {
@@ -41,7 +51,7 @@ namespace Objects
       // TODO: Subscribing to events
     }
     
-    public void Deselect()
+    public virtual void Deselect()
     {
       _outline.enabled = false;
       // TODO: Unsubscribing from events
