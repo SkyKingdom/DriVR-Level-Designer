@@ -9,9 +9,9 @@ public class UiNavigation : MonoBehaviour
 {
     [SerializeField] private int activeMode;
     [SerializeField] private float panelSize = 920f;
-    public Color activeButtonBackgroundColor;
-    public Color inactiveButtonBackgroundColor;
-    public Toggle mapToggle;
+    [SerializeField] private Color activeBtnColor;
+    [SerializeField] private Color inactiveBtnColor;
+    [SerializeField] private Toggle mapToggle;
     
     [Header("Tab Buttons")]
     public GameObject eventsBtn;
@@ -37,51 +37,35 @@ public class UiNavigation : MonoBehaviour
         {
             if (activeMode == i)
             {
-                modeButtons[i].GetComponent<Image>().color = activeButtonBackgroundColor;
+                modeButtons[i].GetComponent<Image>().color = activeBtnColor;
             }
             else
             {
-                modeButtons[i].GetComponent<Image>().color = inactiveButtonBackgroundColor;
+                modeButtons[i].GetComponent<Image>().color = inactiveBtnColor;
             }
         }
         mapToggle.isOn = LevelGeneratorManager.Instance.MapEnabled;
     }
 
+    
+    #region Button Tabs
     public void SwitchToActives()
     {
-        SetOpacity(propsBtn, 0.3f, 0.2f);
-        SetOpacity(interactableBtn, 0.3f, 0.2f);
-        SetOpacity(activesBtn, 1f, 0.2f);
-        
-        activesPnl.SetActive(true);
-        propsPnl.SetActive(false);
-        interactablePnl.SetActive(false);
+        SetActiveButton(1);
     }
     
     public void SwitchToInteractables()
     {
-        SetOpacity(propsBtn, 0.3f, 0.2f);
-        SetOpacity(interactableBtn, 1f, 0.2f);
-        SetOpacity(activesBtn, 0.3f, 0.2f);
-        
-        activesPnl.SetActive(false);
-        propsPnl.SetActive(false);
-        interactablePnl.SetActive(true);
+        SetActiveButton(2);
     }
     
     public void SwitchToProps()
     {
-        SetOpacity(activesBtn, 0.3f, 0.2f);
-        SetOpacity(propsBtn, 1f, 0.2f);
-        SetOpacity(interactableBtn, 0.3f, 0.2f);
-        
-        activesPnl.SetActive(false);
-        interactablePnl.SetActive(false);
-        propsPnl.SetActive(true);
+        SetActiveButton(3);
     }
+    #endregion
     
     //Map Modes
-    
     public void SwitchToMode(int target)
     {
         var move = target - activeMode;
@@ -92,8 +76,8 @@ public class UiNavigation : MonoBehaviour
             MoveObj(p, new Vector2(0, rect.anchoredPosition.y + (panelSize * move)), 0.3f);
         }
         
-        modeButtons[activeMode].GetComponent<Image>().color = inactiveButtonBackgroundColor; 
-        modeButtons[target].GetComponent<Image>().color = activeButtonBackgroundColor; 
+        modeButtons[activeMode].GetComponent<Image>().color = inactiveBtnColor; 
+        modeButtons[target].GetComponent<Image>().color = activeBtnColor; 
         activeMode = target;
         
 
@@ -104,6 +88,46 @@ public class UiNavigation : MonoBehaviour
         element.GetComponent<Image>().DOFade(opacity, time);
     }
 
+    private void SetColor(GameObject element, Color color)
+    {
+        element.GetComponent<Image>().color = color;
+    }
+
+    //1 = actives, 2 = interactables, 3 = decorations
+    private void SetActiveButton(int active)
+    {
+        switch (active)
+        {
+            case 1:
+                SetColor(activesBtn, activeBtnColor);
+                SetColor(interactableBtn, inactiveBtnColor);
+                SetColor(propsBtn, inactiveBtnColor);
+                
+                activesPnl.SetActive(true);
+                interactablePnl.SetActive(false);
+                propsPnl.SetActive(false);
+                break;
+            case 2:
+                SetColor(activesBtn, inactiveBtnColor);
+                SetColor(interactableBtn, activeBtnColor);
+                SetColor(propsBtn, inactiveBtnColor);
+                
+                activesPnl.SetActive(false);
+                interactablePnl.SetActive(true);
+                propsPnl.SetActive(false);
+                break;
+            case 3:
+                SetColor(activesBtn, inactiveBtnColor);
+                SetColor(interactableBtn, inactiveBtnColor);
+                SetColor(propsBtn, activeBtnColor);
+                
+                activesPnl.SetActive(false);
+                interactablePnl.SetActive(false);
+                propsPnl.SetActive(true);
+                break;
+        }
+    }
+    
     private void MoveObj(GameObject element, Vector2 destination, float time)
     {
         foreach (var b in modeButtons)
