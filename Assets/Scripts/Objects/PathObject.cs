@@ -28,7 +28,7 @@ namespace Objects
             _lineRenderer.positionCount = 0;
             _lineRenderer.numCapVertices = 10;
             var pathObject = Instantiate(PathManager.Instance.pathPointPrefab, transform.position, Quaternion.identity);
-            Node node = new Node(pathObject, transform.position);
+            Node node = new Node(pathObject, transform.position, this);
             AddPathPoint(node);
             Debug.Log("PathObject spawned");
         }
@@ -44,6 +44,18 @@ namespace Objects
                 _lineRenderer.SetPosition(i, points[i].Position);
             }
         }
+        
+        public void HandleNodePositionChange(Node node)
+        {
+            var points = new Stack<Node>(_pathPoints).ToArray();
+            for (int i = 0; i < points.Length; i++)
+            {
+                if (points[i] == node)
+                {
+                    _lineRenderer.SetPosition(i, node.Position);
+                }
+            }
+        }
 
         public override void Select()
         {
@@ -52,6 +64,8 @@ namespace Objects
                 return;
             _lineRenderer.startWidth = 0.2f;
             _lineRenderer.endWidth = 0.2f;
+            _lineRenderer.endColor = Color.yellow;
+            _lineRenderer.startColor = Color.yellow;
             _lineRenderer.material = PathManager.Instance.Selected;
         }
         
@@ -77,11 +91,12 @@ namespace Objects
             AnimateOnStart = animateOnStart;
         }
         
-        public void AddPathPoint(Node point)
+        public void AddPathPoint(Node node)
         {
-            _pathPoints.Push(point);
+            node.GameObject.AddComponent<NodeContainer>().node = node;
+            _pathPoints.Push(node);
             _lineRenderer.positionCount = _pathPoints.Count;
-            _lineRenderer.SetPosition(_pathPoints.Count - 1, point.Position);
+            _lineRenderer.SetPosition(_pathPoints.Count - 1, node.Position);
         }
     }
 }

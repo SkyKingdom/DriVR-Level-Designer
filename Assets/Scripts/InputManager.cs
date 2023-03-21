@@ -25,23 +25,24 @@ public class InputManager : StaticInstance<InputManager>
     private Vector2 _mouseStartPosition;
     private Vector2 _mouseEndPosition;
     
-    [Header("Object Manipulation")]
+    [Header("Object Editing")]
     [SerializeField] private float dragThreshold = 1f;
     [SerializeField] [Range(0f, 5f)] private float rotationSpeed = 1f;
-    
-    [Header("Debugging")]
-    [SerializeField] private Logger logger;
     [SerializeField] private Transform dragObject;
     [SerializeField] private Vector3 objectInitialPosition;
     [SerializeField] private Vector3 objectInitialRotation;
+    
+    [Header("Path Editing")]
+    [SerializeField] private NodeContainer dragNode;
+    [Header("Debugging")]
+    [SerializeField] private Logger logger;
+
     
     public event Action<Vector3> OnMapClick;
     public event Action<ObjectBase> OnObjectSelect;
     public event Action OnObjectDeselect;
 
     public event Action<Vector3> OnPathClick;
-
-    public event Action OnDragComplete;
 
     protected override void Awake()
     {
@@ -115,20 +116,25 @@ public class InputManager : StaticInstance<InputManager>
     {
         if (!_inEditMode) return;
         if (!overCanvasCheck.IsOverCanvas) return; // Check if mouse is over canvas/map
-        if (!dragObject) return; // Check if there is an object to drag
-        
+
         var currentPos = Mouse.current.position.ReadValue(); // Get current mouse position
-        
+        ObjectDragUpdate(currentPos);
+        NodeDragUpdate(currentPos);
+    }
+
+    private void ObjectDragUpdate(Vector2 mousePos)
+    {
+        if (!dragObject) return; // Check if there is an object to drag
         // Handle left mouse button
         if (_isLmbDown)
         {
             // check if mouse has moved more than drag threshold
-            var distance = Vector2.Distance(_mouseStartPosition, currentPos);
+            var distance = Vector2.Distance(_mouseStartPosition, mousePos);
             if (distance < dragThreshold) return;
             
             // if mouse has moved more than drag threshold, set object position to mouse position
             // keep the y position of the object the same;
-            var raycastPosition = GetRaycastPosition(currentPos);
+            var raycastPosition = GetRaycastPosition(mousePos);
             raycastPosition.y = 1f;
             dragObject.transform.position = raycastPosition;
 
@@ -139,7 +145,7 @@ public class InputManager : StaticInstance<InputManager>
         if (_isRmbDown)
         {
             // Check distance on the x axis
-            var distance = _mouseStartPosition.x - currentPos.x;
+            var distance = _mouseStartPosition.x - mousePos.x;
             if (Mathf.Abs(distance) > dragThreshold)
             {
                 // Change rotation direction based on distance direction
@@ -153,8 +159,24 @@ public class InputManager : StaticInstance<InputManager>
                 dragObject.transform.Rotate(0, distance, 0);
             }
             // Update mouse start position to current position
-            _mouseStartPosition = currentPos;
+            _mouseStartPosition = mousePos;
         }
+    }
+
+    private void NodeDragUpdate(Vector2 mousePos)
+    {
+        logger.Log("NodeDragUpdate", this);
+        if (!dragNode) return;
+        if (!_isLmbDown) return;
+        // check if mouse has moved more than drag threshold
+        var distance = Vector2.Distance(_mouseStartPosition, mousePos);
+        if (distance < dragThreshold) return;
+            
+        // if mouse has moved more than drag threshold, set object position to mouse position
+        // keep the y position of the object the same;
+        var raycastPosition = GetRaycastPosition(mousePos);
+        raycastPosition.y = 1f;
+        dragNode.transform.position = raycastPosition;
     }
 
     private void OnLmbDown (InputAction.CallbackContext callbackContext)
@@ -195,8 +217,6 @@ public class InputManager : StaticInstance<InputManager>
             // If there is an object to drag, record the drag action
             var dragAction = new DragAction(objectInitialPosition, dragObject.position, dragObject);
             ActionRecorder.Instance.Record(dragAction);
-            OnDragComplete?.Invoke();
-            
             // Reset drag object
             dragObject = null;
             return;
@@ -228,7 +248,6 @@ public class InputManager : StaticInstance<InputManager>
             if (dragObject == null) return;
             var dragAction = new DragAction(objectInitialPosition, hit.point, dragObject);
             ActionRecorder.Instance.Record(dragAction);
-            OnDragComplete?.Invoke();
             dragObject = null;
             return;
         }
@@ -298,13 +317,20 @@ public class InputManager : StaticInstance<InputManager>
     
     private void OnPathLmbDown(InputAction.CallbackContext callbackContext)
     {
+        _isLmbDown = true;
         if (!_inEditMode) return;
         if (!overCanvasCheck.IsOverCanvas) return;
         _mouseStartPosition = Mouse.current.position.ReadValue();
+
+        var hitTransform = GetRaycastHitTransform(_mouseStartPosition);
+        if (!hitTransform) return;
+        if (!hitTransform.TryGetComponent(out NodeContainer node)) return;
+        dragNode = node;
     }
 
     private void OnPathLmbRelease(InputAction.CallbackContext callbackContext)
     {
+        _isLmbDown = false;
         if (!_inEditMode) return;
         if (!overCanvasCheck.IsOverCanvas) return;
         _mouseEndPosition = Mouse.current.position.ReadValue();
@@ -312,12 +338,19 @@ public class InputManager : StaticInstance<InputManager>
         // Check if mouse has moved more than drag threshold
         var distance = Vector2.Distance(_mouseStartPosition, _mouseEndPosition);
         var isDrag = distance > dragThreshold;
-        
-        if (isDrag) return;
-
-        var pos = GetRaycastPosition(_mouseEndPosition);
-        
-        OnPathClick?.Invoke(pos);
+        var posEnd = GetRaycastPosition(_mouseEndPosition);
+        var posStart = GetRaycastPosition(_mouseStartPosition);
+        if (isDrag)
+        {
+            if (dragNode == null) return;
+            var dragAction = new NodeDragAction(posStart, posEnd, dragNode.node);
+            ActionRecorder.Instance.Record(dragAction);
+        }
+        else
+        {
+            OnPathClick?.Invoke(posEnd);
+        }
+        dragNode = null;
     }
     
     
@@ -335,6 +368,22 @@ public class InputManager : StaticInstance<InputManager>
             return hit.point;
         }
         return Vector3.zero;
+    }
+
+    private Transform GetRaycastHitTransform(Vector2 mousePosition)
+    {
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(cameraRenderRectTransform, mousePosition, null, out var localPoint);
+        var rect = cameraRenderRectTransform.rect;
+        var pivot = cameraRenderRectTransform.pivot;
+        localPoint.x = ( localPoint.x / rect.width ) + pivot.x;
+        localPoint.y = ( localPoint.y / rect.height ) + pivot.x;
+        var ray = cam.ViewportPointToRay(localPoint);
+        if (Physics.Raycast(ray, out var hit))
+        {
+            return hit.transform;
+        }
+
+        return null;
     }
 }
 
