@@ -2,10 +2,10 @@
 
 public class FirstPersonMode : ModeBase
 {
-    [SerializeField] private GameObject SceneCamera;
-    [SerializeField] private GameObject MainCamera;
-    [SerializeField] private GameObject Canvas;
-    [SerializeField] private GameObject Capsule;
+    public GameObject SceneCamera {get; private set;}
+    public GameObject MainCamera {get; private set;}
+    public GameObject Canvas {get; private set;}
+    public GameObject Capsule {get; private set;}
 
     public FirstPersonMode(GameObject sceneCamera, GameObject mainCamera, GameObject canvas, GameObject capsule)
     {
@@ -21,6 +21,8 @@ public class FirstPersonMode : ModeBase
         MainCamera.SetActive(false);
         Canvas.SetActive(false);
         Capsule.SetActive(true);
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public override void OnExit()
@@ -29,5 +31,7 @@ public class FirstPersonMode : ModeBase
         MainCamera.SetActive(true);
         Canvas.SetActive(true);
         Capsule.SetActive(false);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 }

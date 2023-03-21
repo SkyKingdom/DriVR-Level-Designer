@@ -5,24 +5,22 @@ using UnityEngine;
 
 public class PreviewMode : MonoBehaviour
 {
-    [SerializeField] private GameObject sceneCamera;
-    [SerializeField] private GameObject mainCamera;
-    [SerializeField] private GameObject canvas;
-    [SerializeField] private GameObject capsule;
+    private bool _isPreviewMode = false;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            SwitchToPreviewMode();
+            _isPreviewMode = !_isPreviewMode;
+            if (_isPreviewMode)
+            {
+                LevelGeneratorManager.Instance.SetMode(3);
+            }
+            else
+            {
+                LevelGeneratorManager.Instance.SetMode(1);
+            }
         }
     }
 
-    private void SwitchToPreviewMode()
-    {
-        capsule.SetActive(!capsule.activeSelf);
-        sceneCamera.SetActive(!sceneCamera.activeSelf);
-        mainCamera.SetActive(!mainCamera.activeSelf);
-        canvas.SetActive(!canvas.activeSelf);
-    }
 }

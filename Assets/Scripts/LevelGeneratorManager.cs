@@ -8,7 +8,8 @@ public enum Mode
 {
     View = 0,
     Edit = 1,
-    Map = 2
+    Map = 2,
+    FirstPerson = 3
 }
 
 public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
@@ -23,6 +24,12 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
     
     [SerializeField] UiNavigation uiNavigation;
     
+    [Header("FPS Mode")]
+    [SerializeField] private GameObject sceneCamera;
+    [SerializeField] private GameObject mainCamera;
+    [SerializeField] private GameObject canvas;
+    [SerializeField] private GameObject capsule;
+    
     // Modes
     private MapMode _mapMode;
     public MapMode MapMode => _mapMode;
@@ -31,11 +38,15 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
     private ViewMode _viewMode;
     public ViewMode ViewMode => _viewMode;
 
+    private FirstPersonMode _firstPersonMode;
+    public FirstPersonMode FirstPersonMode => _firstPersonMode;
+
     private void Start()
     {
         _mapMode = new MapMode(FindObjectOfType<AbstractMap>() , FindObjectOfType<CameraController>());
         _editMode = new EditMode(FindObjectOfType<ObjectManager>());
         _viewMode = new ViewMode();
+        _firstPersonMode = new FirstPersonMode(sceneCamera, mainCamera, canvas, capsule);
         SetMode(1);
     }
 
@@ -79,6 +90,10 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
                 break;
             case Mode.View:
                 ChangeMode(_viewMode);
+                mode = (Mode)modeIndex;
+                break;
+            case Mode.FirstPerson:
+                ChangeMode(_firstPersonMode);
                 mode = (Mode)modeIndex;
                 break;
             default:
