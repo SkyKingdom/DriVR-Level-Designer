@@ -5039,6 +5039,7 @@ GameObject:
   m_Component:
   - component: {fileID: 511080673}
   - component: {fileID: 511080672}
+  - component: {fileID: 511080674}
   m_Layer: 0
   m_Name: GeneratorManager
   m_TagString: Untagged
@@ -5076,6 +5077,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &511080674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511080671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d368d9684fc9048b756fc5c4177a08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneCamera: {fileID: 330585543}
+  mainCamera: {fileID: 1915381838}
+  canvas: {fileID: 1797212726}
+  capsule: {fileID: 0}
 --- !u!1 &532586249
 GameObject:
   m_ObjectHideFlags: 0
