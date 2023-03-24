@@ -1,26 +1,25 @@
-﻿using System.IO;
-using Objects;
+﻿using Objects;
 
 namespace Actions
 {
     class NodeAddAction : ActionBase
     {
-        public Node Node { get; private set; }
-        public PathObject Owner { get; private set; }
+        private readonly Node _node;
+        private readonly ObjectBase _owner;
         
-        public NodeAddAction(Node node, PathObject owner)
+        public NodeAddAction(Node node, ObjectBase owner)
         {
-            Node = node;
-            Owner = owner;
+            _node = node;
+            _owner = owner;
         }
         public override void Execute()
         {
-            Owner.AddPathPoint(Node);
+            _owner.Path.AddPathPoint(_node);
         }
 
         public override void Undo()
         {
-            Owner.RemovePathPoint(Node);
+            _owner.Path.RemovePathPoint(_node);
         }
     }
 }

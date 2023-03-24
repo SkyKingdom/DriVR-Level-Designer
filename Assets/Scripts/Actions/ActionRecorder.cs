@@ -7,8 +7,9 @@ namespace Actions
 {
         public class ActionRecorder : StaticInstance<ActionRecorder>
         {
-                private Stack<ActionBase> _actions = new();
+                private readonly Stack<ActionBase> _actions = new();
                 [SerializeField] private Logger logger;
+
                 public void Record(ActionBase action)
                 {
                         _actions.Push(action);

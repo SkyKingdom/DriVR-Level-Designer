@@ -9033,7 +9033,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -10609,7 +10609,7 @@ GameObject:
   - component: {fileID: 1253823103}
   - component: {fileID: 1253823105}
   m_Layer: 5
-  m_Name: Object (1)
+  m_Name: btn_TestInteractable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14975,7 +14975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87d14aab8cca40cc8f6ca5ecb5e23fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathPointPrefab: {fileID: 6740489422539846161, guid: a350aea17deafdc478f63b272631475e,
+  pathPointPrefab: {fileID: 8210753997060480708, guid: a350aea17deafdc478f63b272631475e,
     type: 3}
   selected: {fileID: 2100000, guid: 973cbf2254bbaec45b99b2227a3092de, type: 2}
   deselected: {fileID: 2100000, guid: 25308b12285cc1d419acaea61d0d7e03, type: 2}
@@ -15461,7 +15461,7 @@ GameObject:
   - component: {fileID: 1880859551}
   - component: {fileID: 1880859553}
   m_Layer: 5
-  m_Name: Object
+  m_Name: btn_TestPlayable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15576,7 +15576,7 @@ MonoBehaviour:
         m_MethodName: SelectObject
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: -6042809969055122573, guid: 7a0d020d8df010249b55369015242e5c,
+          m_ObjectArgument: {fileID: -5823064963835750099, guid: 7a0d020d8df010249b55369015242e5c,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: Objects.ObjectBase, Assembly-CSharp
           m_IntArgument: 0

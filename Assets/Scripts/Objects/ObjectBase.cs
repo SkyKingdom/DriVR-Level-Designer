@@ -1,66 +1,135 @@
-﻿using Actions;
+﻿using ThirdPartyAssets.QuickOutline.Scripts;
 using UnityEngine;
 
 namespace Objects
 {
+  [RequireComponent(typeof(Outline))]
   public class ObjectBase : MonoBehaviour
   {
-    public string objectName;
-    public bool isDeleted;
+    public string ObjectName { get; private set; }
+    
+    public Interactable Interactable { get; private set; }
+    public Playable Playable { get; private set; }
+    public Path Path { get; private set; }
     private Outline _outline;
-    public Vector3 GetPosition()
+    private Transform _mTransform;
+    
+    public bool IsDeleted { get; private set; }
+    
+
+    private void SetupComponents()
     {
-      return transform.position;
-    }
-  
-    public Vector3 GetRotation()
-    {
-      return transform.rotation.eulerAngles;
-    }
-    public void SetPosition(Vector3 position)
-    {
-      transform.position = position;
-    }
-  
-    public void SetRotation(Quaternion rotation)
-    {
-      transform.rotation = rotation;
+      _mTransform = transform;
+      // Setup outline
+      _outline = GetComponent<Outline>();
+      _outline.OutlineColor = Color.yellow;
+      _outline.OutlineWidth = 10f;
+      _outline.OutlineMode = Outline.Mode.OutlineVisible;
+      
+      // Try and get components
+      Interactable = GetComponent<Interactable>();
+      Playable = GetComponent<Playable>();
+      Path = GetComponent<Path>();
     }
 
-    public virtual void OnSpawn()
+    public void Initialize(string objectName)
     {
-      
+      ObjectName = objectName;
+      SetupComponents();
+      if (Interactable != null)
+      {
+        Interactable.Initialize(this);
+      }
+      if (Playable != null)
+      {
+        Playable.Initialize(this);
+      }
+      if (Path != null)
+      {
+        Path.Initialize(this);
+        Path.Spawn();
+      }
+      Select();
     }
     
-    public virtual void OnReposition()
+    public Vector3 GetPosition() => _mTransform.position;
+    
+    public Vector3 GetRotation() => _mTransform.rotation.eulerAngles;
+    
+    public void SetRotation(Vector3 rotation)
     {
-      
+      _mTransform.rotation = Quaternion.Euler(rotation);
+    }
+    
+    public void Rename(string newName)
+    {
+      ObjectName = newName;
+    }
+    
+    public void SetDeleted(bool deleted)
+    {
+      IsDeleted = deleted;
+      if (deleted)
+      {
+        Hide();
+      }
+      else
+      {
+        Show();
+      }
+    }
+
+    public virtual void OnReposition(Vector3 position)
+    {
+      transform.position = position;
+      if (!Path) return;
+      Path.HandleObjectReposition(position);
     }
 
     public virtual void Select()
     {
-      if (_outline == null)
-      {
-        _outline = gameObject.AddComponent<Outline>();
-        _outline.OutlineColor = Color.yellow;
-        _outline.OutlineWidth = 10f;
-        _outline.OutlineMode = Outline.Mode.OutlineVisible;
-      }
-      
       _outline.enabled = true;
-      // TODO: Subscribing to events
+      if (Path)
+      {
+        Path.Select();
+      }
     }
     
     public virtual void Deselect()
     {
       _outline.enabled = false;
-      // TODO: Unsubscribing from events
+      if (Path)
+      {
+        Path.Deselect();
+      }
+    }
+    
+    public virtual void Delete()
+    {
+      if (Path)
+      {
+        Path.DeletePath();
+      }
+      Destroy(gameObject);
     }
 
-    public void Delete()
+    private void Hide()
     {
-      var deleteAction = new DeleteAction(this);
-      ActionRecorder.Instance.Record(deleteAction);
+      if (Path)
+      {
+        Path.HidePath();
+      }
+
+      gameObject.SetActive(false);
+    }
+
+    private void Show()
+    {
+      if (Path)
+      {
+        Path.ShowPath();
+      }
+      gameObject.SetActive(true);
     }
   }
 }

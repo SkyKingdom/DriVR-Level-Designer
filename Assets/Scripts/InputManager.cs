@@ -28,7 +28,7 @@ public class InputManager : StaticInstance<InputManager>
     [Header("Object Editing")]
     [SerializeField] private float dragThreshold = 1f;
     [SerializeField] [Range(0f, 5f)] private float rotationSpeed = 1f;
-    [SerializeField] private Transform dragObject;
+    [SerializeField] private ObjectBase dragObject;
     [SerializeField] private Vector3 objectInitialPosition;
     [SerializeField] private Vector3 objectInitialRotation;
     
@@ -199,8 +199,8 @@ public class InputManager : StaticInstance<InputManager>
         // Check if object is an ObjectBase
         if (!hit.transform.TryGetComponent(out ObjectBase objectBase)) return;
         
-        dragObject = objectBase.transform;
-        objectInitialPosition = dragObject.position;
+        dragObject = objectBase;
+        objectInitialPosition = dragObject.GetPosition();
         OnObjectSelect?.Invoke(objectBase);
     }
 
@@ -214,7 +214,7 @@ public class InputManager : StaticInstance<InputManager>
             if (!dragObject) return;
             
             // If there is an object to drag, record the drag action
-            var dragAction = new DragAction(objectInitialPosition, dragObject.position, dragObject);
+            var dragAction = new DragAction(objectInitialPosition, dragObject.GetPosition(), dragObject);
             ActionRecorder.Instance.Record(dragAction);
             // Reset drag object
             dragObject = null;
@@ -291,8 +291,8 @@ public class InputManager : StaticInstance<InputManager>
         var ray = cam.ViewportPointToRay(localPoint);
         if (!Physics.Raycast(ray, out var hit)) return;
         if (!hit.transform.TryGetComponent(out ObjectBase objectBase)) return;
-        dragObject = objectBase.transform;
-        objectInitialRotation = dragObject.rotation.eulerAngles;
+        dragObject = objectBase;
+        objectInitialRotation = dragObject.GetRotation();
         OnObjectSelect?.Invoke(objectBase);
     }
     
@@ -307,7 +307,7 @@ public class InputManager : StaticInstance<InputManager>
         if (!dragObject) return;
         
         // Record rotate action
-        var rotateAction = new RotateAction(dragObject.transform, objectInitialRotation);
+        var rotateAction = new RotateAction(dragObject, objectInitialRotation);
         ActionRecorder.Instance.Record(rotateAction);
         
         // Reset drag object

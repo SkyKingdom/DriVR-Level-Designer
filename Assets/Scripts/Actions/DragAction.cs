@@ -5,10 +5,10 @@ namespace Actions
 {
     class DragAction : ActionBase
     {
-        private Vector3 _startPosition;
-        private Vector3 _endPosition;
-        private Transform _draggedObject;
-        public DragAction(Vector3 startPosition, Vector3 endPosition, Transform draggedObject)
+        private readonly Vector3 _startPosition;
+        private readonly Vector3 _endPosition;
+        private readonly ObjectBase _draggedObject;
+        public DragAction(Vector3 startPosition, Vector3 endPosition, ObjectBase draggedObject)
         {
             _startPosition = startPosition;
             _endPosition = endPosition;
@@ -16,13 +16,12 @@ namespace Actions
         }
         public override void Execute()
         {
-            _draggedObject.GetComponent<ObjectBase>().OnReposition();
+            _draggedObject.OnReposition(_endPosition);
         }
 
         public override void Undo()
         {
-            _draggedObject.position = _startPosition;
-            _draggedObject.GetComponent<ObjectBase>().OnReposition();
+            _draggedObject.OnReposition(_startPosition);
         }
     }
 }

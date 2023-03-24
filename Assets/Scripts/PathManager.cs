@@ -5,8 +5,8 @@ using Utilities;
 
 public class PathManager : StaticInstance<PathManager>
 {
-    private PathObject _selectedObject;
-    public GameObject pathPointPrefab;
+    private ObjectBase _selectedObject;
+    public NodeContainer pathPointPrefab;
 
     [SerializeField] private Material selected;
     [SerializeField] private Material deselected;
@@ -20,15 +20,16 @@ public class PathManager : StaticInstance<PathManager>
         InputManager.Instance.OnPathClick += HandlePathClick;
     }
     
-    public void SelectObject(PathObject obj) => _selectedObject = obj;
+    public void SelectObject(ObjectBase obj) => _selectedObject = obj;
 
     public void DeselectObject() => _selectedObject = null;
 
     private void HandlePathClick(Vector3 point)
     {
-        var obj = Instantiate(pathPointPrefab, point, Quaternion.identity);
-        var Node = new Node(obj, point, _selectedObject);
-        var action = new NodeAddAction(Node, _selectedObject);
+        var cont = Instantiate(pathPointPrefab, point, Quaternion.identity);
+        var node = new Node(cont.gameObject, _selectedObject, point);
+        cont.node = node;
+        var action = new NodeAddAction(node, _selectedObject);
         ActionRecorder.Instance.Record(action);
     }
 

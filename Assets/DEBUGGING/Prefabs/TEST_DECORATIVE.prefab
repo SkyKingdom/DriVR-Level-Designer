@@ -118,5 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca2edf3277184b059982a172c05ecb6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: 
-  isDeleted: 0
+  interactable: {fileID: 0}
+  playable: {fileID: 0}
+  path: {fileID: 0}
+  outline: {fileID: 0}
+  mTransform: {fileID: 0}

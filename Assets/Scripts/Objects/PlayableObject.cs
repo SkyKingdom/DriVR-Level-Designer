@@ -1,12 +1,9 @@
-﻿namespace Objects
+﻿using UnityEngine;
+
+namespace Objects
 {
-    class PlayableObject : PathObject
+    [RequireComponent(typeof(Path), typeof(Playable))]
+    class PlayableObject : ObjectBase
     {
-        public float SwitchViewTime { get; private set; }
-        
-        public void SetViewValues(float switchViewTime)
-        {
-            SwitchViewTime = switchViewTime;
-        }
     }
 }

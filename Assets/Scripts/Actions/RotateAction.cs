@@ -1,25 +1,27 @@
-﻿using UnityEngine;
+﻿using Objects;
+using UnityEngine;
 
 namespace Actions
 {
     class RotateAction : ActionBase
     {
-        public Transform ObjectToRotate;
-        public Vector3 InitialRotation;
+        private readonly ObjectBase _rotatedObject;
+        private readonly Vector3 _initialRotation;
 
-        public RotateAction(Transform objectToRotate, Vector3 initialRotation)
+        public RotateAction(ObjectBase rotatedObject, Vector3 initialRotation)
         {
-            ObjectToRotate = objectToRotate;
-            InitialRotation = initialRotation;
+            _rotatedObject = rotatedObject;
+            _initialRotation = initialRotation;
         }
         
         public override void Execute()
         {
+            
         }
 
         public override void Undo()
         {
-            ObjectToRotate.rotation = Quaternion.Euler(InitialRotation);
+            _rotatedObject.SetRotation(_initialRotation);
         }
     }
 }

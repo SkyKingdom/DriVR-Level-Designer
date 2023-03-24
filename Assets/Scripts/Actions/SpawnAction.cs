@@ -5,10 +5,10 @@ namespace Actions
 {
     class SpawnAction : ActionBase
     {
-        private ObjectManager _objectManager;
-        private SettingsManager _settingsManager;
+        private readonly ObjectManager _objectManager;
+        private readonly SettingsManager _settingsManager;
         private ObjectBase _spawnedObject;
-        private Vector3 _position;
+        private readonly Vector3 _position;
 
         public SpawnAction(ObjectManager objectManager, SettingsManager settingsManager, Vector3 position)
         {
@@ -19,7 +19,6 @@ namespace Actions
         public override void Execute()
         {
             _spawnedObject = _objectManager.Spawn(_position);
-            _spawnedObject.OnSpawn();
         }
 
         public override void Undo()
@@ -29,17 +28,7 @@ namespace Actions
                 _settingsManager.DeselectObject();
             }
             
-            var pathObject = _spawnedObject as PathObject;
-
-            if (pathObject)
-            {
-                foreach (var p in pathObject.PathPoints)
-                {
-                    p.GameObject.Destroy();
-                }
-            }
-            
-            _spawnedObject.gameObject.Destroy();
+            _spawnedObject.Delete();
         }
     }
 }

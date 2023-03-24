@@ -1,28 +1,62 @@
-using Objects;
+using System;using Objects;
 using UnityEngine;
 
-public class Node
+public class Node : IDisposable
 {
-    public PathObject Owner { get; private set; }
+    private ObjectBase Owner { get; set; }
     public GameObject GameObject { get; private set; }
     public Vector3 Position { get; private set; }
     
-    public Node(GameObject gameObject, Vector3 position,PathObject owner)
+    private bool _disposed = false;
+    
+    public Node(GameObject gameObject, ObjectBase owner, Vector3 position)
     {
         GameObject = gameObject;
-        Position = position;
         Owner = owner;
+        Position = position;
     }
 
     public void SetPosition(Vector3 position)
     {
         Position = position;
         GameObject.transform.position = position;
+        OnPositionChange();
     }
-    
-    public void ReportPositionChange()
+
+    private void OnPositionChange()
     {
-        Owner.HandleNodePositionChange(this);
+        Owner.Path.RepositionPathPoint(this);
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                // Release any managed resources here.
+                // In this case, we don't have any managed resources to release.
+            }
+
+            // Release any unmanaged resources here.
+            if (GameObject != null)
+            {
+                GameObject.Destroy();
+            }
+
+            _disposed = true;
+        }
+    }
+
+    ~Node()
+    {
+        Dispose(false);
     }
     
 }
