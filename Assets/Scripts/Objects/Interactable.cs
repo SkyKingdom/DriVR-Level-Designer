@@ -22,10 +22,10 @@ namespace Objects
             InteractionEndTime = interactionEndTime;
         }
 
-        public void SetAlwaysInteractable(bool alwaysInteractable)
+        public void SetAlwaysInteractable(bool alwaysInteractable, bool answer)
         {
             AlwaysInteractable = alwaysInteractable;
-            // TODO: Handle UI
+            Answer = answer;
         }
     }
 }

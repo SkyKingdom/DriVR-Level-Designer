@@ -8,6 +8,6 @@ namespace Objects.Interfaces
         public float InteractionEndTime { get; }
         
         public void SetInteractionValues(bool answer, float interactionStartTime, float interactionEndTime);
-        public void SetAlwaysInteractable(bool alwaysInteractable);
+        public void SetAlwaysInteractable(bool alwaysInteractable, bool answer);
     }
 }

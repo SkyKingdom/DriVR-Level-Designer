@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: ececa8559e6b161459386c7b29df6ba9
+  - enabled: 1
+    path: Assets/Scenes/LoadingScene.unity
+    guid: a005bf2a66153eb41abf52290c358189
   - enabled: 0
     path: Assets/Scenes/LevelGenerator_Obselete.unity
     guid: 19f2871d28121cc428234bd1b3fdb088

@@ -17,6 +17,7 @@ namespace Saving
     [Serializable]
     public class DecorativeObjectData
     {
+        public string objectName;
         public string prefabName;
         public Vector3 position;
         public Vector3 rotation;
@@ -31,6 +32,7 @@ namespace Saving
 
         public Vector3[] pathPoints;
         public float speed;
+        public float animationStartTime;
     }
     
     [Serializable]
@@ -39,5 +41,6 @@ namespace Saving
         public float switchTime;
         public Vector3[] pathPoints;
         public float speed;
+        public float animationStartTime;
     }
 }

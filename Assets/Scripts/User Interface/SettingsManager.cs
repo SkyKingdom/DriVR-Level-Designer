@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Actions;
 using Objects;
+using Saving;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -108,7 +109,7 @@ public class SettingsManager : MonoBehaviour
                 isCorrect.isOn,
                 float.Parse(objectInteractionStart.text),
                 float.Parse(objectInteractionEnd.text));
-            _selectedObject.Interactable.SetAlwaysInteractable(alwaysInteractable.isOn);
+            _selectedObject.Interactable.SetAlwaysInteractable(alwaysInteractable.isOn, isCorrect.isOn);
         }
 
         if (_selectedObject.Playable)
@@ -158,5 +159,9 @@ public class SettingsManager : MonoBehaviour
         ActionRecorder.Instance.Record(deleteAction);
         DeselectObject();
     }
-    
+
+    public void SaveLevel()
+    {
+        LevelDataManager.Instance.SaveLevel();
+    }
 }
