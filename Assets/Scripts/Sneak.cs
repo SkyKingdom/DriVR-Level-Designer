@@ -17,7 +17,8 @@ public class Sneak : MonoBehaviour
                 if (Input.GetKey(KeyCode.E))
                     if (Input.GetKey(KeyCode.A))
                         if (Input.GetKey(KeyCode.K))
-                            Sneako();
+                            if (Input.GetKey(KeyCode.O))
+                                Sneako();
     }
 
     private void Sneako()
