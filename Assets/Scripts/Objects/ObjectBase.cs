@@ -1,4 +1,5 @@
-﻿using ThirdPartyAssets.QuickOutline.Scripts;
+﻿using Saving;
+using ThirdPartyAssets.QuickOutline.Scripts;
 using UnityEngine;
 
 namespace Objects
@@ -7,6 +8,7 @@ namespace Objects
   public class ObjectBase : MonoBehaviour
   {
     public string ObjectName { get; private set; }
+    public string PrefabName { get; private set; }
     
     public Interactable Interactable { get; private set; }
     public Playable Playable { get; private set; }
@@ -32,9 +34,10 @@ namespace Objects
       Path = GetComponent<Path>();
     }
 
-    public void Initialize(string objectName)
+    public void Initialize(string objectName, string prefabName)
     {
       ObjectName = objectName;
+      PrefabName = prefabName;
       SetupComponents();
       if (Interactable != null)
       {
@@ -50,7 +53,10 @@ namespace Objects
         Path.Spawn();
       }
       Select();
+      RegisterSelf();
     }
+
+    private void RegisterSelf() => LevelDataManager.Instance.RegisterObject(this);
     
     public Vector3 GetPosition() => _mTransform.position;
     

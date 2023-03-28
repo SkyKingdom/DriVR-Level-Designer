@@ -24,7 +24,7 @@ public class ObjectManager : StaticInstance<ObjectManager>
     public ObjectBase Spawn(Vector3 position)
     {
         var spawnedObject = Instantiate(prefabToSpawn, position, Quaternion.identity);
-        spawnedObject.Initialize(spawnedObject.gameObject.name);
+        spawnedObject.Initialize(spawnedObject.gameObject.name, prefabToSpawn.name);
         if (_settingsManager == null)
         {
             _settingsManager = FindObjectOfType<SettingsManager>();
