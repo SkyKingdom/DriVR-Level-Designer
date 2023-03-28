@@ -6,8 +6,10 @@ using UnityEngine;
 public class Sneak : MonoBehaviour
 {
     public GameObject SneakoWrap;
+    public GameObject SfadiWrap;
 
     private Vector3 sneakPos = new Vector3(-8.5f, 0, -6);
+    private Vector3 sfadiPos = new Vector3(8.25f, 0, 6);
 
     // Update is called once per frame
     void Update()
@@ -18,12 +20,21 @@ public class Sneak : MonoBehaviour
                     if (Input.GetKey(KeyCode.A))
                         if (Input.GetKey(KeyCode.K))
                             if (Input.GetKey(KeyCode.O))
+                            {
                                 Sneako();
+                                Sfadi();
+                            }
     }
 
     private void Sneako()
     {
         SneakoWrap.SetActive(true);
         SneakoWrap.transform.DOMove(sneakPos, 2f);
+    }
+
+    private void Sfadi()
+    {
+        SfadiWrap.SetActive(true);
+        SfadiWrap.transform.DOMove(sfadiPos, 2f);
     }
 }
