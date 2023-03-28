@@ -13,5 +13,19 @@ MonoBehaviour:
   m_Name: PrefabData
   m_EditorClassIdentifier: 
   prefabsDictionary:
-    m_keys: 
-    m_values: []
+    m_keys:
+    - Building_1
+    - Building_2
+    - mark_1
+    - tanisha_1
+    - TEST_DECORATIVE
+    - TEST_INTERACTABLE
+    - TEST_PLAYABLE
+    m_values:
+    - {fileID: 7657806682616460990, guid: 9c90c7b2bf4289145afbf3ce8c6084a0, type: 3}
+    - {fileID: 4246311633823287979, guid: 204581432cb801e4bb063f696e4bd4d7, type: 3}
+    - {fileID: 3767822249606226643, guid: 4a17a53632cd8aa48b8182247d929dab, type: 3}
+    - {fileID: 1102423055823449415, guid: b59de88d6cd611746a0f7c9277bff14c, type: 3}
+    - {fileID: 5452692450897037768, guid: 5ec7038dd9a610e48b98084b566839c3, type: 3}
+    - {fileID: 5452692450897037768, guid: 6df3efc1812859d4983749cc0d488980, type: 3}
+    - {fileID: 5452692450897037768, guid: 7a0d020d8df010249b55369015242e5c, type: 3}

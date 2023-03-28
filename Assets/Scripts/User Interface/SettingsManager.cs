@@ -70,11 +70,54 @@ public class SettingsManager : MonoBehaviour
     private void LoadData()
     {
         objectName.text = _selectedObject.ObjectName;
+        if (_selectedObject.Path)
+        {
+            objectSpeed.text = _selectedObject.Path.Speed.ToString("F1");
+            animateOnStart.isOn = _selectedObject.Path.AnimateOnStart;
+            objectPathStart.text = _selectedObject.Path.AnimationStartTime.ToString("F1");
+        }
+        
+        if (_selectedObject.Interactable)
+        {
+            isCorrect.isOn = _selectedObject.Interactable.Answer;
+            objectInteractionStart.text = _selectedObject.Interactable.InteractionStartTime.ToString("F1");
+            objectInteractionEnd.text = _selectedObject.Interactable.InteractionEndTime.ToString("F1");
+            alwaysInteractable.isOn = _selectedObject.Interactable.AlwaysInteractable;
+        }
+        
+        if (_selectedObject.Playable)
+        {
+            objectPovStart.text = _selectedObject.Playable.SwitchViewTime.ToString("F1");
+        }
+        SaveData();
     }
     
-    private void SaveData()
+    public void SaveData()
     {
         _selectedObject.Rename(objectName.text);
+        if (_selectedObject.Path)
+        {
+            _selectedObject.Path.SetSpeed(float.Parse(objectSpeed.text));
+            _selectedObject.Path.SetAnimateOnStart(animateOnStart.isOn);
+            _selectedObject.Path.SetAnimationStartTime(float.Parse(objectPathStart.text));
+        }
+
+        if (_selectedObject.Interactable)
+        {
+            _selectedObject.Interactable.SetInteractionValues(
+                isCorrect.isOn,
+                float.Parse(objectInteractionStart.text),
+                float.Parse(objectInteractionEnd.text));
+            _selectedObject.Interactable.SetAlwaysInteractable(alwaysInteractable.isOn);
+        }
+
+        if (_selectedObject.Playable)
+        {
+            float time = float.Parse(objectPovStart.text);
+            _selectedObject.Playable.SetPlayOnStart(time < 1f);
+            _selectedObject.Playable.SetViewValues(time);
+
+        }
     }
     
     private void ClearData()

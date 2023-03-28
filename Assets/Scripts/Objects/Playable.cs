@@ -23,7 +23,6 @@ namespace Objects
         public void SetPlayOnStart(bool playOnStart)
         {
             PlayOnStart = playOnStart;
-            // TODO: Handle UI
         }
         
     }
