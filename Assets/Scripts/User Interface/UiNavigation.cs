@@ -22,6 +22,7 @@ public class UiNavigation : MonoBehaviour
     
     [Header("Map Mode Buttons")]
     public List<Button> modeButtons;
+    public GameObject drawingPathBtn;
 
     [Header("Panels")] 
     public GameObject eventsPnl;
@@ -30,6 +31,8 @@ public class UiNavigation : MonoBehaviour
     public GameObject propsPnl;
     public Transform eventContainer;
     public List<GameObject> modePanels;
+
+    private bool _drawingPath = false;
 
     private void Start()
     {
@@ -146,6 +149,21 @@ public class UiNavigation : MonoBehaviour
                     modeButtons[i].interactable = true;
                 }
         };
+    }
+
+    public void ToggleDrawPath()
+    {
+        switch (_drawingPath)
+        {
+            case false:
+                drawingPathBtn.SetActive(true);
+                _drawingPath = true;
+                break;
+            default:
+                drawingPathBtn.SetActive(false);
+                _drawingPath = false;
+                break;
+        }
     }
     
     //Instantiate event button prefab
