@@ -8,7 +8,7 @@ using File = System.IO.File;
 
 namespace Saving
 {
-    public class LevelDataManager : StaticInstance<LevelDataManager>
+    public class LevelDataManager : PersistentSingleton<LevelDataManager>
     {
         private List<ObjectBase> _registeredObjects = new();
         private List<ObjectBase> _deletedObjects = new();
@@ -27,7 +27,14 @@ namespace Saving
             VerifyObjects();
             DeleteObjects();
             SaveObjects();
-            SaveFile();
+            if (VerifyPlayOnStart(_saveData))
+            {
+                SaveFile();
+            }
+            else
+            {
+                Debug.Log("Could not save level. There must be just one object with PlayOnStart set to true.");
+            }
         }
 
         private void DeleteObjects()
@@ -38,15 +45,23 @@ namespace Saving
             }
         }
 
-        public void LoadLevel()
+        public void LoadLevel(TextAsset file)
+        {
+            _saveData = JsonUtility.FromJson<SaveData>(file.text);
+            LoadObjects(_saveData);
+        }
+
+        private void LoadObjects(SaveData data)
         {
             
         }
-        
+
         public void RegisterObject(ObjectBase obj)
         {
             _registeredObjects.Add(obj);
         }
+
+ 
         
         private void VerifyObjects()
         {
@@ -111,6 +126,12 @@ namespace Saving
                 decorative.rotation = objTransform.rotation.eulerAngles;
                 _saveData.decorativeObjects.Add(decorative);
             }
+        }
+
+        private bool VerifyPlayOnStart(SaveData data)
+        {
+            int i = data.playableObjects.Count(obj => obj.switchTime < 0);
+            return i == 1;
         }
 
         private Vector3[] GetObjectPath(Path path)

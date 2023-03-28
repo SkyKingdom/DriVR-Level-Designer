@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Saving
@@ -8,7 +9,7 @@ namespace Saving
     {
         [SerializeField] private PrefabDataDictionary prefabsDictionary;
         
-        public IDictionary<int, GameObject> PrefabsDictionary
+        public IDictionary<string, GameObject> PrefabsDictionary
         {
             get { return prefabsDictionary; }
             set { prefabsDictionary.CopyFrom(value); }
