@@ -33,6 +33,8 @@ namespace Objects
             AddPathPoint(n);
             if (select)
                 Select();
+            else
+                Deselect();
         }
 
         public void AddPathPoint(Node node)

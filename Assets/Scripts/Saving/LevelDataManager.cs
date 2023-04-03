@@ -1,10 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Objects;
 using SimpleFileBrowser;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
@@ -97,7 +97,7 @@ namespace Saving
         private IEnumerator HandleMap(SaveData data)
         {
             if (!data.mapEnabled) yield break;
-            LevelGeneratorManager.Instance.LoadMap(data.cameraZoom, data.mapLocationX, data.mapLocationY, data.cameraPosition);
+            LevelGeneratorManager.Instance.LoadMap(data.cameraZoom, data.mapLocationX, data.mapLocationY);
             LevelGeneratorManager.Instance.OnMapEnabledValueChange(true);
             yield return null;
         }
@@ -129,6 +129,17 @@ namespace Saving
                 {
                     objectBase.Path.SetAnimateOnStart(obj.animationStartTime < 0);
                 }
+
+                if (obj.pathPoints.Length <= 1) continue;
+                for (int i = 1; i < obj.pathPoints.Length; i++)
+                {
+                    var pos = obj.pathPoints[i];
+                    var nodeObj = Instantiate(prefabData.PrefabsDictionary["PathPoint"], pos,
+                        Quaternion.identity);
+                    var node = new Node(nodeObj, objectBase, pos);
+                    nodeObj.GetComponent<NodeContainer>().node = node;
+                    objectBase.Path.AddPathPoint(node);
+                }
             }
             yield return null;
         }
@@ -157,7 +168,16 @@ namespace Saving
                 {
                     objectBase.Path.SetAnimateOnStart(obj.animationStartTime < 0);
                 }
-                // Generate Path Points
+                if (obj.pathPoints.Length <= 1) continue;
+                for (int i = 1; i < obj.pathPoints.Length; i++)
+                {
+                    var pos = obj.pathPoints[i];
+                    var nodeObj = Instantiate(prefabData.PrefabsDictionary["PathPoint"], pos,
+                        Quaternion.identity);
+                    var node = new Node(nodeObj, objectBase, pos);
+                    nodeObj.GetComponent<NodeContainer>().node = node;
+                    objectBase.Path.AddPathPoint(node);
+                }
             }
             yield return null;
         }

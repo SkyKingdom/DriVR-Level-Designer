@@ -35,9 +35,7 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
     [SerializeField] private GameObject capsule;
     [SerializeField] private GameObject plane;
     [SerializeField] private Toggle mapToggle;
-    
-    private Vector3 _cameraStartPosition = Vector3.zero;
-    
+
     public Transform SceneCameraTransform => sceneCamera.transform;
     // Modes
     private MapMode _mapMode;
@@ -117,11 +115,10 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
         SceneManager.LoadScene(1);
     }
 
-    public void LoadMap(float zoom, double posX, double posY, Vector3 cameraPos)
+    public void LoadMap(float zoom, double posX, double posY)
     {
         var center = new Vector2d(posX, posY);
         MapMode.Map.UpdateMap(center, zoom);
-        _cameraStartPosition = cameraPos;
         mapToggle.isOn = true;
     }
     
