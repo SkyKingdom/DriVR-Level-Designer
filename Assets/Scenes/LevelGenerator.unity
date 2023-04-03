@@ -4270,19 +4270,7 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 944001246}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!1 &404762869
 GameObject:
@@ -5549,6 +5537,8 @@ MonoBehaviour:
   mainCamera: {fileID: 1915381838}
   canvas: {fileID: 1797212726}
   capsule: {fileID: 388333854}
+  plane: {fileID: 684948977}
+  mapToggle: {fileID: 1906704895}
 --- !u!4 &511080673
 Transform:
   m_ObjectHideFlags: 0
@@ -6511,10 +6501,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 977956750}
   m_HandleRect: {fileID: 22486127}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 22
+  m_MinValue: 14
+  m_MaxValue: 20
   m_WholeNumbers: 0
-  m_Value: 6.5
+  m_Value: 14
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -9446,7 +9436,7 @@ MonoBehaviour:
   _options:
     locationOptions:
       latitudeLongitude: 53.2435698, 6.5337269
-      zoom: 6.5
+      zoom: 14
     extentOptions:
       extentType: 0
       defaultExtents:
@@ -17530,9 +17520,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 622472945}
-        m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: DeleteObject
+      - m_Target: {fileID: 511080672}
+        m_TargetAssemblyTypeName: LevelGeneratorManager, Assembly-CSharp
+        m_MethodName: ExitToMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

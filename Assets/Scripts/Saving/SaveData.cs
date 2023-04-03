@@ -10,8 +10,11 @@ namespace Saving
         public List<DecorativeObjectData> decorativeObjects = new();
         public List<InteractableObjectData> interactableObjects = new();
         public List<PlayableObjectData> playableObjects = new();
+        public bool mapEnabled;
         public float cameraZoom;
-        public string mapLocation;
+        public double mapLocationX;
+        public double mapLocationY;
+        public Vector3 cameraPosition;
     }
 
     [Serializable]

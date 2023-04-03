@@ -1,6 +1,10 @@
 using System;
 using Mapbox.Unity.Map;
+using Mapbox.Utils;
+using Saving;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Utilities;
 
 [Serializable]
@@ -29,7 +33,12 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject canvas;
     [SerializeField] private GameObject capsule;
+    [SerializeField] private GameObject plane;
+    [SerializeField] private Toggle mapToggle;
     
+    private Vector3 _cameraStartPosition = Vector3.zero;
+    
+    public Transform SceneCameraTransform => sceneCamera.transform;
     // Modes
     private MapMode _mapMode;
     public MapMode MapMode => _mapMode;
@@ -43,7 +52,7 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
 
     private void Start()
     {
-        _mapMode = new MapMode(FindObjectOfType<AbstractMap>() , FindObjectOfType<CameraController>());
+        _mapMode = new MapMode(FindObjectOfType<AbstractMap>() , FindObjectOfType<CameraController>(), plane);
         _editMode = new EditMode(FindObjectOfType<ObjectManager>());
         _viewMode = new ViewMode();
         _firstPersonMode = new FirstPersonMode(sceneCamera, mainCamera, canvas, capsule);
@@ -56,7 +65,7 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
         if (!value && CurrentMode == _mapMode)
         {
             ChangeMode(_viewMode);
-            uiNavigation.SwitchToMode((int)Mode.View);
+            uiNavigation.SwitchToMode((int)Mode.Edit);
         }
         uiNavigation.modeButtons[(int)Mode.Map].interactable = value;
         MapMode.ToggleMap(value);
@@ -101,4 +110,19 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
         }
         OnModeChange?.Invoke(Mode);
     }
+
+    public async void ExitToMenu()
+    {
+        await LevelDataManager.Instance.Cleanup();
+        SceneManager.LoadScene(1);
+    }
+
+    public void LoadMap(float zoom, double posX, double posY, Vector3 cameraPos)
+    {
+        var center = new Vector2d(posX, posY);
+        MapMode.Map.UpdateMap(center, zoom);
+        _cameraStartPosition = cameraPos;
+        mapToggle.isOn = true;
+    }
+    
 }

@@ -42,14 +42,13 @@ public class Node : IDisposable
             {
                 // Release any managed resources here.
                 // In this case, we don't have any managed resources to release.
+                if (GameObject != null)
+                {
+                    GameObject.Destroy();
+                }
             }
 
             // Release any unmanaged resources here.
-            if (GameObject != null)
-            {
-                GameObject.Destroy();
-            }
-
             _disposed = true;
         }
     }

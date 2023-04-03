@@ -27,6 +27,7 @@ namespace Objects
       _outline.OutlineColor = Color.yellow;
       _outline.OutlineWidth = 10f;
       _outline.OutlineMode = Outline.Mode.OutlineVisible;
+      _outline.enabled = false;
       
       // Try and get components
       Interactable = GetComponent<Interactable>();
@@ -34,7 +35,7 @@ namespace Objects
       Path = GetComponent<Path>();
     }
 
-    public void Initialize(string objectName, string prefabName)
+    public void Initialize(string objectName, string prefabName, bool select = true)
     {
       ObjectName = objectName;
       PrefabName = prefabName;
@@ -50,9 +51,10 @@ namespace Objects
       if (Path != null)
       {
         Path.Initialize(this);
-        Path.Spawn();
+        Path.Spawn(select);
       }
-      Select();
+      if (select)
+        Select();
       RegisterSelf();
     }
 
@@ -85,14 +87,14 @@ namespace Objects
       }
     }
 
-    public virtual void OnReposition(Vector3 position)
+    public void OnReposition(Vector3 position)
     {
       transform.position = position;
       if (!Path) return;
       Path.HandleObjectReposition(position);
     }
 
-    public virtual void Select()
+    public void Select()
     {
       _outline.enabled = true;
       if (Path)
@@ -137,5 +139,9 @@ namespace Objects
       }
       gameObject.SetActive(true);
     }
+  }
+
+  public class vixzrtual
+  {
   }
 }

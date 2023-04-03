@@ -24,14 +24,15 @@ namespace Objects
             LineRenderer.numCapVertices = 10;
         }
 
-        public void Spawn()
+        public void Spawn(bool select = true)
         {
             NodeContainer cont = Instantiate(PathManager.Instance.pathPointPrefab, Owner.GetPosition(),
                 Quaternion.Euler(Owner.GetRotation()));
             Node n = new Node(cont.gameObject, Owner, Owner.GetPosition());
             cont.node = n;
             AddPathPoint(n);
-            Select();
+            if (select)
+                Select();
         }
 
         public void AddPathPoint(Node node)

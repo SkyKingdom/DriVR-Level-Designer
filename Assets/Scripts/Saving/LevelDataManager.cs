@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Objects;
 using SimpleFileBrowser;
 using UnityEngine;
@@ -17,8 +18,7 @@ namespace Saving
         private List<ObjectBase> _registeredObjects = new();
         private List<ObjectBase> _deletedObjects = new();
         private SaveData _saveData;
-        private string _filePath;
-        
+
         private void Start()
         {
             FileBrowser.SetFilters(true, new FileBrowser.Filter("JSON Levels", ".json"));
@@ -32,6 +32,7 @@ namespace Saving
             VerifyObjects();
             DeleteObjects();
             SaveObjects();
+            SaveCamera();
             if (VerifyPlayOnStart(_saveData))
             { 
                 StartCoroutine(SaveFile());
@@ -40,6 +41,18 @@ namespace Saving
             {
                 Debug.Log("Could not save level. There must be just one object with PlayOnStart set to true.");
             }
+        }
+
+        private void SaveCamera()
+        {
+            if (!LevelGeneratorManager.Instance.MapEnabled) return;
+            
+            _saveData.mapEnabled = true;
+            var cameraData = LevelGeneratorManager.Instance.MapMode.GetMapData();
+            _saveData.cameraZoom = cameraData.Zoom;
+            _saveData.mapLocationX = cameraData.CenterX;
+            _saveData.mapLocationY = cameraData.CenterY;
+            _saveData.cameraPosition = LevelGeneratorManager.Instance.SceneCameraTransform.position;
         }
 
         private void DeleteObjects()
@@ -57,65 +70,48 @@ namespace Saving
         
         IEnumerator LoadLevelAsync(SaveData data)
         {
-            var asyncLoad = SceneManager.LoadSceneAsync(2);
+            
+            var asyncLoad = SceneManager.LoadSceneAsync(0);
             while (!asyncLoad.isDone)
             {
                 yield return null;
             }
-            asyncLoad = SceneManager.LoadSceneAsync(0, LoadSceneMode.Additive);
+            asyncLoad = SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive);
             while (!asyncLoad.isDone)
             {
                 yield return null;
             }
-
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName("LevelGenerator"));
-            yield return LoadObjects(data);
-
+            
+            yield return GeneratePlayableObjects(data);
+            yield return GenerateInteractableObjects(data);
+            yield return GenerateDecorativeObjects(data);
+            yield return HandleMap(data);
+            
+            yield return Helpers.GetWait(2f);
+            Debug.Log("Done loading level.");
+            if (data.cameraPosition != Vector3.zero)
+                LevelGeneratorManager.Instance.SceneCameraTransform.position = data.cameraPosition;
             SceneManager.UnloadSceneAsync(2);
         }
 
-        IEnumerator LoadObjects(SaveData data)
+        private IEnumerator HandleMap(SaveData data)
         {
-            Debug.Log("Loading objects...");
-            foreach (var obj in data.decorativeObjects)
-            {
-                var prefab = prefabData.PrefabsDictionary[obj.prefabName];
-                var instance = Instantiate(prefab, obj.position, Quaternion.Euler(obj.rotation));
-                var objectBase = instance.GetComponent<ObjectBase>();
-                objectBase.Initialize(obj.objectName, prefab.name);
-                yield return null;
-            }
+            if (!data.mapEnabled) yield break;
+            LevelGeneratorManager.Instance.LoadMap(data.cameraZoom, data.mapLocationX, data.mapLocationY, data.cameraPosition);
+            LevelGeneratorManager.Instance.OnMapEnabledValueChange(true);
             yield return null;
-            foreach (var obj in data.interactableObjects)
-            {
-                var prefab = prefabData.PrefabsDictionary[obj.prefabName];
-                var instance = Instantiate(prefab, obj.position, Quaternion.Euler(obj.rotation));
-                var objectBase = instance.GetComponent<ObjectBase>();
-                objectBase.Initialize(obj.objectName, prefab.name);
-                if (obj.interactionStartTime < 0 && obj.interactionEndTime < 0)
-                {
-                    objectBase.Interactable.SetAlwaysInteractable(true, obj.isCorrect);
-                }
-                objectBase.Interactable.SetInteractionValues(obj.isCorrect, obj.interactionStartTime, obj.interactionEndTime);
-                objectBase.Path.SetSpeed(obj.speed);
-                if (obj.animationStartTime >= 0)
-                {
-                    objectBase.Path.SetAnimationStartTime(obj.animationStartTime);
-                }
-                else
-                {
-                    objectBase.Path.SetAnimateOnStart(obj.animationStartTime < 0);
-                }
-                // Generate Path Points
-                yield return null; 
-            }
-            yield return null;
+        }
+
+        private IEnumerator GeneratePlayableObjects(SaveData data)
+        {
+            if (data.playableObjects.Count == 0)
+                yield break;
             foreach (var obj in data.playableObjects)
             {
                 var prefab = prefabData.PrefabsDictionary[obj.prefabName];
                 var instance = Instantiate(prefab, obj.position, Quaternion.Euler(obj.rotation));
                 var objectBase = instance.GetComponent<ObjectBase>();
-                objectBase.Initialize(obj.objectName, prefab.name);
+                objectBase.Initialize(obj.objectName, prefab.name, false);
                 if (obj.switchTime >= 0)
                 {
                     objectBase.Playable.SetViewValues(obj.switchTime);
@@ -133,18 +129,57 @@ namespace Saving
                 {
                     objectBase.Path.SetAnimateOnStart(obj.animationStartTime < 0);
                 }
-                yield return null; 
             }
-            Debug.Log("Loaded Level");
-            yield return null; 
+            yield return null;
+        }
+        
+        private IEnumerator GenerateInteractableObjects(SaveData data)
+        {
+            if (data.interactableObjects.Count == 0)
+                yield break;
+            foreach (var obj in data.interactableObjects)
+            {
+                var prefab = prefabData.PrefabsDictionary[obj.prefabName];
+                var instance = Instantiate(prefab, obj.position, Quaternion.Euler(obj.rotation));
+                var objectBase = instance.GetComponent<ObjectBase>();
+                objectBase.Initialize(obj.objectName, prefab.name, false);
+                if (obj.interactionStartTime < 0 && obj.interactionEndTime < 0)
+                {
+                    objectBase.Interactable.SetAlwaysInteractable(true, obj.isCorrect);
+                }
+                objectBase.Interactable.SetInteractionValues(obj.isCorrect, obj.interactionStartTime, obj.interactionEndTime);
+                objectBase.Path.SetSpeed(obj.speed);
+                if (obj.animationStartTime >= 0)
+                {
+                    objectBase.Path.SetAnimationStartTime(obj.animationStartTime);
+                }
+                else
+                {
+                    objectBase.Path.SetAnimateOnStart(obj.animationStartTime < 0);
+                }
+                // Generate Path Points
+            }
+            yield return null;
+        }
+
+        private IEnumerator GenerateDecorativeObjects(SaveData data)
+        {
+            if (data.decorativeObjects.Count == 0)
+                yield break;
+            foreach (var obj in data.decorativeObjects)
+            {
+               var prefab = prefabData.PrefabsDictionary[obj.prefabName];
+                var instance = Instantiate(prefab, obj.position, Quaternion.Euler(obj.rotation));
+                var objectBase = instance.GetComponent<ObjectBase>();
+                objectBase.Initialize(obj.objectName, prefab.name, false);
+            }
+            yield return null;
         }
     
         public void RegisterObject(ObjectBase obj)
         {
             _registeredObjects.Add(obj);
         }
-
- 
         
         private void VerifyObjects()
         {
@@ -173,7 +208,7 @@ namespace Saving
                 {
                     var interactable = new InteractableObjectData();
                     interactable.prefabName = obj.PrefabName;
-                    interactable.objectName = obj.name;
+                    interactable.objectName = obj.ObjectName;
                     var transform1 = obj.transform;
                     interactable.position = transform1.position;
                     interactable.rotation = transform1.rotation.eulerAngles;
@@ -199,7 +234,7 @@ namespace Saving
                 {
                     var playable = new PlayableObjectData();
                     playable.prefabName = obj.PrefabName;
-                    playable.objectName = obj.name;
+                    playable.objectName = obj.ObjectName;
                     var transform1 = obj.transform;
                     playable.position = transform1.position;
                     playable.rotation = transform1.rotation.eulerAngles;
@@ -213,7 +248,7 @@ namespace Saving
                 
                 var decorative = new DecorativeObjectData();
                 decorative.prefabName = obj.PrefabName;
-                decorative.objectName = obj.name;
+                decorative.objectName = obj.ObjectName;
                 var objTransform = obj.transform;
                 decorative.position = objTransform.position;
                 decorative.rotation = objTransform.rotation.eulerAngles;
@@ -223,6 +258,11 @@ namespace Saving
 
         private bool VerifyPlayOnStart(SaveData data)
         {
+            // Check for at least one playable object
+            if (data.playableObjects.Count == 0)
+                return false;
+            
+            // Check for only one playable object with play on start
             int i = data.playableObjects.Count(obj => obj.switchTime < 0);
             return i == 1;
         }
@@ -237,5 +277,14 @@ namespace Saving
 
             return pathPoints.ToArray();
         }
+        
+        public async Task Cleanup()
+        {
+            _registeredObjects.Clear();
+            _deletedObjects.Clear();
+            _saveData = new SaveData();
+            await Task.CompletedTask;
+        }
     }
+    
 }
