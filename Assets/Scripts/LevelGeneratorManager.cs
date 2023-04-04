@@ -36,6 +36,9 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
     [SerializeField] private GameObject plane;
     [SerializeField] private Toggle mapToggle;
 
+    [Header("Objects Blanket")] 
+    [SerializeField] private GameObject blanket;
+
     public Transform SceneCameraTransform => sceneCamera.transform;
     // Modes
     private MapMode _mapMode;
@@ -51,7 +54,7 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
     private void Start()
     {
         _mapMode = new MapMode(FindObjectOfType<AbstractMap>() , FindObjectOfType<CameraController>(), plane);
-        _editMode = new EditMode(FindObjectOfType<ObjectManager>());
+        _editMode = new EditMode(FindObjectOfType<ObjectManager>(), blanket);
         _viewMode = new ViewMode();
         _firstPersonMode = new FirstPersonMode(sceneCamera, mainCamera, canvas, capsule);
         SetMode(1);
