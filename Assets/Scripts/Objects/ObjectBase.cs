@@ -58,8 +58,12 @@ namespace Objects
       RegisterSelf();
     }
 
-    private void RegisterSelf() => LevelDataManager.Instance.RegisterObject(this);
-    
+    private void RegisterSelf()
+    {
+      if (LevelDataManager.Instance)
+          LevelDataManager.Instance.RegisterObject(this);
+    }
+
     public Vector3 GetPosition() => _mTransform.position;
     
     public Vector3 GetRotation() => _mTransform.rotation.eulerAngles;

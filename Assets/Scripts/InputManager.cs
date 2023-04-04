@@ -135,7 +135,7 @@ public class InputManager : StaticInstance<InputManager>
             // if mouse has moved more than drag threshold, set object position to mouse position
             // keep the y position of the object the same;
             var raycastPosition = GetRaycastPosition(mousePos);
-            raycastPosition.y = 1f;
+            raycastPosition.y = 0f;
             dragObject.transform.position = raycastPosition;
 
             return;
@@ -263,7 +263,7 @@ public class InputManager : StaticInstance<InputManager>
             return;
         }
 
-        if (!ObjectManager.Instance.PrefabToSpawn)
+        if (!ObjectManager.Instance.PrefabToSpawn && !ObjectManager.Instance.RoadToolEnabled)
         {
             OnObjectDeselect?.Invoke();
             return;
