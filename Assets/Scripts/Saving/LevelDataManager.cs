@@ -7,6 +7,7 @@ using SimpleFileBrowser;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using User_Interface;
 using Utilities;
 using File = System.IO.File;
 
@@ -211,6 +212,18 @@ namespace Saving
 
         IEnumerator SaveFile()
         {
+            yield return LevelInfoModal.Instance.WaitForLevelInfo();
+
+            if (LevelInfoModal.Success)
+            {
+                _saveData.levelName = LevelInfoModal.Result.Name;
+                _saveData.levelDescription = LevelInfoModal.Result.Description;
+            }
+            else
+            {
+                yield break;
+            }
+            
             yield return FileBrowser.WaitForSaveDialog(FileBrowser.PickMode.Files, false, null, null, "JSON Level",
                 "Save");
             if (FileBrowser.Success)

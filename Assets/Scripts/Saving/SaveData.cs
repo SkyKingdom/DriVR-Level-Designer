@@ -7,6 +7,8 @@ namespace Saving
     [Serializable]
     public class SaveData
     {
+        public string levelName;
+        public string levelDescription;
         public List<DecorativeObjectData> decorativeObjects = new();
         public List<InteractableObjectData> interactableObjects = new();
         public List<PlayableObjectData> playableObjects = new();
