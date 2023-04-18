@@ -22,7 +22,14 @@ namespace User_Interface
         public static LevelInfo Result { get; private set; }
         [SerializeField] private TMP_InputField levelNameInputField;
         [SerializeField] private TMP_InputField levelDescriptionInputField;
-        
+
+
+        protected override void Awake()
+        {
+            base.Awake();
+            Hide();
+        }
+
         public void Show()
         {
             gameObject.SetActive(true);
