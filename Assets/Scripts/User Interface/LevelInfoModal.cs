@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using Utilities;
+using DG.Tweening;
 
 namespace User_Interface
 {
@@ -22,6 +23,7 @@ namespace User_Interface
         public static LevelInfo Result { get; private set; }
         [SerializeField] private TMP_InputField levelNameInputField;
         [SerializeField] private TMP_InputField levelDescriptionInputField;
+        [SerializeField] private GameObject popUp;
 
 
         protected override void Awake()
@@ -33,6 +35,8 @@ namespace User_Interface
         public void Show()
         {
             gameObject.SetActive(true);
+            popUp.transform.DOScale(new Vector3(1.05f, 1.05f, 1.05f), 0.2f)
+                .OnComplete(() => popUp.transform.DOScale(new Vector3(1f, 1f, 1f), 0.2f));
         }
 
         private void SetSuccess(bool success)
