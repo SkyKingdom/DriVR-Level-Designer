@@ -26,15 +26,15 @@ public class RoadTool : MonoBehaviour
 
     public void RemovePoint(SplineNode node)
     {
-        spline.RemoveNode(node);
-        points.Remove(node);
-        
-        if (points.Count < 2)
+        if (points.Count <= 2)
         {
+            points.Clear();
+            spline.nodes.Clear();
             spline.gameObject.SetActive(false);
             return;
         }
-        spline.RefreshCurves();
+        spline.RemoveNode(node);
+        points.Remove(node);
         smoother.SmoothAll();
     }
 }
