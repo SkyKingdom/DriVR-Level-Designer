@@ -3134,6 +3134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1339447721}
   - component: {fileID: 1339447722}
+  - component: {fileID: 1339447723}
   m_Layer: 0
   m_Name: LevelDataManager
   m_TagString: Untagged
@@ -3169,6 +3170,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabData: {fileID: 11400000, guid: 18414563e8a105e4d89c4a68ad16423a, type: 2}
+--- !u!114 &1339447723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339447719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed3b2ff118a7482488d6e0f8ec6fa0c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneCameraTexture: {fileID: 8400000, guid: 07e44d29557eb954d9f8472da56bc239, type: 2}
 --- !u!1 &1421015119
 GameObject:
   m_ObjectHideFlags: 0

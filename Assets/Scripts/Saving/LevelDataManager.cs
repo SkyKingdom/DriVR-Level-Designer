@@ -19,12 +19,14 @@ namespace Saving
         private List<ObjectBase> _registeredObjects = new();
         private List<ObjectBase> _deletedObjects = new();
         private SaveData _saveData;
+        private ScreenshotManager _screenshotManager;
 
         private void Start()
         {
             FileBrowser.SetFilters(true, new FileBrowser.Filter("JSON Levels", ".json"));
             FileBrowser.AddQuickLink( "Users", "C:\\Users", null );
             FileBrowser.SetDefaultFilter(".json");
+            _screenshotManager = GetComponent<ScreenshotManager>();
         }
 
         public void SaveLevel()
@@ -230,6 +232,7 @@ namespace Saving
             {
                 string json = JsonUtility.ToJson(_saveData);
                 File.WriteAllText(FileBrowser.Result[0], json);
+                _screenshotManager.TakeScreenShot(_saveData.levelName ,FileBrowserHelpers.GetDirectoryName(FileBrowser.Result[0]));
             }
         }
         
