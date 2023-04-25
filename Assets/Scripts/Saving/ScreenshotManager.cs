@@ -7,7 +7,7 @@ namespace Saving
     {
         [SerializeField] private RenderTexture sceneCameraTexture;
         
-        public void TakeScreenShot(string name ,string path)
+        public void TakeScreenShot(string name, string path)
         {
             Texture2D tex = new Texture2D(sceneCameraTexture.width, sceneCameraTexture.height);
             RenderTexture.active = sceneCameraTexture;
