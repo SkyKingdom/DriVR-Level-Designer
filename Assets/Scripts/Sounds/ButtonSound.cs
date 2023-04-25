@@ -9,15 +9,33 @@ public class ButtonSound : MonoBehaviour
 {
     public GeneratorMusicSounds buttonSounds;
     private Button _button;
+    private Toggle _toggle;
 
     private void Awake()
     {
         _button = GetComponent<Button>();
+        
+        if (!_button)
+            _toggle = GetComponent<Toggle>();
     }
 
     private void Start()
     {
-        _button.onClick.AddListener(PlaySound);
+        if (_button)
+            _button.onClick.AddListener(PlaySound);
+        
+        if (_toggle)
+            _toggle.onValueChanged.AddListener(PlaySound);
+    }
+
+    private void PlaySound(bool arg0)
+    {
+        if (arg0)
+            AudioManager.PlaySound(buttonSounds);
+        else
+        {
+            AudioManager.PlaySound(GeneratorMusicSounds.UIClose);
+        }
     }
 
     private void PlaySound()
@@ -27,6 +45,10 @@ public class ButtonSound : MonoBehaviour
 
     private void OnDestroy()
     {
-        _button.onClick.RemoveAllListeners();
+        if (_button) 
+            _button.onClick.RemoveAllListeners();
+        
+        if (_toggle)
+            _toggle.onValueChanged.RemoveAllListeners();
     }
 }

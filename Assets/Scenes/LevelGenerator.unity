@@ -11135,6 +11135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed3b2ff118a7482488d6e0f8ec6fa0c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneCameraTexture: {fileID: 0}
 --- !u!114 &1145664299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11420,6 +11421,7 @@ GameObject:
   - component: {fileID: 1231447010}
   - component: {fileID: 1231447012}
   - component: {fileID: 1231447011}
+  - component: {fileID: 1231447013}
   m_Layer: 5
   m_Name: building_2
   m_TagString: Untagged
@@ -11519,6 +11521,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1231447009}
   m_CullTransparentMesh: 1
+--- !u!114 &1231447013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231447009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60050bf090666b34b98b3bb183b6a4fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSounds: 0
 --- !u!1 &1235422182
 GameObject:
   m_ObjectHideFlags: 0
@@ -16637,7 +16652,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1202554369}
   m_HandleRect: {fileID: 1202554368}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -21732,7 +21747,7 @@ GameObject:
   - component: {fileID: 3536634210053360396}
   - component: {fileID: 6281867668657921436}
   m_Layer: 5
-  m_Name: Name_Input
+  m_Name: Description_Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31221,7 +31236,7 @@ GameObject:
   - component: {fileID: 813225494316704152}
   - component: {fileID: 3630447153461810342}
   m_Layer: 5
-  m_Name: Name_txt
+  m_Name: Description_label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31572,7 +31587,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -35852,6 +35867,7 @@ GameObject:
   - component: {fileID: 9055758337910496117}
   - component: {fileID: 5484459184117751435}
   - component: {fileID: 380410453889511547}
+  - component: {fileID: 9055758337910496118}
   m_Layer: 5
   m_Name: dude_1
   m_TagString: Untagged
@@ -37792,7 +37808,7 @@ MonoBehaviour:
   m_InputType: 0
   m_AsteriskChar: 42
   m_KeyboardType: 0
-  m_LineType: 0
+  m_LineType: 2
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
   m_CharacterValidation: 0
@@ -42014,6 +42030,7 @@ GameObject:
   - component: {fileID: 6589957975168477608}
   - component: {fileID: 7693284467916614742}
   - component: {fileID: 2566984361994437286}
+  - component: {fileID: 7693284467916614743}
   m_Layer: 5
   m_Name: building_1
   m_TagString: Untagged
@@ -42170,6 +42187,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7637477296110433238}
   m_CullTransparentMesh: 1
+--- !u!114 &7693284467916614743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7637477296110433238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60050bf090666b34b98b3bb183b6a4fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSounds: 0
 --- !u!1 &7697965024085453881
 GameObject:
   m_ObjectHideFlags: 0
@@ -45951,6 +45981,19 @@ RectTransform:
   m_AnchoredPosition: {x: 90, y: -71.5}
   m_SizeDelta: {x: 140, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &9055758337910496118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5703099490374861067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60050bf090666b34b98b3bb183b6a4fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSounds: 0
 --- !u!1 &9063643472505956599
 GameObject:
   m_ObjectHideFlags: 0
