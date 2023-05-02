@@ -1,4 +1,6 @@
-﻿using Actions;
+﻿using System;
+using Actions;
+using Interfaces;
 using Objects;
 using SplineMesh;
 using UnityEngine;
@@ -9,11 +11,13 @@ public class ObjectManager : StaticInstance<ObjectManager>
     [SerializeField] private ObjectBase prefabToSpawn;
     [SerializeField] private RoadTool roadTool;
     public ObjectBase PrefabToSpawn => prefabToSpawn;
-    private InputManager _inputManager;
+    private InputHandler _inputManager;
     private SettingsManager _settingsManager;
     private bool _roadToolEnabled;
     public bool RoadToolEnabled => _roadToolEnabled;
-    
+
+    public event Action<IEditorInteractable> ObjectSpawned; 
+
     public void SelectObject(ObjectBase prefab)
     {
         if (LevelGeneratorManager.Instance.Mode != Mode.Edit) return;
@@ -29,6 +33,7 @@ public class ObjectManager : StaticInstance<ObjectManager>
             _settingsManager = FindObjectOfType<SettingsManager>();
         }
         _settingsManager.SelectObject(spawnedObject);
+        ObjectSpawned?.Invoke(spawnedObject);
         return spawnedObject;
     }
     
@@ -65,16 +70,16 @@ public class ObjectManager : StaticInstance<ObjectManager>
     {
         if (_inputManager == null)
         {
-            _inputManager = FindObjectOfType<InputManager>();
+            _inputManager = FindObjectOfType<InputHandler>();
             if (_inputManager)
-                _inputManager.OnMapClick += OnSpawnObject;
+                _inputManager.OnSpawnClick += OnSpawnObject;
             return;
         } 
-        _inputManager.OnMapClick += OnSpawnObject;
+        _inputManager.OnSpawnClick += OnSpawnObject;
     }
 
     private void OnDisable()
     {
-        _inputManager.OnMapClick -= OnSpawnObject;
+        _inputManager.OnSpawnClick -= OnSpawnObject;
     }
 }

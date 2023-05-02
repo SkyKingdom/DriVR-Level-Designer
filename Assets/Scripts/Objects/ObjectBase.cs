@@ -1,11 +1,13 @@
-﻿using Saving;
+﻿using Actions;
+using Interfaces;
+using Saving;
 using ThirdPartyAssets.QuickOutline.Scripts;
 using UnityEngine;
 
 namespace Objects
 {
   [RequireComponent(typeof(Outline))]
-  public class ObjectBase : MonoBehaviour
+  public class ObjectBase : MonoBehaviour, IEditorInteractable
   {
     public string ObjectName { get; private set; }
     public string PrefabName { get; private set; }
@@ -97,24 +99,6 @@ namespace Objects
       if (!Path) return;
       Path.HandleObjectReposition(position);
     }
-
-    public void Select()
-    {
-      _outline.enabled = true;
-      if (Path)
-      {
-        Path.Select();
-      }
-    }
-    
-    public virtual void Deselect()
-    {
-      _outline.enabled = false;
-      if (Path)
-      {
-        Path.Deselect();
-      }
-    }
     
     public virtual void Delete()
     {
@@ -143,9 +127,78 @@ namespace Objects
       }
       gameObject.SetActive(true);
     }
-  }
 
-  public class vixzrtual
-  {
+    #region Editor Interactions
+
+    public bool IsSelected { get; private set; }
+
+    private Vector3 _lastPosition;
+    private Vector3 _lastRotation;
+
+    public void OnPointerEnter()
+    {
+      if (IsSelected) return;
+      _outline.enabled = true;
+    }
+
+    public void OnPointerExit()
+    {
+      if (IsSelected) return;
+      _outline.enabled = false;
+    }
+    
+    public void OnDrag(Vector3 position)
+    {
+      transform.position = position;
+    }
+    
+    public void OnDragRelease()
+    {
+      // Create action
+      var action = new DragAction(_lastPosition, transform.position, this);
+      // Add action to undo stack
+      ActionRecorder.Instance.Record(action);
+    }
+
+    public void OnRotate(float angle)
+    {
+      transform.Rotate(0f, angle, 0f);
+    }
+    
+    public void OnRotateRelease()
+    {
+      // Create action
+      var action = new RotateAction(_lastRotation, transform.rotation.eulerAngles, this);
+      // Add action to undo stack
+      ActionRecorder.Instance.Record(action);
+    }
+
+    public void Select()
+    {
+      IsSelected = true;
+      _outline.enabled = true;
+      
+      // Store last position and rotation
+      var transform1 = transform;
+      _lastPosition = transform1.position;
+      _lastRotation = transform1.rotation.eulerAngles;
+      
+      if (Path)
+      {
+        Path.Select();
+      }
+    }
+    
+    public void Deselect()
+    {
+      IsSelected = false;
+      _outline.enabled = false;
+      if (Path)
+      {
+        Path.Deselect();
+      }
+    }
+
+    #endregion
   }
 }

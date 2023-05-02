@@ -17,7 +17,7 @@ public class PathManager : StaticInstance<PathManager>
 
     private void OnEnable()
     {
-        InputManager.Instance.OnPathClick += HandlePathClick;
+        //InputManager.Instance.OnPathClick += HandlePathClick;
     }
     
     public void SelectObject(ObjectBase obj) => _selectedObject = obj;

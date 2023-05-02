@@ -12,7 +12,7 @@ public class InputManager : StaticInstance<InputManager>
     [Header("Ray Casting")]
     [SerializeField] private RectTransform cameraRenderRectTransform;
     [SerializeField] private Camera cam;
-    [SerializeField] private OverCanvasCheck overCanvasCheck;
+    [SerializeField] private OverViewportCheck overCanvasCheck;
     
     [Header("Input")]
     [SerializeField] private InputActionAsset actionAsset;
@@ -55,11 +55,7 @@ public class InputManager : StaticInstance<InputManager>
         _rmb.started += OnRmbDown;
         _rmb.canceled += OnRmbRelease;
     }
-
-    private void Start()
-    {
-        LevelGeneratorManager.Instance.OnModeChange += HandleModeChange;
-    }
+    
 
     private void HandleModeChange(Mode mode)
     {
@@ -115,7 +111,7 @@ public class InputManager : StaticInstance<InputManager>
     private void Update()
     {
         if (!_inEditMode) return;
-        if (!overCanvasCheck.IsOverCanvas) return; // Check if mouse is over canvas/map
+        if (!overCanvasCheck.IsOverViewport) return; // Check if mouse is over canvas/map
 
         var currentPos = Mouse.current.position.ReadValue(); // Get current mouse position
         ObjectDragUpdate(currentPos);
@@ -181,7 +177,7 @@ public class InputManager : StaticInstance<InputManager>
     private void OnLmbDown (InputAction.CallbackContext callbackContext)
     {
         if (!_inEditMode) return;
-        if (!overCanvasCheck.IsOverCanvas) return;
+        if (!overCanvasCheck.IsOverViewport) return;
         if (_isRmbDown) return;
         _mouseStartPosition = Mouse.current.position.ReadValue();
         _isLmbDown = true;
@@ -208,7 +204,7 @@ public class InputManager : StaticInstance<InputManager>
     {
         if (!_inEditMode) return;
         // Check if mouse is over canvas
-        if (!overCanvasCheck.IsOverCanvas)
+        if (!overCanvasCheck.IsOverViewport)
         {
             // Check if there is an object to drag
             if (!dragObject) return;
@@ -280,7 +276,7 @@ public class InputManager : StaticInstance<InputManager>
     {
         if (!_inEditMode) return;
         logger.Log("RMB", this);
-        if (!overCanvasCheck.IsOverCanvas) return;
+        if (!overCanvasCheck.IsOverViewport) return;
         if (_isLmbDown) return;
         _mouseStartPosition = Mouse.current.position.ReadValue();
         _isRmbDown = true;
@@ -309,8 +305,8 @@ public class InputManager : StaticInstance<InputManager>
         if (!dragObject) return;
         
         // Record rotate action
-        var rotateAction = new RotateAction(dragObject, objectInitialRotation);
-        ActionRecorder.Instance.Record(rotateAction);
+        // var rotateAction = new RotateAction(dragObject, objectInitialRotation);
+        // ActionRecorder.Instance.Record(rotateAction);
         
         // Reset drag object
         dragObject = null;
@@ -320,7 +316,7 @@ public class InputManager : StaticInstance<InputManager>
     {
         _isLmbDown = true;
         if (!_inEditMode) return;
-        if (!overCanvasCheck.IsOverCanvas) return;
+        if (!overCanvasCheck.IsOverViewport) return;
         _mouseStartPosition = Mouse.current.position.ReadValue();
 
         var hitTransform = GetRaycastHitTransform(_mouseStartPosition);
@@ -333,7 +329,7 @@ public class InputManager : StaticInstance<InputManager>
     {
         _isLmbDown = false;
         if (!_inEditMode) return;
-        if (!overCanvasCheck.IsOverCanvas) return;
+        if (!overCanvasCheck.IsOverViewport) return;
         _mouseEndPosition = Mouse.current.position.ReadValue();
         
         // Check if mouse has moved more than drag threshold

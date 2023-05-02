@@ -24,7 +24,7 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
     [SerializeField] private bool mapEnabled;
     public bool MapEnabled => mapEnabled;
     
-    public event Action<Mode> OnModeChange;
+    public event Action OnModeChange;
     
     [SerializeField] UiNavigation uiNavigation;
     
@@ -109,7 +109,7 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
             default:
                 throw new ArgumentOutOfRangeException(nameof(modeIndex), modeIndex, null);
         }
-        OnModeChange?.Invoke(Mode);
+        OnModeChange?.Invoke();
     }
 
     public async void ExitToMenu()
