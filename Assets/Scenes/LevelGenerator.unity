@@ -5560,8 +5560,6 @@ MonoBehaviour:
   inputActionAsset: {fileID: -944628639613478452, guid: bc87c2a060bf3134aadc12cd1e3caf69,
     type: 3}
   dragThreshold: 1
-  selectedObject: {fileID: 0}
-  hoveredObject: {fileID: 0}
 --- !u!4 &511019095
 Transform:
   m_ObjectHideFlags: 0
@@ -14241,7 +14239,7 @@ GameObject:
   - component: {fileID: 1660685787}
   - component: {fileID: 1660685786}
   m_Layer: 0
-  m_Name: ObjectManager
+  m_Name: SpawnManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14259,8 +14257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff3465e741840ccb5512bdc790b1b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editType: 0
   prefabToSpawn: {fileID: 0}
-  roadTool: {fileID: 224572292}
 --- !u!4 &1660685787
 Transform:
   m_ObjectHideFlags: 0
@@ -15674,9 +15672,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 274622513}
-        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
-        m_MethodName: TogglePathEdit
+      - m_Target: {fileID: 1660685786}
+        m_TargetAssemblyTypeName: ObjectManager, Assembly-CSharp
+        m_MethodName: TogglePathTool
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17236,9 +17234,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1797212727}
-        m_TargetAssemblyTypeName: UiNavigation, Assembly-CSharp
-        m_MethodName: ToggleDrawPath
+      - m_Target: {fileID: 1660685786}
+        m_TargetAssemblyTypeName: SpawnManager, Assembly-CSharp
+        m_MethodName: TogglePathTool
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17248,9 +17246,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 274622513}
-        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
-        m_MethodName: TogglePathEdit
+      - m_Target: {fileID: 1797212727}
+        m_TargetAssemblyTypeName: UiNavigation, Assembly-CSharp
+        m_MethodName: ToggleDrawPath
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

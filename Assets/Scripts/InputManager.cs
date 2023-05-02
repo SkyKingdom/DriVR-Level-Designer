@@ -252,7 +252,7 @@ public class InputManager : StaticInstance<InputManager>
         // If click is on an ObjectBase, select the object
         if (hit.transform.TryGetComponent(out ObjectBase objectBase))
         {
-            if (ObjectManager.Instance.PrefabToSpawn)
+            if (SpawnManager.Instance.PrefabToSpawn)
             {
                 return;
             }
@@ -261,7 +261,7 @@ public class InputManager : StaticInstance<InputManager>
             return;
         }
 
-        if (!ObjectManager.Instance.PrefabToSpawn && !ObjectManager.Instance.RoadToolEnabled)
+        if (!SpawnManager.Instance.PrefabToSpawn)
         {
             OnObjectDeselect?.Invoke();
             return;

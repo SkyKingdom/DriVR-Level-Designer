@@ -15,19 +15,14 @@ public class PathManager : StaticInstance<PathManager>
 
     public Material Deselected => deselected;
 
-    private void OnEnable()
-    {
-        //InputManager.Instance.OnPathClick += HandlePathClick;
-    }
-    
     public void SelectObject(ObjectBase obj) => _selectedObject = obj;
 
     public void DeselectObject() => _selectedObject = null;
 
-    private void HandlePathClick(Vector3 point)
+    public void HandlePathPointSpawn(Vector3 pos)
     {
-        var cont = Instantiate(pathPointPrefab, point, Quaternion.identity);
-        var node = new Node(cont.gameObject, _selectedObject, point);
+        var cont = Instantiate(pathPointPrefab, pos, Quaternion.identity);
+        var node = new Node(cont.gameObject, _selectedObject, pos);
         cont.node = node;
         var action = new NodeAddAction(node, _selectedObject);
         ActionRecorder.Instance.Record(action);

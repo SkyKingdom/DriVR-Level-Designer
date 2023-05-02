@@ -100,7 +100,7 @@ namespace Objects
       Path.HandleObjectReposition(position);
     }
     
-    public virtual void Delete()
+    public void Delete()
     {
       if (Path)
       {
@@ -146,14 +146,17 @@ namespace Objects
       if (IsSelected) return;
       _outline.enabled = false;
     }
-    
+
     public void OnDrag(Vector3 position)
     {
-      transform.position = position;
+      if (SpawnManager.Instance.EditType == EditType.Object && !SpawnManager.Instance.PrefabToSpawn)
+        transform.position = position;
     }
-    
+
     public void OnDragRelease()
     {
+      if (transform.position == _lastPosition) return;
+      
       // Create action
       var action = new DragAction(_lastPosition, transform.position, this);
       // Add action to undo stack
@@ -162,11 +165,14 @@ namespace Objects
 
     public void OnRotate(float angle)
     {
-      transform.Rotate(0f, angle, 0f);
+      if (SpawnManager.Instance.EditType == EditType.Object && !SpawnManager.Instance.PrefabToSpawn)
+        transform.Rotate(0f, angle, 0f);
     }
-    
+
     public void OnRotateRelease()
     {
+      if (transform.rotation.eulerAngles == _lastRotation) return;
+      
       // Create action
       var action = new RotateAction(_lastRotation, transform.rotation.eulerAngles, this);
       // Add action to undo stack

@@ -31,14 +31,14 @@ public class SettingsManager : MonoBehaviour
 
     private void OnEnable()
     {
-        //InputManager.Instance.OnObjectSelect += SelectObject;
-        //InputManager.Instance.OnObjectDeselect += DeselectObject;
+        InputHandler.Instance.OnSelect += SelectObject;
+        InputHandler.Instance.OnDeselect += DeselectObject;
     }
 
     private void OnDisable()
     {
-        //InputManager.Instance.OnObjectSelect -= SelectObject;
-        //InputManager.Instance.OnObjectDeselect -= DeselectObject;
+        InputHandler.Instance.OnSelect -= SelectObject;
+        InputHandler.Instance.OnDeselect -= DeselectObject;
     }
 
     public void SelectObject(ObjectBase obj)

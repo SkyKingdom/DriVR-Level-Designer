@@ -5,20 +5,17 @@ namespace Actions
 {
     class SpawnAction : ActionBase
     {
-        private readonly ObjectManager _objectManager;
         private readonly SettingsManager _settingsManager;
         private ObjectBase _spawnedObject;
-        private readonly Vector3 _position;
 
-        public SpawnAction(ObjectManager objectManager, SettingsManager settingsManager, Vector3 position)
+        public SpawnAction(SettingsManager settingsManager, ObjectBase spawnedObject)
         {
-            _objectManager = objectManager;
             _settingsManager = settingsManager;
-            _position = position;
+            _spawnedObject = spawnedObject;
         }
         public override void Execute()
         {
-            _spawnedObject = _objectManager.Spawn(_position);
+            _settingsManager.SelectObject(_spawnedObject);
         }
 
         public override void Undo()

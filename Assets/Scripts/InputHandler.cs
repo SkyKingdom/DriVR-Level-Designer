@@ -1,5 +1,6 @@
 ﻿using System;
 using Interfaces;
+using Objects;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using User_Interface;
@@ -28,9 +29,14 @@ public class InputHandler : StaticInstance<InputHandler>
     [Header("Settings")] 
     [SerializeField] private float dragThreshold = 1f;
 
+    [SerializeField] private float rotationSpeed = 3f;
+    
     
     private IEditorInteractable _currentHoveredObject;
     private IEditorInteractable _currentSelectedObject;
+    
+    private ObjectBase _hoveredObjectBase;
+    private ObjectBase _selectedObjectBase;
     
     // States
     private bool InEditMode => LevelGeneratorManager.Instance.Mode == Mode.Edit;
@@ -38,11 +44,13 @@ public class InputHandler : StaticInstance<InputHandler>
     // Start and end positions of the mouse drag
     private Vector2 _mouseStartPosition;
     private Vector2 _mouseEndPosition;
+    private Vector2 _lastMousePosition;
     
     // Events
-    public event Action OnSelect;
+    public event Action<ObjectBase> OnSelect;
     public event Action OnDeselect;
-    public event Action<Vector3> OnSpawnClick;
+    public event Action<Vector3> OnSpawn;
+
 
     #region Unity Methods
 
@@ -58,11 +66,7 @@ public class InputHandler : StaticInstance<InputHandler>
     private void Start()
     {
         LevelGeneratorManager.Instance.OnModeChange += OnModeChanged;
-        ObjectManager.Instance.ObjectSpawned += OnObjectSpawned;
-        _move.performed += OnMove;
-
-        _lmb.started += OnLMBDown;
-        _lmb.canceled += OnLMBUp;
+        SpawnManager.Instance.ObjectSpawned += OnObjectSpawned;
     }
     
     private void OnEnable()
@@ -70,10 +74,26 @@ public class InputHandler : StaticInstance<InputHandler>
         _lmb.Enable();
         _rmb.Enable();
         _move.Enable();
+        
+        _move.performed += OnMove;
+
+        _lmb.started += OnLMBDown;
+        _lmb.canceled += OnLMBUp;
+        
+        _rmb.started += OnRMBDown;
+        _rmb.canceled += OnRMBUp;
     }
     
     private void OnDisable()
     {
+        _move.performed -= OnMove;
+
+        _lmb.started -= OnLMBDown;
+        _lmb.canceled -= OnLMBUp;
+        
+        _rmb.started -= OnRMBDown;
+        _rmb.canceled -= OnRMBUp;
+        
         _lmb.Disable();
         _rmb.Disable();
         _move.Disable();
@@ -89,12 +109,13 @@ public class InputHandler : StaticInstance<InputHandler>
             return;
         }
 
-        if (_rmbDown)
+        if (_rmbDown && Vector2.Distance(_mouseStartPosition, mousePos) > dragThreshold)
         {
-            
+            float mouseTravel = CalculateMouseTravel(mousePos);
+            _currentSelectedObject.OnRotate(mouseTravel);
         }
     }
-
+    
     #endregion
 
     #region Event Handlers
@@ -129,6 +150,7 @@ public class InputHandler : StaticInstance<InputHandler>
         { 
             _currentHoveredObject?.OnPointerExit();
             _currentHoveredObject = null;
+            _hoveredObjectBase = null;
             return;
         }
 
@@ -136,6 +158,7 @@ public class InputHandler : StaticInstance<InputHandler>
         if (!hit.transform.TryGetComponent(out IEditorInteractable interactable)) return;
         interactable.OnPointerEnter();
         _currentHoveredObject = interactable;
+        _hoveredObjectBase = hit.transform.GetComponent<ObjectBase>();
     }
     
     private void OnLMBDown(InputAction.CallbackContext obj)
@@ -165,7 +188,33 @@ public class InputHandler : StaticInstance<InputHandler>
         {
             _currentSelectedObject?.OnDragRelease();
         }
+    }
+    
+    private void OnRMBDown(InputAction.CallbackContext obj)
+    {
+        if (!InEditMode) return;
+        if (!overViewportCheck.IsOverViewport) return;
+        if (_lmbDown) return;
+        
+        _rmbDown = true;
+        _mouseStartPosition = Mouse.current.position.ReadValue();
+    }
+    
+    private void OnRMBUp(InputAction.CallbackContext obj)
+    {
+        if (!InEditMode) return;
+        if (!overViewportCheck.IsOverViewport) return;
+        if (_lmbDown) return;
+        
+        _rmbDown = false;
+        _mouseEndPosition = Mouse.current.position.ReadValue();
+        
+        bool isDrag = Vector2.Distance(_mouseStartPosition, _mouseEndPosition) > dragThreshold;
 
+        if (isDrag)
+        {
+            _currentSelectedObject?.OnRotateRelease();
+        }
     }
     
     #endregion
@@ -176,28 +225,63 @@ public class InputHandler : StaticInstance<InputHandler>
     {
         var ray = GetRayFromMousePosition(Mouse.current.position.ReadValue());
 
-        // Check if prefab to spawn is selected
-        if (ObjectManager.Instance.PrefabToSpawn)
+        // Check if raycast hits ground
+        if (!Physics.Raycast(ray, out var spawnHit)) return;
+        //if (!groundMask.Contains(spawnHit.transform.gameObject.layer)) return;
+
+        if (SpawnManager.Instance.EditType == EditType.Object && !SpawnManager.Instance.PrefabToSpawn)
         {
-            // Check if raycast hits ground
-            if (!Physics.Raycast(ray, out var spawnHit)) return;
-            if (!groundMask.Contains(spawnHit.transform.gameObject.layer)) return;
-            
-            OnSpawnClick?.Invoke(spawnHit.point);
-            
+            if (_currentHoveredObject == null)
+            {
+                DeselectObject();
+                return;
+            }
+
+            SelectHoveredObject();
             return;
         }
-
-        if (_currentHoveredObject == null)
+        
+        switch (SpawnManager.Instance.EditType)
         {
-            DeselectObject();
-            OnDeselect?.Invoke();
-            return;
+            case EditType.Object:
+                OnSpawn?.Invoke(spawnHit.point);
+                return;
+            case EditType.Path:
+                OnSpawn?.Invoke(spawnHit.point);
+                return;
+            case EditType.Road:
+                OnSpawn?.Invoke(spawnHit.point);
+                return;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
-
+    }
+    
+    private float CalculateMouseTravel(Vector2 mousePos)
+    {
+        var distance = _lastMousePosition.x - mousePos.x;
+        if (Mathf.Abs(distance) > dragThreshold)
+        {
+            // Change rotation direction based on distance direction
+            distance = distance switch
+            {
+                > 0 => rotationSpeed,
+                < 0 => -rotationSpeed,
+                _ => distance
+            };
+        }
+        // Update mouse start position to current position
+        _lastMousePosition = mousePos;
+        return distance;
+    }
+    
+    private void SelectHoveredObject()
+    {
         _currentSelectedObject?.Deselect();
-        _currentHoveredObject?.Select();
         _currentSelectedObject = _currentHoveredObject;
+        _selectedObjectBase = _hoveredObjectBase;
+        _currentSelectedObject?.Select();
+        OnSelect?.Invoke(_selectedObjectBase);
     }
 
     #endregion
@@ -228,8 +312,9 @@ public class InputHandler : StaticInstance<InputHandler>
         // TODO: Handle object deselection
         _currentSelectedObject?.Deselect();
         _currentSelectedObject = null;
+        _selectedObjectBase = null;
+        OnDeselect?.Invoke();
     }
 
     #endregion
-
 }
