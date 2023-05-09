@@ -203,6 +203,11 @@ namespace Saving
         {
             _registeredObjects.Add(obj);
         }
+
+        public void DeregisterObject(ObjectBase obj)
+        {
+            _registeredObjects.Remove(obj);
+        }
         
         private void VerifyObjects()
         {

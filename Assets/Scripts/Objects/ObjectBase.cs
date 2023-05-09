@@ -106,6 +106,7 @@ namespace Objects
       {
         Path.DeletePath();
       }
+      LevelDataManager.Instance.DeregisterObject(this);
       Destroy(gameObject);
     }
 

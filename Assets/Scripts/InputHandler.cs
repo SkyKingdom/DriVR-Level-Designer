@@ -67,8 +67,9 @@ public class InputHandler : StaticInstance<InputHandler>
     {
         LevelGeneratorManager.Instance.OnModeChange += OnModeChanged;
         SpawnManager.Instance.ObjectSpawned += OnObjectSpawned;
+        SpawnManager.Instance.EditTypeChanged += OnEditTypeChanged;
     }
-    
+
     private void OnEnable()
     {
         _lmb.Enable();
@@ -131,6 +132,16 @@ public class InputHandler : StaticInstance<InputHandler>
     {
         _currentSelectedObject = obj;
         _currentSelectedObject.Select();
+    }
+    
+    
+    private void OnEditTypeChanged(EditType exitMode, EditType enterMode)
+    {
+        if (exitMode == EditType.Path && enterMode == EditType.Object)
+        {
+            _currentSelectedObject?.Deselect();
+            _currentSelectedObject = _selectedObjectBase;
+        }
     }
 
     #endregion
@@ -320,7 +331,6 @@ public class InputHandler : StaticInstance<InputHandler>
 
     private void DeselectObject()
     {
-        // TODO: Handle object deselection
         _currentSelectedObject?.Deselect();
         _currentSelectedObject = null;
         _selectedObjectBase = null;

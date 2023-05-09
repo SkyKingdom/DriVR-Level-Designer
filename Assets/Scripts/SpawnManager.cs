@@ -17,6 +17,7 @@ public class SpawnManager : StaticInstance<SpawnManager>
     private SettingsManager _settingsManager;
 
     public event Action<IEditorInteractable> ObjectSpawned;
+    public event Action<EditType, EditType> EditTypeChanged;
 
     #region Unity Methods
 
@@ -104,6 +105,7 @@ public class SpawnManager : StaticInstance<SpawnManager>
 
     public void HandleEditTypeChange(EditType type)
     {
+        EditTypeChanged?.Invoke(editType, type);
         editType = type;
         switch (type)
         {
