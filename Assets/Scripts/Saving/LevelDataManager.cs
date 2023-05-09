@@ -124,13 +124,13 @@ namespace Saving
                     objectBase.Playable.SetPlayOnStart(obj.switchTime < 0);
                 }
                 objectBase.Path.SetSpeed(obj.speed);
-                if (obj.animationStartTime >= 0)
+                if (obj.animationStartTime > 0)
                 {
                     objectBase.Path.SetAnimationStartTime(obj.animationStartTime);
                 }
                 else
                 {
-                    objectBase.Path.SetAnimateOnStart(obj.animationStartTime < 0);
+                    objectBase.Path.SetAnimateOnStart(obj.animationStartTime <= 0);
                 }
 
                 if (obj.pathPoints.Length <= 1) continue;
@@ -163,13 +163,13 @@ namespace Saving
                 }
                 objectBase.Interactable.SetInteractionValues(obj.isCorrect, obj.interactionStartTime, obj.interactionEndTime);
                 objectBase.Path.SetSpeed(obj.speed);
-                if (obj.animationStartTime >= 0)
+                if (obj.animationStartTime > 0)
                 {
                     objectBase.Path.SetAnimationStartTime(obj.animationStartTime);
                 }
                 else
                 {
-                    objectBase.Path.SetAnimateOnStart(obj.animationStartTime < 0);
+                    objectBase.Path.SetAnimateOnStart(obj.animationStartTime <= 0);
                 }
                 if (obj.pathPoints.Length <= 1) continue;
                 for (int i = 1; i < obj.pathPoints.Length; i++)
