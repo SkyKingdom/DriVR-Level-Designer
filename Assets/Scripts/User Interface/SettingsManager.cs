@@ -49,6 +49,8 @@ public class SettingsManager : MonoBehaviour
             _selectedObject.Deselect();
             ClearData();
         }
+        
+        if (obj == null) return;
 
         obj.Select();
         _selectedObject = obj;

@@ -15,7 +15,8 @@ namespace Actions
         }
         public override void Execute()
         {
-            _settingsManager.SelectObject(_spawnedObject);
+            //_settingsManager.SelectObject(_spawnedObject);
+            InputHandler.Instance.SelectObject(_spawnedObject);
         }
 
         public override void Undo()
@@ -24,6 +25,7 @@ namespace Actions
             {
                 _settingsManager.DeselectObject();
             }
+            InputHandler.Instance.DropObject(_spawnedObject);
             
             _spawnedObject.Delete();
         }

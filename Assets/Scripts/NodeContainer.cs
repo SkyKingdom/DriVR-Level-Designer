@@ -1,29 +1,54 @@
-﻿using Interfaces;
+﻿using Actions;
+using Interfaces;
 using UnityEngine;
 
 public class NodeContainer : MonoBehaviour, IEditorInteractable
 {
     public Node node;
 
-    public bool IsSelected { get; }
+    public Material defaultMaterial;
+    public Material selectedMaterial;
+    
+    private Renderer _renderer;
+    
+    public bool IsSelected { get; private set; }
+    
+    private Vector3 _lastPosition;
+    private Vector3 _lastRotation;
+    
+    private void Awake()
+    {
+        _renderer = GetComponent<Renderer>();
+    }
+    
     public void OnPointerEnter()
     {
-        throw new System.NotImplementedException();
+        if (IsSelected) return;
+        _renderer.material = selectedMaterial;
     }
 
     public void OnPointerExit()
     {
-        throw new System.NotImplementedException();
+        if (IsSelected) return;
+        _renderer.material = defaultMaterial;   
     }
 
     public void OnDrag(Vector3 position)
     {
-        throw new System.NotImplementedException();
+        if (SpawnManager.Instance.EditType == EditType.Path)
+            transform.position = position;
     }
 
     public void OnDragRelease()
     {
-        throw new System.NotImplementedException();
+        if (transform.position == _lastPosition) return;
+        
+        // Create action
+        var action = new NodeDragAction(_lastPosition, transform.position, node);
+        ActionRecorder.Instance.Record(action);
+        
+        // Store last position
+        _lastPosition = transform.position;
     }
 
     public void OnRotate(float angle)
@@ -38,11 +63,18 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
 
     public void Select()
     {
-        throw new System.NotImplementedException();
+        IsSelected = true;
+        _renderer.material = selectedMaterial;
+        
+        // Store last position and rotation
+        var transform1 = transform;
+        _lastPosition = transform1.position;
+        _lastRotation = transform1.rotation.eulerAngles;
     }
 
     public void Deselect()
     {
-        throw new System.NotImplementedException();
+        IsSelected = false;
+        _renderer.material = defaultMaterial;
     }
 }

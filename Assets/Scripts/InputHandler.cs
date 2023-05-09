@@ -34,10 +34,10 @@ public class InputHandler : StaticInstance<InputHandler>
     
     private IEditorInteractable _currentHoveredObject;
     private IEditorInteractable _currentSelectedObject;
-    
-    private ObjectBase _hoveredObjectBase;
-    private ObjectBase _selectedObjectBase;
-    
+
+    [SerializeField] private ObjectBase _selectedObjectBase;
+    [SerializeField] private ObjectBase _hoveredObjectBase;
+
     // States
     private bool InEditMode => LevelGeneratorManager.Instance.Mode == Mode.Edit;
     
@@ -223,22 +223,21 @@ public class InputHandler : StaticInstance<InputHandler>
     
     private void HandleClick()
     {
+        if (_currentHoveredObject != null)
+        {
+            SelectHoveredObject();
+            return;
+        }
+        
         var ray = GetRayFromMousePosition(Mouse.current.position.ReadValue());
 
         // Check if raycast hits ground
         if (!Physics.Raycast(ray, out var spawnHit)) return;
-        //if (!groundMask.Contains(spawnHit.transform.gameObject.layer)) return;
 
         if (SpawnManager.Instance.EditType == EditType.Object && !SpawnManager.Instance.PrefabToSpawn)
         {
-            if (_currentHoveredObject == null)
-            {
-                DeselectObject();
+            DeselectObject();
                 return;
-            }
-
-            SelectHoveredObject();
-            return;
         }
         
         switch (SpawnManager.Instance.EditType)
@@ -277,11 +276,23 @@ public class InputHandler : StaticInstance<InputHandler>
     
     private void SelectHoveredObject()
     {
-        _currentSelectedObject?.Deselect();
-        _currentSelectedObject = _currentHoveredObject;
-        _selectedObjectBase = _hoveredObjectBase;
-        _currentSelectedObject?.Select();
-        OnSelect?.Invoke(_selectedObjectBase);
+        switch (SpawnManager.Instance.EditType)
+        {
+            case EditType.Object:
+                _currentSelectedObject?.Deselect();
+                _currentSelectedObject = _currentHoveredObject;
+                _selectedObjectBase = _hoveredObjectBase;
+                _currentSelectedObject?.Select();
+                OnSelect?.Invoke(_selectedObjectBase);
+                break;
+            case EditType.Path:
+                _currentSelectedObject = _currentHoveredObject;
+                break;
+            case EditType.Road:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
     #endregion
@@ -317,4 +328,19 @@ public class InputHandler : StaticInstance<InputHandler>
     }
 
     #endregion
+
+    public void DropObject(ObjectBase obj)
+    {
+        if (_selectedObjectBase != obj) return;
+        DeselectObject();
+    }
+
+    public void SelectObject(ObjectBase obj)
+    {
+        _currentSelectedObject?.Deselect();
+        _currentSelectedObject = obj;
+        _selectedObjectBase = obj;
+        _currentSelectedObject?.Select();
+        OnSelect?.Invoke(_selectedObjectBase);
+    }
 }

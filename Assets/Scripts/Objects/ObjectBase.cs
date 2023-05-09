@@ -161,6 +161,8 @@ namespace Objects
       var action = new DragAction(_lastPosition, transform.position, this);
       // Add action to undo stack
       ActionRecorder.Instance.Record(action);
+      
+      _lastPosition = transform.position;
     }
 
     public void OnRotate(float angle)
@@ -177,6 +179,8 @@ namespace Objects
       var action = new RotateAction(_lastRotation, transform.rotation.eulerAngles, this);
       // Add action to undo stack
       ActionRecorder.Instance.Record(action);
+      
+      _lastRotation = transform.rotation.eulerAngles;
     }
 
     public void Select()
