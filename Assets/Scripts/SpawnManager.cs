@@ -79,7 +79,8 @@ public class SpawnManager : StaticInstance<SpawnManager>
 
     private void SpawnRoad(Vector3 pos)
     {
-        //TODO: Handle Road Spawning
+        var action = new RoadPointAction(pos);
+        ActionRecorder.Instance.Record(action);
     }
 
     #endregion

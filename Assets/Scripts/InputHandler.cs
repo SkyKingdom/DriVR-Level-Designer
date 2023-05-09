@@ -104,7 +104,7 @@ public class InputHandler : StaticInstance<InputHandler>
     {
         if (_currentSelectedObject == null) return;
         var mousePos = Mouse.current.position.ReadValue();
-        if (_lmbDown && Vector2.Distance(_mouseStartPosition, mousePos) > dragThreshold)
+        if (_lmbDown && Vector2.Distance(_mouseStartPosition, mousePos) > dragThreshold && overViewportCheck.IsOverViewport)
         {
             _currentSelectedObject.OnDrag(GetGroundHitPosition(GetRayFromMousePosition(mousePos)));
             return;
@@ -251,16 +251,19 @@ public class InputHandler : StaticInstance<InputHandler>
                 return;
         }
         
+        var pos = spawnHit.point;
+        pos.y = 0;
+        
         switch (SpawnManager.Instance.EditType)
         {
             case EditType.Object:
-                OnSpawn?.Invoke(spawnHit.point);
+                OnSpawn?.Invoke(pos);
                 return;
             case EditType.Path:
-                OnSpawn?.Invoke(spawnHit.point);
+                OnSpawn?.Invoke(pos);
                 return;
             case EditType.Road:
-                OnSpawn?.Invoke(spawnHit.point);
+                OnSpawn?.Invoke(pos);
                 return;
             default:
                 throw new ArgumentOutOfRangeException();

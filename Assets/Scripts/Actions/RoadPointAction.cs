@@ -1,18 +1,25 @@
-﻿using SplineMesh;
-using UnityEngine;
+﻿using Vector3 = UnityEngine.Vector3;
 
 namespace Actions
 {
     class RoadPointAction : ActionBase
     {
+        private readonly Vector3 _position;
+        private RoadPoint point;
+        
+        public RoadPointAction(Vector3 position)
+        {
+            _position = position;
+        }
+        
         public override void Execute()
         {
-            throw new System.NotImplementedException();
+            point = RoadTool.Instance.AddPoint(_position);
         }
 
         public override void Undo()
         {
-            throw new System.NotImplementedException();
+            RoadTool.Instance.RemovePoint(point);
         }
     }
 }

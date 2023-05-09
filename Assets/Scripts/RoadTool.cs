@@ -1,40 +1,79 @@
 using System;
 using System.Collections.Generic;
-using SplineMesh;
+using PathCreation;
+using PathCreation.Examples;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Utilities;
 
-public class RoadTool : MonoBehaviour
+public class RoadTool : StaticInstance<RoadTool>
 {
-    public Spline spline;
-    public SplineSmoother smoother;
-    public List<SplineNode> points = new();
+    [SerializeField] private PathCreator roadPrefab;
+    [SerializeField] private RoadPointContainer roadNode;
 
-    private void Start()
+    private PathCreator road;
+    private RoadMeshCreator roadMesh;
+    private List<RoadPoint> points = new();
+
+    public RoadPoint AddPoint(Vector3 pos)
     {
-        spline.nodes.Clear();
+        var container = Instantiate(roadNode, pos, Quaternion.identity);
+        var roadPoint = new RoadPoint(pos, container.gameObject);
+        container.SetRoadPoint(roadPoint);
+        points.Add(roadPoint);
+        UpdateRoad();
+        return roadPoint;
+    }
+    
+    public void RemovePoint(RoadPoint point)
+    {
+        Destroy(point.GameObject);
+        var index = points.FindIndex(p => p == point);
+        points.Remove(point);
+        road.bezierPath.DeleteSegment(index);
+        UpdateRoad();
     }
 
-    public void AddPoint(SplineNode node)
+    private void UpdateRoad()
     {
-        Debug.Log("ADDING NODE");
-        points.Add(node);
-        spline.AddNode(node);
-        if (points.Count < 2) return;
-        spline.gameObject.SetActive(true);
-        smoother.SmoothAll();
-    }
-
-    public void RemovePoint(SplineNode node)
-    {
-        if (points.Count <= 2)
+        if (!road)
         {
-            points.Clear();
-            spline.nodes.Clear();
-            spline.gameObject.SetActive(false);
-            return;
+            road = Instantiate(roadPrefab);
+            roadMesh = road.GetComponent<RoadMeshCreator>();
+            roadMesh.TriggerUpdate();
         }
-        spline.RemoveNode(node);
-        points.Remove(node);
-        smoother.SmoothAll();
+
+        road.gameObject.SetActive(points.Count >= 2);
+        for (int i = 0; i < points.Count; i++)
+        {
+            if (i < road.bezierPath.NumPoints)
+            {
+                road.bezierPath.SetPoint(i, points[i].Position);
+                continue;
+            }
+            road.bezierPath.AddSegmentToEnd(points[i].Position);
+        }
+
+        if (road.gameObject.activeSelf)
+        {
+            road.TriggerPathUpdate();
+            roadMesh.TriggerUpdate();
+        }
     }
+}
+
+
+[Serializable]
+public class RoadPoint
+{
+    public GameObject GameObject;
+    public Vector3 Position;
+    
+    public RoadPoint(Vector3 position, GameObject gameObject)
+    {
+        Position = position;
+        GameObject = gameObject;
+    }
+
 }
