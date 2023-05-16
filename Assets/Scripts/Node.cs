@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Node : IDisposable
 {
-    private ObjectBase Owner { get; set; }
+    public ObjectBase Owner { get; private set; }
     public GameObject GameObject { get; private set; }
     public Vector3 Position { get; private set; }
     

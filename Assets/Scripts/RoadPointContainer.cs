@@ -64,7 +64,8 @@ public class RoadPointContainer : MonoBehaviour, IEditorInteractable
 
     public void OnRotate(float angle)
     {
-        throw new NotImplementedException();
+        var action = new RoadDeleteAction(_roadPoint);
+        ActionRecorder.Instance.Record(action);
     }
 
     public void OnRotateRelease()

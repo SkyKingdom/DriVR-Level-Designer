@@ -1,4 +1,6 @@
-﻿namespace Actions
+﻿using System.Runtime.InteropServices;
+
+namespace Actions
 {
     public abstract class ActionBase
     {

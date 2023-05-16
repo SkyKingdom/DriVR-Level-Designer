@@ -36,6 +36,20 @@ public class RoadTool : StaticInstance<RoadTool>
         points.Remove(point);
         UpdateRoad();
     }
+    
+    public int RemovePointTemporarily(RoadPoint point)
+    {
+        var i = points.IndexOf(point);
+        points.Remove(point);
+        UpdateRoad();
+        return i;
+    }
+    
+    public void AddPoint(int index, RoadPoint point)
+    {
+        points.Insert(index, point);
+        UpdateRoad();
+    }
 
     public void UpdateRoad()
     {

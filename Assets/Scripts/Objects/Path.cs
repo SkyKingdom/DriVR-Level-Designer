@@ -49,6 +49,20 @@ namespace Objects
             node.Dispose();
             UpdatePath();
         }
+        
+        public int RemovePathTemporarily(Node node)
+        {
+            var i = PathPoints.IndexOf(node);
+            PathPoints.Remove(node);
+            UpdatePath();
+            return i;
+        }
+        
+        public void AddPathPoint(Node node, int index)
+        {
+            PathPoints.Insert(index, node);
+            UpdatePath();
+        }
 
         public void RepositionPathPoint(Node node)
         {

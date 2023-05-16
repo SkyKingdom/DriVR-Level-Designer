@@ -52,7 +52,8 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
 
     public void OnRotate(float angle)
     {
-        throw new System.NotImplementedException();
+        var action = new PathDeleteAction(node);
+        ActionRecorder.Instance.Record(action);
     }
 
     public void OnRotateRelease()

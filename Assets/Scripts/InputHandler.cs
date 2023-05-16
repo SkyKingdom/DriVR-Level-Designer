@@ -207,6 +207,14 @@ public class InputHandler : StaticInstance<InputHandler>
         if (!overViewportCheck.IsOverViewport) return;
         if (_lmbDown) return;
         
+        if (SpawnManager.Instance.EditType == EditType.Path || SpawnManager.Instance.EditType == EditType.Road)
+        {
+            _currentSelectedObject?.Deselect();
+            _currentSelectedObject = null;
+            _currentHoveredObject?.OnRotate(0f);
+            return;
+        }
+        
         _rmbDown = true;
         _mouseStartPosition = Mouse.current.position.ReadValue();
     }
