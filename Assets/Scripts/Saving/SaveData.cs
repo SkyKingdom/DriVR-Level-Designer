@@ -12,6 +12,7 @@ namespace Saving
         public List<DecorativeObjectData> decorativeObjects = new();
         public List<InteractableObjectData> interactableObjects = new();
         public List<PlayableObjectData> playableObjects = new();
+        public Vector3[] roadPoints;
         public bool mapEnabled;
         public float cameraZoom;
         public double mapLocationX;

@@ -139,7 +139,7 @@ public class InputHandler : StaticInstance<InputHandler>
     {
         if (exitMode == EditType.Path && enterMode == EditType.Object)
         {
-            _currentSelectedObject?.Deselect();
+            //_currentSelectedObject?.Deselect();
             _currentSelectedObject = _selectedObjectBase;
         }
     }

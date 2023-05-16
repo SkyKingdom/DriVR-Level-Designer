@@ -18,6 +18,8 @@ public class RoadTool : StaticInstance<RoadTool>
     private List<RoadPoint> points = new();
     [SerializeField] private float tilingMultiplier = 7f;
 
+    public Vector3[] RoadPoints => GetPointPositions();
+
     public RoadPoint AddPoint(Vector3 pos)
     {
         var container = Instantiate(roadNode, pos, Quaternion.identity);

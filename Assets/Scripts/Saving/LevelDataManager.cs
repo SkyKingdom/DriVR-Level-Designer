@@ -35,6 +35,10 @@ namespace Saving
             VerifyObjects();
             DeleteObjects();
             SaveObjects();
+            if (!SaveRoad())
+            {
+                Debug.Log("Could not save road. There must be at least two road points.");
+            }
             SaveCamera();
             if (VerifyPlayOnStart(_saveData))
             { 
@@ -56,6 +60,19 @@ namespace Saving
             _saveData.mapLocationX = cameraData.CenterX;
             _saveData.mapLocationY = cameraData.CenterY;
             _saveData.cameraPosition = LevelGeneratorManager.Instance.SceneCameraTransform.position;
+        }
+
+        private bool SaveRoad()
+        {
+            _saveData.roadPoints = RoadTool.Instance.RoadPoints;
+            
+            if (_saveData.roadPoints.Length < 2)
+            {
+                Debug.Log("Could not save level. There must be at least two road points.");
+                return false;
+            }
+
+            return true;
         }
 
         private void DeleteObjects()
@@ -88,6 +105,7 @@ namespace Saving
             yield return GeneratePlayableObjects(data);
             yield return GenerateInteractableObjects(data);
             yield return GenerateDecorativeObjects(data);
+            yield return GenerateRoad(data);
             yield return HandleMap(data);
             
             yield return Helpers.GetWait(2f);
@@ -95,6 +113,15 @@ namespace Saving
             if (data.cameraPosition != Vector3.zero)
                 LevelGeneratorManager.Instance.SceneCameraTransform.position = data.cameraPosition;
             SceneManager.UnloadSceneAsync(2);
+        }
+
+        private IEnumerator GenerateRoad(SaveData data)
+        {
+            foreach (var point in data.roadPoints)
+            {
+                RoadTool.Instance.AddPoint(point);
+                yield return null;
+            }
         }
 
         private IEnumerator HandleMap(SaveData data)

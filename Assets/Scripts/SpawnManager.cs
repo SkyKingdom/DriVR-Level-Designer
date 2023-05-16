@@ -3,6 +3,7 @@ using Actions;
 using Interfaces;
 using Objects;
 using UnityEngine;
+using UnityEngine.UI;
 using Utilities;
 
 public class SpawnManager : StaticInstance<SpawnManager>
@@ -12,12 +13,17 @@ public class SpawnManager : StaticInstance<SpawnManager>
     
     [SerializeField] private ObjectBase prefabToSpawn;
     public ObjectBase PrefabToSpawn => prefabToSpawn;
+
+    // Toggle handling
+    private ObjectBase _clickedObject;
+    private Toggle _activeToggle;
     
     private InputHandler _inputHandler;
     private SettingsManager _settingsManager;
 
     public event Action<IEditorInteractable> ObjectSpawned;
     public event Action<EditType, EditType> EditTypeChanged;
+        
 
     #region Unity Methods
 
@@ -94,9 +100,25 @@ public class SpawnManager : StaticInstance<SpawnManager>
     
     public void SelectObject(ObjectBase prefab)
     {
-        if (LevelGeneratorManager.Instance.Mode != Mode.Edit) return;
-        prefabToSpawn = PrefabToSpawn == prefab ? null : prefab;
-        HandleEditTypeChange(EditType.Object);
+        _clickedObject = prefab;
+    }
+    
+    public void SelectToggle(Toggle toggle)
+    {
+        _activeToggle = toggle;
+    }
+
+    public void HandleObjectToggle(bool value)
+    {
+        prefabToSpawn = value ? _clickedObject : null;
+        if (!value)
+            _activeToggle = null;
+    }
+    
+    public void DisableActiveToggle()
+    {
+        if (!_activeToggle) return;
+        _activeToggle.isOn = false;
     }
     
     public void TogglePathTool()
