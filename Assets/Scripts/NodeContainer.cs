@@ -52,6 +52,8 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
 
     public void OnRotate(float angle)
     {
+        if (SpawnManager.Instance.EditType != EditType.Path) return;
+        
         var action = new PathDeleteAction(node);
         ActionRecorder.Instance.Record(action);
     }

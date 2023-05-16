@@ -64,6 +64,7 @@ public class RoadPointContainer : MonoBehaviour, IEditorInteractable
 
     public void OnRotate(float angle)
     {
+        if (SpawnManager.Instance.EditType != EditType.Road) return;
         var action = new RoadDeleteAction(_roadPoint);
         ActionRecorder.Instance.Record(action);
     }
