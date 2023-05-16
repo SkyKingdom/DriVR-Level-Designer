@@ -33,6 +33,10 @@ MonoBehaviour:
     - Car_3
     - Car_4
     - Car_5
+    - Man_01
+    - iMan_01
+    - Woman_01
+    - iWoman_01
     m_values:
     - {fileID: 5318102986828167701, guid: 75c6092c1093fb34ea7cdbb5b705ad55, type: 3}
     - {fileID: 5807703717364957645, guid: f61844559f8f142488b3b65cf1b75fbc, type: 3}
@@ -53,3 +57,7 @@ MonoBehaviour:
     - {fileID: 4625844126634337142, guid: ee2023a574f674435bd0843773b2ecfb, type: 3}
     - {fileID: 4155691206597575929, guid: 2434e667a612c4b10844f8c82ba0d44b, type: 3}
     - {fileID: 573022157991683700, guid: 267ac988ed5c34628884bd28baca8d6f, type: 3}
+    - {fileID: 8745487302074088827, guid: 713f16386965edf45ab6455c9c959a19, type: 3}
+    - {fileID: 8745487302074088827, guid: b5c4aa4a5b0944942895a5e05586b3f4, type: 3}
+    - {fileID: 3092542964578735950, guid: 356d6dd502e53e344b35dbb1b7802bec, type: 3}
+    - {fileID: 3092542964578735950, guid: 7e0be5aeeb878c041962b0aeb4348bc0, type: 3}
