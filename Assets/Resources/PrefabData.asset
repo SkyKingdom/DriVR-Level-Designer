@@ -28,6 +28,11 @@ MonoBehaviour:
     - TEST_DECORATIVE
     - TEST_PLAYABLE
     - TEST_INTERACTABLE
+    - Car_1
+    - Car_2
+    - Car_3
+    - Car_4
+    - Car_5
     m_values:
     - {fileID: 5318102986828167701, guid: 75c6092c1093fb34ea7cdbb5b705ad55, type: 3}
     - {fileID: 5807703717364957645, guid: f61844559f8f142488b3b65cf1b75fbc, type: 3}
@@ -43,3 +48,8 @@ MonoBehaviour:
     - {fileID: 5452692450897037768, guid: 5ec7038dd9a610e48b98084b566839c3, type: 3}
     - {fileID: 5452692450897037768, guid: 7a0d020d8df010249b55369015242e5c, type: 3}
     - {fileID: 5452692450897037768, guid: 6df3efc1812859d4983749cc0d488980, type: 3}
+    - {fileID: 5752201884500778155, guid: 276dd511dcdbc4f76b433d417ab2e42c, type: 3}
+    - {fileID: 8549693929693549503, guid: 8ff26ff9f44ea457382a037ae3610fca, type: 3}
+    - {fileID: 4625844126634337142, guid: ee2023a574f674435bd0843773b2ecfb, type: 3}
+    - {fileID: 4155691206597575929, guid: 2434e667a612c4b10844f8c82ba0d44b, type: 3}
+    - {fileID: 573022157991683700, guid: 267ac988ed5c34628884bd28baca8d6f, type: 3}
