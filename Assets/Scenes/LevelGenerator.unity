@@ -8132,9 +8132,9 @@ RectTransform:
   m_Father: {fileID: 1688711130}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -71.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 140, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &830174239
@@ -9309,7 +9309,7 @@ MonoBehaviour:
         m_MethodName: SelectObject
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 5562297386361837714, guid: 96a77b489ef25d34686c34200b103cd4,
+          m_ObjectArgument: {fileID: 8807369402162862120, guid: 2ba946338aecfd24eb2138b3feb71ce5,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: Objects.ObjectBase, Assembly-CSharp
           m_IntArgument: 0
@@ -10004,7 +10004,7 @@ MonoBehaviour:
         m_MethodName: SelectObject
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 5454568297692810850, guid: 71b32dcd83635b345924c4839ee71b2b,
+          m_ObjectArgument: {fileID: 8468984168679250840, guid: 95d8aa0a8dd4a6c4eaf2d7e48d7f17c6,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: Objects.ObjectBase, Assembly-CSharp
           m_IntArgument: 0
@@ -12229,7 +12229,7 @@ MonoBehaviour:
         m_MethodName: SelectObject
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 2199725788522722, guid: c31fa4305b940614c96348bc28dd7fb7,
+          m_ObjectArgument: {fileID: 8587361206995661951, guid: f61844559f8f142488b3b65cf1b75fbc,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: Objects.ObjectBase, Assembly-CSharp
           m_IntArgument: 0
@@ -13436,7 +13436,7 @@ MonoBehaviour:
         m_MethodName: SelectObject
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 3180763475414203966, guid: e15e7e99b78c1874db16b3b3882ff6f5,
+          m_ObjectArgument: {fileID: 272290562683479290, guid: 1729e956590806a4a8b5db91c85b38be,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: Objects.ObjectBase, Assembly-CSharp
           m_IntArgument: 0
@@ -13858,7 +13858,7 @@ MonoBehaviour:
         m_MethodName: SelectObject
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 4571021307267470190, guid: ac52cfcd68d5119499819aadd74c299d,
+          m_ObjectArgument: {fileID: 3791407485622678858, guid: a5929735679b28646918bc1a51f14e8c,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: Objects.ObjectBase, Assembly-CSharp
           m_IntArgument: 0
@@ -14066,7 +14066,7 @@ MonoBehaviour:
         m_MethodName: SelectObject
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1222054362234377725, guid: 8f4e3d45eadddf74e855b99c15ccbf6b,
+          m_ObjectArgument: {fileID: 8311753835256980521, guid: 2038aa4886f4b76409533bba64cadd3b,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: Objects.ObjectBase, Assembly-CSharp
           m_IntArgument: 0
@@ -15869,7 +15869,7 @@ MonoBehaviour:
         m_MethodName: SelectObject
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: -2260961108370183646, guid: 1854e22ba0b8af14ba32c6b7498bf0b3,
+          m_ObjectArgument: {fileID: 5732077861439373348, guid: 3f2124ad24783414a924f0e8ef793445,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: Objects.ObjectBase, Assembly-CSharp
           m_IntArgument: 0
@@ -18303,7 +18303,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1202554369}
   m_HandleRect: {fileID: 1202554368}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -20882,7 +20882,7 @@ MonoBehaviour:
         m_MethodName: SelectObject
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 6312761496405509121, guid: 271fe6ab90d4a03418ac6cb6896f9bfa,
+          m_ObjectArgument: {fileID: 142739695508827235, guid: 61d47cd16ba05814e907b514a820570c,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: Objects.ObjectBase, Assembly-CSharp
           m_IntArgument: 0
@@ -28537,7 +28537,7 @@ MonoBehaviour:
         m_MethodName: SelectObject
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: -8367304756629208300, guid: 9ff1db388eebd82478bfe321667c880b,
+          m_ObjectArgument: {fileID: 747995034264919317, guid: 75c6092c1093fb34ea7cdbb5b705ad55,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: Objects.ObjectBase, Assembly-CSharp
           m_IntArgument: 0
@@ -35025,9 +35025,9 @@ RectTransform:
   m_Father: {fileID: 1688711130}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 90, y: -71.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 140, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4841486756976721016
