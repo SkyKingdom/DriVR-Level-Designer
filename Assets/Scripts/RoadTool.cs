@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using PathCreation;
 using PathCreation.Examples;
 using Unity.Mathematics;
@@ -15,6 +16,7 @@ public class RoadTool : StaticInstance<RoadTool>
     private PathCreator road;
     private RoadMeshCreator roadMesh;
     private List<RoadPoint> points = new();
+    [SerializeField] private float tilingMultiplier = 7f;
 
     public RoadPoint AddPoint(Vector3 pos)
     {
@@ -28,14 +30,12 @@ public class RoadTool : StaticInstance<RoadTool>
     
     public void RemovePoint(RoadPoint point)
     {
-        Destroy(point.GameObject);
-        var index = points.FindIndex(p => p == point);
+        Destroy(point.gameObject);
         points.Remove(point);
-        road.bezierPath.DeleteSegment(index);
         UpdateRoad();
     }
 
-    private void UpdateRoad()
+    public void UpdateRoad()
     {
         if (!road)
         {
@@ -45,21 +45,23 @@ public class RoadTool : StaticInstance<RoadTool>
         }
 
         road.gameObject.SetActive(points.Count >= 2);
-        for (int i = 0; i < points.Count; i++)
-        {
-            if (i < road.bezierPath.NumPoints)
-            {
-                road.bezierPath.SetPoint(i, points[i].Position);
-                continue;
-            }
-            road.bezierPath.AddSegmentToEnd(points[i].Position);
-        }
+        if (points.Count < 2)
+            return;
+        var positions = GetPointPositions();
+        BezierPath bezierPath = new BezierPath(positions, false, PathSpace.xz);
+        road.bezierPath = bezierPath;
 
         if (road.gameObject.activeSelf)
         {
             road.TriggerPathUpdate();
+            roadMesh.textureTiling = positions.Length * tilingMultiplier;
             roadMesh.TriggerUpdate();
         }
+    }
+
+    private Vector3[] GetPointPositions()
+    {
+        return points.Select(p => p.position).ToArray();
     }
 }
 
@@ -67,13 +69,18 @@ public class RoadTool : StaticInstance<RoadTool>
 [Serializable]
 public class RoadPoint
 {
-    public GameObject GameObject;
-    public Vector3 Position;
+    public GameObject gameObject;
+    public Vector3 position;
+    public RoadPointContainer owner;
     
     public RoadPoint(Vector3 position, GameObject gameObject)
     {
-        Position = position;
-        GameObject = gameObject;
+        this.position = position;
+        this.gameObject = gameObject;
     }
-
+    
+    public void SetOwner(RoadPointContainer o)
+    {
+        owner = o;
+    }
 }

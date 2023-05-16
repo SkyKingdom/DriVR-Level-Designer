@@ -1,4 +1,5 @@
 ﻿using System;
+using Actions;
 using Interfaces;
 using UnityEngine;
 
@@ -19,9 +20,13 @@ public class RoadPointContainer : MonoBehaviour, IEditorInteractable
     public void SetRoadPoint(RoadPoint roadPoint)
     {
         _roadPoint = roadPoint;
+        _roadPoint.SetOwner(this);
     }
 
     public bool IsSelected { get; private set;}
+    
+    private Vector3 _lastPosition;
+    
     public void OnPointerEnter()
     {
         if (IsSelected)
@@ -39,28 +44,39 @@ public class RoadPointContainer : MonoBehaviour, IEditorInteractable
 
     public void OnDrag(Vector3 position)
     {
-        throw new System.NotImplementedException();
+        if (SpawnManager.Instance.EditType == EditType.Road)
+            transform.position = position;
     }
 
     public void OnDragRelease()
     {
-        throw new System.NotImplementedException();
+        if (transform.position == _lastPosition) return;
+        
+        var position = transform.position;
+        
+        // Create action
+        var action = new RoadDragAction(_lastPosition, position, _roadPoint);
+        ActionRecorder.Instance.Record(action);
+        
+        // Store last position
+        _lastPosition = position;
     }
 
     public void OnRotate(float angle)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public void OnRotateRelease()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public void Select()
     {
         IsSelected = true;
         _renderer.material = hoverMaterial;
+        _lastPosition = transform.position;
     }
 
     public void Deselect()

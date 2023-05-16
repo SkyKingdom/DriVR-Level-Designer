@@ -290,23 +290,24 @@ public class InputHandler : StaticInstance<InputHandler>
     
     private void SelectHoveredObject()
     {
+        _currentSelectedObject?.Deselect();
         switch (SpawnManager.Instance.EditType)
         {
             case EditType.Object:
-                _currentSelectedObject?.Deselect();
                 _currentSelectedObject = _currentHoveredObject;
                 _selectedObjectBase = _hoveredObjectBase;
-                _currentSelectedObject?.Select();
                 OnSelect?.Invoke(_selectedObjectBase);
                 break;
             case EditType.Path:
                 _currentSelectedObject = _currentHoveredObject;
                 break;
             case EditType.Road:
+                _currentSelectedObject = _currentHoveredObject;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
+        _currentSelectedObject?.Select();
     }
 
     #endregion

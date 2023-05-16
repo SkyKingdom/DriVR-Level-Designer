@@ -14,8 +14,7 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
     public bool IsSelected { get; private set; }
     
     private Vector3 _lastPosition;
-    private Vector3 _lastRotation;
-    
+
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
@@ -66,10 +65,7 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
         IsSelected = true;
         _renderer.material = selectedMaterial;
         
-        // Store last position and rotation
-        var transform1 = transform;
-        _lastPosition = transform1.position;
-        _lastRotation = transform1.rotation.eulerAngles;
+        _lastPosition = transform.position;
     }
 
     public void Deselect()
