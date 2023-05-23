@@ -831,7 +831,7 @@ namespace PathCreation
             ClosePointData pointData = new ClosePointData();
             pointData.distance = float.MaxValue;
 
-            for (int i = 0; i <= NumSegments; i++)
+            for (int i = 0; i < NumSegments; i++)
             {
                 var segment = GetPointsInSegment(i);
                 var closestPoint = CubicBezierUtility.ClosestPointOnCubicBezier(segment, pos, timeStep, iterations);
