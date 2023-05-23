@@ -18432,7 +18432,7 @@ MonoBehaviour:
   stopEditingButton: {fileID: 1945291362}
   pathPrefab: {fileID: 5441053598509911056, guid: c0dca71de226a85419c7e6915bf9cf96,
     type: 3}
-  snappingDistanceThreshold: 2
+  snappingDistanceThreshold: 1
 --- !u!4 &1798667127
 Transform:
   m_ObjectHideFlags: 0
