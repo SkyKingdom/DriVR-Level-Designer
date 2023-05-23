@@ -22,13 +22,13 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
     
     public void OnPointerEnter()
     {
-        if (IsSelected) return;
+        if (IsSelected || node.Selected) return;
         _renderer.material = selectedMaterial;
     }
 
     public void OnPointerExit()
     {
-        if (IsSelected) return;
+        if (IsSelected || node.Selected) return;
         _renderer.material = defaultMaterial;   
     }
 
@@ -60,7 +60,7 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
 
     public void OnRotateRelease()
     {
-        throw new System.NotImplementedException();
+
     }
 
     public void Select()
@@ -69,11 +69,13 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
         _renderer.material = selectedMaterial;
         
         _lastPosition = transform.position;
+        node.Owner.Path.Select();
     }
 
     public void Deselect()
     {
         IsSelected = false;
         _renderer.material = defaultMaterial;
+        node.Owner.Path.Deselect();
     }
 }

@@ -9,9 +9,14 @@ public class Node : IDisposable
     
     private bool _disposed = false;
     
+    private MeshRenderer _renderer;
+
+    public bool Selected { get; private set; } = false;
+
     public Node(GameObject gameObject, ObjectBase owner, Vector3 position)
     {
         GameObject = gameObject;
+        _renderer = gameObject.GetComponent<MeshRenderer>();
         Owner = owner;
         Position = position;
     }
@@ -51,6 +56,18 @@ public class Node : IDisposable
             // Release any unmanaged resources here.
             _disposed = true;
         }
+    }
+    
+    public void Select()
+    {
+        Selected = true;
+        _renderer.material.color = Color.red;
+    }
+    
+    public void Deselect()
+    {
+        Selected = false;
+        _renderer.material.color = Color.green;
     }
 
     ~Node()

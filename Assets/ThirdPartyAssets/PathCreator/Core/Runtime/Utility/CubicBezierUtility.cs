@@ -13,6 +13,20 @@ namespace PathCreation.Utility {
             return EvaluateCurve (points[0], points[1], points[2], points[3], t);
         }
 
+        public static Vector3 ClosestPointOnCubicBezier(Vector3[] bezierPoints, Vector3 p, float learningRate = 0.1f, int iterations = 20)
+        {
+            float t = 0.5f;
+            for (int i = 0; i < iterations; i++)
+            {
+                Vector3 b = EvaluateCurve(bezierPoints, t);
+                Vector3 derivative = EvaluateCurveDerivative(bezierPoints, t);
+                Vector3 gradient = -2 * (p - b);
+                t -= learningRate * Vector3.Dot(gradient, derivative);
+                t = Mathf.Clamp01(t);
+            }
+            return EvaluateCurve(bezierPoints, t);
+        }
+
         /// Returns point at time 't' (between 0 and 1)  along bezier curve defined by 4 points (anchor_1, control_1, control_2, anchor_2)
         public static Vector3 EvaluateCurve (Vector3 a1, Vector3 c1, Vector3 c2, Vector3 a2, float t) {
             t = Mathf.Clamp01 (t);

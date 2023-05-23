@@ -1,5 +1,6 @@
 ﻿using Actions;
 using Interfaces;
+using Mapbox.Unity;
 using Saving;
 using ThirdPartyAssets.QuickOutline.Scripts;
 using UnityEngine;
@@ -53,6 +54,7 @@ namespace Objects
       if (Path != null)
       {
         Path.Initialize(this);
+        Path.SetPath(PathManager.Instance.GetNewPath());
         Path.Spawn(select);
       }
       if (select)

@@ -2,6 +2,7 @@
 using Actions;
 using Interfaces;
 using Objects;
+using PathCreation.Examples;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
@@ -81,7 +82,10 @@ public class SpawnManager : StaticInstance<SpawnManager>
         ObjectSpawned?.Invoke(spawnedObject);
     }
 
-    private void SpawnPathPoint(Vector3 pos) => PathManager.Instance.HandlePathPointSpawn(pos);
+    private void SpawnPathPoint(Vector3 pos)
+    {
+        PathManager.Instance.HandlePathPointSpawn(pos);
+    }
 
     private void SpawnRoad(Vector3 pos)
     {

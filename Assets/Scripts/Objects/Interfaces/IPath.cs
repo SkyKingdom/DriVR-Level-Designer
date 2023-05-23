@@ -6,7 +6,6 @@ namespace Objects.Interfaces
     public interface IPath
     {
         public  List<Node> PathPoints { get; }
-        public LineRenderer LineRenderer { get; }
         public bool AnimateOnStart { get; }
         public float AnimationStartTime { get; }
         public float Speed { get; }

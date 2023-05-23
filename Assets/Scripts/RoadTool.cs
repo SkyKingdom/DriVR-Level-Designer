@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PathCreation;
 using PathCreation.Examples;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utilities;
 
 public class RoadTool : StaticInstance<RoadTool>
@@ -14,11 +12,13 @@ public class RoadTool : StaticInstance<RoadTool>
     [SerializeField] private RoadPointContainer roadNode;
 
     private PathCreator road;
+    public PathCreator Road => road;
     private RoadMeshCreator roadMesh;
     private List<RoadPoint> points = new();
     [SerializeField] private float tilingMultiplier = 7f;
 
     public Vector3[] RoadPoints => GetPointPositions();
+    public bool HasRoad => points.Count >= 2;
 
     public RoadPoint AddPoint(Vector3 pos)
     {

@@ -1,27 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using Objects.Interfaces;
+using PathCreation;
+using PathCreation.Examples;
+using UnityEditor.Timeline;
 using UnityEngine;
 
 namespace Objects
 {
-    [RequireComponent(typeof(LineRenderer))]
     public class Path : MonoBehaviour, IPath, IObjectComponent
     {
         public ObjectBase Owner { get; private set; }
         public  List<Node> PathPoints { get; private set; }
-        public LineRenderer LineRenderer { get; private set; }
+        
         public bool AnimateOnStart { get; private set; }
         public float AnimationStartTime { get; private set; }
         public float Speed { get; private set; }
+
+        [SerializeField] private PathCreator bezierPath;
+        private RoadMeshCreator meshCreator;
+        
         
         public void Initialize(ObjectBase objectBase)
         {
             Owner = objectBase;
             PathPoints = new List<Node>();
-            LineRenderer = GetComponent<LineRenderer>();
-            LineRenderer.positionCount = 0;
-            LineRenderer.numCapVertices = 10;
+        }
+
+        public void SetPath(PathCreator pathCreator)
+        {
+            bezierPath = pathCreator;
+            meshCreator = bezierPath.GetComponent<RoadMeshCreator>();
         }
 
         public void Spawn(bool select = true)
@@ -40,6 +49,7 @@ namespace Objects
         public void AddPathPoint(Node node)
         {
             PathPoints.Add(node);
+            node.Select();
             UpdatePath();
         }
 
@@ -64,39 +74,44 @@ namespace Objects
             UpdatePath();
         }
 
-        public void RepositionPathPoint(Node node)
-        {
-            int id = PathPoints.IndexOf(node);
-            LineRenderer.SetPosition(id, node.Position);
-        }
+        public void RepositionPathPoint(Node node) => UpdatePath();
+
 
         public void HandleObjectReposition(Vector3 position) => PathPoints[0].SetPosition(position);
 
         public void Select()
         {
-            LineRenderer.startWidth = 0.2f;
-            LineRenderer.endWidth = 0.2f;
-            LineRenderer.endColor = Color.yellow;
-            LineRenderer.startColor = Color.yellow;
-            LineRenderer.material = PathManager.Instance.Selected;
+            foreach (var p in PathPoints)
+            {
+                p.Select();
+            }
         }
 
         public void Deselect()
         {
-            LineRenderer.startWidth = 0.1f;
-            LineRenderer.endWidth = 0.1f;
-            LineRenderer.endColor = Color.white;
-            LineRenderer.startColor = Color.white;
-            LineRenderer.material = PathManager.Instance.Deselected;
+            foreach (var p in PathPoints)
+            {
+                p.Deselect();
+            }
         }
 
         public void UpdatePath()
         {
-            LineRenderer.positionCount = PathPoints.Count;
-            for (int i = 0; i < PathPoints.Count; i++)
+            if (PathPoints.Count < 2)
             {
-                LineRenderer.SetPosition(i, PathPoints[i].Position);
+                bezierPath.gameObject.SetActive(false);
+                return;
             }
+            
+            bezierPath.gameObject.SetActive(true);
+            bezierPath.bezierPath = new BezierPath(PathPoints.ConvertAll(p => p.Position), false, PathSpace.xyz);
+            TriggerPathUpdate();
+        }
+
+        private void TriggerPathUpdate()
+        {
+            bezierPath.TriggerPathUpdate();
+            meshCreator.TriggerUpdate();
         }
 
         public void DeletePath()
@@ -115,7 +130,7 @@ namespace Objects
             {
                 p.GameObject.SetActive(false);
             }
-            LineRenderer.enabled = false;
+            bezierPath.gameObject.SetActive(false);
         }
 
         public void ShowPath()
@@ -124,7 +139,7 @@ namespace Objects
             {
                 p.GameObject.SetActive(true);
             }
-            LineRenderer.enabled = true;
+            bezierPath.gameObject.SetActive(true);
         }
 
         public void SetSpeed(float speed)
