@@ -1,6 +1,7 @@
 ﻿using Actions;
 using Objects;
 using UnityEngine;
+using UnityEngine.UI;
 using Utilities;
 
 public class PathManager : StaticInstance<PathManager>
@@ -15,9 +16,16 @@ public class PathManager : StaticInstance<PathManager>
 
     public Material Deselected => deselected;
 
+    [SerializeField] private Button stopEditingButton;
+    
+
     public void SelectObject(ObjectBase obj) => _selectedObject = obj;
 
-    public void DeselectObject() => _selectedObject = null;
+    public void DeselectObject()
+    {
+        _selectedObject = null;
+        stopEditingButton.onClick.Invoke();
+    }
 
     public void HandlePathPointSpawn(Vector3 pos)
     {

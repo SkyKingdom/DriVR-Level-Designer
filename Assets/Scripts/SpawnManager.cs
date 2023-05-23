@@ -20,7 +20,7 @@ public class SpawnManager : StaticInstance<SpawnManager>
     
     private InputHandler _inputHandler;
     private SettingsManager _settingsManager;
-
+    
     public event Action<IEditorInteractable> ObjectSpawned;
     public event Action<EditType, EditType> EditTypeChanged;
         

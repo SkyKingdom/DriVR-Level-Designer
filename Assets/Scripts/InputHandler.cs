@@ -103,6 +103,14 @@ public class InputHandler : StaticInstance<InputHandler>
     private void Update()
     {
         if (_currentSelectedObject == null) return;
+        if (!overViewportCheck.IsOverViewport)
+        {
+            if (_lmbDown)
+            {
+                OnLMBUp();
+                return;
+            }
+        }
         var mousePos = Mouse.current.position.ReadValue();
         if (_lmbDown && Vector2.Distance(_mouseStartPosition, mousePos) > dragThreshold && overViewportCheck.IsOverViewport)
         {
@@ -200,6 +208,22 @@ public class InputHandler : StaticInstance<InputHandler>
             _currentSelectedObject?.OnDragRelease();
         }
     }
+
+    private void OnLMBUp()
+    {
+        if (!InEditMode) return;
+        if (_rmbDown) return;
+        
+        _lmbDown = false;
+        _mouseEndPosition = Mouse.current.position.ReadValue();
+        
+        bool isDrag = Vector2.Distance(_mouseStartPosition, _mouseEndPosition) > dragThreshold;
+
+        if (isDrag)
+        {
+            _currentSelectedObject?.OnDragRelease();
+        }
+    }
     
     private void OnRMBDown(InputAction.CallbackContext obj)
     {
@@ -217,12 +241,12 @@ public class InputHandler : StaticInstance<InputHandler>
         
         _rmbDown = true;
         _mouseStartPosition = Mouse.current.position.ReadValue();
+        HandleClick();
     }
     
     private void OnRMBUp(InputAction.CallbackContext obj)
     {
         if (!InEditMode) return;
-        if (!overViewportCheck.IsOverViewport) return;
         if (_lmbDown) return;
         
         _rmbDown = false;
@@ -235,7 +259,7 @@ public class InputHandler : StaticInstance<InputHandler>
             _currentSelectedObject?.OnRotateRelease();
         }
     }
-    
+
     #endregion
 
     #region Private Methods
