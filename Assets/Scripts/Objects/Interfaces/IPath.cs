@@ -12,14 +12,12 @@ namespace Objects.Interfaces
 
 
         public void Spawn(bool select = true);
-        public void AddPathPoint(Node node);
+        public void AddPathPoint(Node node, bool select = true);
         public void RemovePathPoint(Node node);
         public void RepositionPathPoint(Node node);
         
         public void HandleObjectReposition(Vector3 position);
         
-        public void Select();
-        public void Deselect();
         public void UpdatePath();
         public void DeletePath();
 

@@ -166,9 +166,9 @@ namespace Saving
                     var pos = obj.pathPoints[i];
                     var nodeObj = Instantiate(prefabData.PrefabsDictionary["PathPoint"], pos,
                         Quaternion.identity);
-                    var node = new Node(nodeObj, objectBase, pos);
-                    nodeObj.GetComponent<NodeContainer>().node = node;
-                    objectBase.Path.AddPathPoint(node);
+                    var node = new Node(nodeObj.GetComponent<NodeContainer>(), objectBase, pos);
+                    nodeObj.GetComponent<NodeContainer>().Node = node;
+                    objectBase.Path.AddPathPoint(node, false);
                 }
             }
             yield return null;
@@ -204,8 +204,8 @@ namespace Saving
                     var pos = obj.pathPoints[i];
                     var nodeObj = Instantiate(prefabData.PrefabsDictionary["PathPoint"], pos,
                         Quaternion.identity);
-                    var node = new Node(nodeObj, objectBase, pos);
-                    nodeObj.GetComponent<NodeContainer>().node = node;
+                    var node = new Node(nodeObj.GetComponent<NodeContainer>(), objectBase, pos);
+                    nodeObj.GetComponent<NodeContainer>().Node = node;
                     objectBase.Path.AddPathPoint(node);
                 }
             }

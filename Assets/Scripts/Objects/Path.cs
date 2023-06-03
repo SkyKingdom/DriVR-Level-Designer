@@ -19,6 +19,8 @@ namespace Objects
 
         [SerializeField] private PathCreator bezierPath;
         private RoadMeshCreator meshCreator;
+
+        public bool Highlighted { get; set; }
         
         
         public void Initialize(ObjectBase objectBase)
@@ -37,19 +39,14 @@ namespace Objects
         {
             NodeContainer cont = Instantiate(PathManager.Instance.pathPointPrefab, Owner.GetPosition(),
                 Quaternion.Euler(Owner.GetRotation()));
-            Node n = new Node(cont.gameObject, Owner, Owner.GetPosition());
-            cont.node = n;
-            AddPathPoint(n);
-            if (select)
-                Select();
-            else
-                Deselect();
+            Node n = new Node(cont, Owner, Owner.GetPosition());
+            cont.Node = n;
+            AddPathPoint(n, select);
         }
 
-        public void AddPathPoint(Node node)
+        public void AddPathPoint(Node node, bool select = true)
         {
             PathPoints.Add(node);
-            node.Select();
             UpdatePath();
         }
 
@@ -78,22 +75,29 @@ namespace Objects
 
 
         public void HandleObjectReposition(Vector3 position) => PathPoints[0].SetPosition(position);
-
-        public void Select()
+        
+        public void HighlightPath(NodeContainer initiator)
         {
+            Highlighted = true;
             foreach (var p in PathPoints)
             {
-                p.Select();
+                if (p.Container == initiator)
+                    continue;
+                p.Container.Highlight();
             }
         }
-
-        public void Deselect()
+        
+        public void UnhighlightPath(NodeContainer initiator)
         {
+            Highlighted = false;
             foreach (var p in PathPoints)
             {
-                p.Deselect();
+                if (p.Container == initiator)
+                    continue;
+                p.Container.Unhighlight();
             }
         }
+        
 
         public void UpdatePath()
         {
@@ -118,7 +122,7 @@ namespace Objects
         {
             foreach (var p in PathPoints)
             {
-                Destroy(p.GameObject);
+                Destroy(p.Container);
             }
 
             PathPoints.Clear();
@@ -128,7 +132,7 @@ namespace Objects
         {
             foreach (var p in PathPoints)
             {
-                p.GameObject.SetActive(false);
+                p.Container.gameObject.SetActive(false);
             }
             bezierPath.gameObject.SetActive(false);
         }
@@ -137,7 +141,7 @@ namespace Objects
         {
             foreach (var p in PathPoints)
             {
-                p.GameObject.SetActive(true);
+                p.Container.gameObject.SetActive(true);
             }
             bezierPath.gameObject.SetActive(true);
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Actions;
+using Interfaces;
 using Objects;
 using Saving;
 using TMPro;
@@ -14,8 +15,8 @@ public class SettingsManager : MonoBehaviour
     //2 interaction
     //3 pov
     [SerializeField] private List<GameObject> blankets;
-    private ObjectBase _selectedObject;
-    public ObjectBase SelectedObject => _selectedObject;
+    [SerializeField] private ObjectBase selectedObject;
+    public ObjectBase SelectedObject => selectedObject;
     
     [Header("Object Details")]
     [SerializeField] private TMP_InputField objectName;
@@ -41,84 +42,90 @@ public class SettingsManager : MonoBehaviour
         InputHandler.Instance.OnDeselect -= DeselectObject;
     }
 
-    public void SelectObject(ObjectBase obj)
+    public void SelectObject(IEditorInteractable interactable)
     {
-        if (_selectedObject != null)
+        var obj = interactable.GetObject();
+        if (selectedObject != null)
         {
             SaveData();
-            _selectedObject.Deselect();
+            selectedObject.Deselect();
             ClearData();
         }
         
-        if (obj == null) return;
-
+        if (obj == null)
+        {
+            selectedObject = null;
+            UpdateUIBlankets(selectedObject);
+            return;
+        }
+        
         obj.Select();
-        _selectedObject = obj;
-        UpdateUIBlankets(_selectedObject);
-        PathManager.Instance.SelectObject(_selectedObject);
+        selectedObject = obj;
+        UpdateUIBlankets(selectedObject);
+        PathManager.Instance.SelectObject(selectedObject);
         LoadData();
     }
 
     public void DeselectObject()
     {
-        if (_selectedObject == null) return;
+        if (selectedObject == null) return;
         SaveData();
         ClearData();
-        _selectedObject.Deselect();
-        _selectedObject = null;
-        UpdateUIBlankets(_selectedObject);
+        selectedObject.Deselect();
+        selectedObject = null;
+        UpdateUIBlankets(selectedObject);
         PathManager.Instance.DeselectObject();
     }
 
     private void LoadData()
     {
-        objectName.text = _selectedObject.ObjectName;
-        if (_selectedObject.Path)
+        objectName.text = selectedObject.ObjectName;
+        if (selectedObject.Path)
         {
-            objectSpeed.text = _selectedObject.Path.Speed.ToString("F1");
-            animateOnStart.isOn = _selectedObject.Path.AnimateOnStart;
-            objectPathStart.text = _selectedObject.Path.AnimationStartTime.ToString("F1");
+            objectSpeed.text = selectedObject.Path.Speed.ToString("F1");
+            animateOnStart.isOn = selectedObject.Path.AnimateOnStart;
+            objectPathStart.text = selectedObject.Path.AnimationStartTime.ToString("F1");
         }
         
-        if (_selectedObject.Interactable)
+        if (selectedObject.Interactable)
         {
-            isCorrect.isOn = _selectedObject.Interactable.Answer;
-            objectInteractionStart.text = _selectedObject.Interactable.InteractionStartTime.ToString("F1");
-            objectInteractionEnd.text = _selectedObject.Interactable.InteractionEndTime.ToString("F1");
-            alwaysInteractable.isOn = _selectedObject.Interactable.AlwaysInteractable;
+            isCorrect.isOn = selectedObject.Interactable.Answer;
+            objectInteractionStart.text = selectedObject.Interactable.InteractionStartTime.ToString("F1");
+            objectInteractionEnd.text = selectedObject.Interactable.InteractionEndTime.ToString("F1");
+            alwaysInteractable.isOn = selectedObject.Interactable.AlwaysInteractable;
         }
         
-        if (_selectedObject.Playable)
+        if (selectedObject.Playable)
         {
-            objectPovStart.text = _selectedObject.Playable.SwitchViewTime.ToString("F1");
+            objectPovStart.text = selectedObject.Playable.SwitchViewTime.ToString("F1");
         }
         SaveData();
     }
     
     public void SaveData()
     {
-        _selectedObject.Rename(objectName.text);
-        if (_selectedObject.Path)
+        selectedObject.Rename(objectName.text);
+        if (selectedObject.Path)
         {
-            _selectedObject.Path.SetSpeed(float.Parse(objectSpeed.text));
-            _selectedObject.Path.SetAnimateOnStart(animateOnStart.isOn);
-            _selectedObject.Path.SetAnimationStartTime(float.Parse(objectPathStart.text));
+            selectedObject.Path.SetSpeed(float.Parse(objectSpeed.text));
+            selectedObject.Path.SetAnimateOnStart(animateOnStart.isOn);
+            selectedObject.Path.SetAnimationStartTime(float.Parse(objectPathStart.text));
         }
 
-        if (_selectedObject.Interactable)
+        if (selectedObject.Interactable)
         {
-            _selectedObject.Interactable.SetInteractionValues(
+            selectedObject.Interactable.SetInteractionValues(
                 isCorrect.isOn,
                 float.Parse(objectInteractionStart.text),
                 float.Parse(objectInteractionEnd.text));
-            _selectedObject.Interactable.SetAlwaysInteractable(alwaysInteractable.isOn, isCorrect.isOn);
+            selectedObject.Interactable.SetAlwaysInteractable(alwaysInteractable.isOn, isCorrect.isOn);
         }
 
-        if (_selectedObject.Playable)
+        if (selectedObject.Playable)
         {
             float time = float.Parse(objectPovStart.text);
-            _selectedObject.Playable.SetPlayOnStart(time < 1f);
-            _selectedObject.Playable.SetViewValues(time);
+            selectedObject.Playable.SetPlayOnStart(time < 1f);
+            selectedObject.Playable.SetViewValues(time);
 
         }
     }
@@ -156,8 +163,8 @@ public class SettingsManager : MonoBehaviour
     
     public void DeleteObject()
     {
-        if (_selectedObject == null) return;
-        var deleteAction = new DeleteAction(_selectedObject);
+        if (selectedObject == null) return;
+        var deleteAction = new DeleteAction(selectedObject);
         ActionRecorder.Instance.Record(deleteAction);
         DeselectObject();
     }

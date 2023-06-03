@@ -198,7 +198,7 @@ namespace Objects
       
       if (Path)
       {
-        Path.Select();
+        Path.HighlightPath(null);
       }
     }
     
@@ -208,8 +208,13 @@ namespace Objects
       _outline.enabled = false;
       if (Path)
       {
-        Path.Deselect();
+        Path.UnhighlightPath(null);
       }
+    }
+
+    public ObjectBase GetObject()
+    {
+      return this;
     }
 
     #endregion

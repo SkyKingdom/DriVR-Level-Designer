@@ -1,10 +1,11 @@
 ﻿using Actions;
 using Interfaces;
+using Objects;
 using UnityEngine;
 
 public class NodeContainer : MonoBehaviour, IEditorInteractable
 {
-    public Node node;
+    public Node Node;
 
     public Material defaultMaterial;
     public Material selectedMaterial;
@@ -19,23 +20,33 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
     {
         _renderer = GetComponent<Renderer>();
     }
+
+    public void SetNode(Node node)
+    {
+        Node = node;
+
+        if (node.Owner.IsSelected)
+        {
+            Highlight();
+        }
+    }
     
     public void OnPointerEnter()
     {
-        if (IsSelected || node.Selected) return;
+        if (IsSelected || Node.Owner.Path.Highlighted) return;
         _renderer.material = selectedMaterial;
     }
 
     public void OnPointerExit()
     {
-        if (IsSelected || node.Selected) return;
+        if (IsSelected || Node.Owner.Path.Highlighted) return;
         _renderer.material = defaultMaterial;   
     }
 
     public void OnDrag(Vector3 position)
     {
-        if (SpawnManager.Instance.EditType == EditType.Path)
-            transform.position = position;
+        if (SpawnManager.Instance.EditType != EditType.Path) return;
+        transform.position = position;
     }
 
     public void OnDragRelease()
@@ -43,7 +54,7 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
         if (transform.position == _lastPosition) return;
         
         // Create action
-        var action = new NodeDragAction(_lastPosition, transform.position, node);
+        var action = new NodeDragAction(_lastPosition, transform.position, Node);
         ActionRecorder.Instance.Record(action);
         
         // Store last position
@@ -54,7 +65,7 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
     {
         if (SpawnManager.Instance.EditType != EditType.Path) return;
         
-        var action = new PathDeleteAction(node);
+        var action = new PathDeleteAction(Node);
         ActionRecorder.Instance.Record(action);
     }
 
@@ -69,13 +80,28 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
         _renderer.material = selectedMaterial;
         
         _lastPosition = transform.position;
-        node.Owner.Path.Select();
+        Node.Owner.Path.HighlightPath(this);
     }
 
     public void Deselect()
     {
         IsSelected = false;
         _renderer.material = defaultMaterial;
-        node.Owner.Path.Deselect();
+        Node.Owner.Path.UnhighlightPath(this);
+    }
+
+    public ObjectBase GetObject()
+    {
+        return Node.Owner;
+    }
+
+    public void Highlight()
+    {
+        _renderer.material = selectedMaterial;
+    }
+
+    public void Unhighlight()
+    {
+        _renderer.material = defaultMaterial;
     }
 }

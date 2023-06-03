@@ -47,7 +47,7 @@ public class InputHandler : StaticInstance<InputHandler>
     private Vector2 _lastMousePosition;
     
     // Events
-    public event Action<ObjectBase> OnSelect;
+    public event Action<IEditorInteractable> OnSelect;
     public event Action OnDeselect;
     public event Action<Vector3> OnSpawn;
 
@@ -328,7 +328,6 @@ public class InputHandler : StaticInstance<InputHandler>
             case EditType.Object:
                 _currentSelectedObject = _currentHoveredObject;
                 _selectedObjectBase = _hoveredObjectBase;
-                OnSelect?.Invoke(_selectedObjectBase);
                 break;
             case EditType.Path:
                 _currentSelectedObject = _currentHoveredObject;
@@ -339,6 +338,7 @@ public class InputHandler : StaticInstance<InputHandler>
             default:
                 throw new ArgumentOutOfRangeException();
         }
+        OnSelect?.Invoke(_currentSelectedObject);
         _currentSelectedObject?.Select();
     }
 

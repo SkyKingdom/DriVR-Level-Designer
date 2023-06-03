@@ -456,6 +456,12 @@ namespace Mapbox.Unity.Map
 				return isAccessTokenValid;
 			}
 		}
+
+		public void ForceUpdateColliders()
+		{
+			Terrain.EnableCollider(false);
+			Terrain.EnableCollider(true);
+		}
 		#endregion
 
 		#region Private/Protected Methods

@@ -1,4 +1,5 @@
-﻿using Mapbox.Unity.Map;
+﻿using Mapbox.Map;
+using Mapbox.Unity.Map;
 using Mapbox.Unity.Utilities;
 using UnityEngine;
 
@@ -19,6 +20,8 @@ public class MapMode : ModeBase
         base.OnEnter();
         CameraController.enabled = true;
         GetMapData();
+        Map.UpdateMap();
+        Map.ForceUpdateColliders();
     }
     
     public override void OnExit()

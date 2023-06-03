@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Buffers;
 using Actions;
 using Interfaces;
+using Objects;
 using UnityEngine;
 
 public class RoadPointContainer : MonoBehaviour, IEditorInteractable
@@ -85,5 +87,10 @@ public class RoadPointContainer : MonoBehaviour, IEditorInteractable
     {
         IsSelected = false;
         _renderer.material = defaultMaterial;
+    }
+
+    public ObjectBase GetObject()
+    {
+        return null;
     }
 }

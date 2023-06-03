@@ -1,4 +1,5 @@
-﻿using Vector3 = UnityEngine.Vector3;
+﻿using Objects;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Interfaces
 {
@@ -19,6 +20,8 @@ namespace Interfaces
         public void Select();
         
         public void Deselect();
+        
+        public ObjectBase GetObject();
         
     }
 }

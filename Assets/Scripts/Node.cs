@@ -4,19 +4,17 @@ using UnityEngine;
 public class Node : IDisposable
 {
     public ObjectBase Owner { get; private set; }
-    public GameObject GameObject { get; private set; }
+    public NodeContainer Container { get; private set; }
     public Vector3 Position { get; private set; }
     
     private bool _disposed = false;
     
     private MeshRenderer _renderer;
 
-    public bool Selected { get; private set; } = false;
-
-    public Node(GameObject gameObject, ObjectBase owner, Vector3 position)
+    public Node(NodeContainer container, ObjectBase owner, Vector3 position)
     {
-        GameObject = gameObject;
-        _renderer = gameObject.GetComponent<MeshRenderer>();
+        Container = container;
+        _renderer = container.GetComponent<MeshRenderer>();
         Owner = owner;
         Position = position;
     }
@@ -24,7 +22,7 @@ public class Node : IDisposable
     public void SetPosition(Vector3 position)
     {
         Position = position;
-        GameObject.transform.position = position;
+        Container.transform.position = position;
         OnPositionChange();
     }
 
@@ -47,9 +45,9 @@ public class Node : IDisposable
             {
                 // Release any managed resources here.
                 // In this case, we don't have any managed resources to release.
-                if (GameObject != null)
+                if (Container != null)
                 {
-                    GameObject.Destroy();
+                    Container.Destroy();
                 }
             }
 
@@ -58,18 +56,6 @@ public class Node : IDisposable
         }
     }
     
-    public void Select()
-    {
-        Selected = true;
-        _renderer.material.color = Color.red;
-    }
-    
-    public void Deselect()
-    {
-        Selected = false;
-        _renderer.material.color = Color.green;
-    }
-
     ~Node()
     {
         Dispose(false);
