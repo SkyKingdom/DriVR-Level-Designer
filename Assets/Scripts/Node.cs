@@ -48,7 +48,7 @@ public class Node : IDisposable
                 // In this case, we don't have any managed resources to release.
                 if (Container != null)
                 {
-                    Container.Destroy();
+                    GameObject.Destroy(Container.gameObject);
                 }
             }
 

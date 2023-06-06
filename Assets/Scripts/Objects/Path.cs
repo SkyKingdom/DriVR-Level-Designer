@@ -122,7 +122,7 @@ namespace Objects
         {
             foreach (var p in PathPoints)
             {
-                Destroy(p.Container);
+                Destroy(p.Container.gameObject);
             }
 
             PathPoints.Clear();

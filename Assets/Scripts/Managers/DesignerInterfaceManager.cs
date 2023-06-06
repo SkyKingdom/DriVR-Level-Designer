@@ -12,6 +12,7 @@ namespace Managers
         [Header("Blankets")] 
         [SerializeField] private GameObject objectsDrawerBlanket;
 
+        // Object Options Panel
         [SerializeField] private GameObject objectDetailsBlanket;
         [SerializeField] private GameObject objectPathBlanket;
         [SerializeField] private GameObject objectInteractableBlanket;
@@ -31,10 +32,13 @@ namespace Managers
             switch (value)
             {
                 case Mode.View:
+                    objectsDrawerBlanket.SetActive(true);
                     break;
                 case Mode.Edit:
+                    objectsDrawerBlanket.SetActive(false);
                     break;
                 case Mode.Map:
+                    objectsDrawerBlanket.SetActive(true);
                     break;
                 case Mode.FirstPerson:
                     break;
