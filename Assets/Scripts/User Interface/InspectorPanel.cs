@@ -9,27 +9,25 @@ public class InspectorPanel : MonoBehaviour
 {
     [SerializeField] private int activeMode;
     [SerializeField] private float panelSize = 920f;
-    [SerializeField] private Color activeBtnColor;
-    [SerializeField] private Color inactiveBtnColor;
+    [SerializeField] private Color activeButtonColor;
+    [SerializeField] private Color inactiveButtonColor;
+    
+    
     [SerializeField] private Toggle mapToggle;
     
     [Header("Tab Buttons")]
-    public GameObject eventsBtn;
     public GameObject activesBtn;
     public GameObject interactableBtn;
     public GameObject propsBtn;
-    public GameObject eventPrefab;
-    
+
     [Header("Map Mode Buttons")]
     public List<Button> modeButtons;
     public GameObject drawingPathBtn;
 
-    [Header("Panels")] 
-    public GameObject eventsPnl;
+    [Header("Panels")]
     public GameObject activesPnl;
     public GameObject interactablePnl;
     public GameObject propsPnl;
-    public Transform eventContainer;
     public List<GameObject> modePanels;
 
     private bool _drawingPath = false;
@@ -40,11 +38,11 @@ public class InspectorPanel : MonoBehaviour
         {
             if (activeMode == i)
             {
-                modeButtons[i].GetComponent<Image>().color = activeBtnColor;
+                modeButtons[i].GetComponent<Image>().color = activeButtonColor;
             }
             else
             {
-                modeButtons[i].GetComponent<Image>().color = inactiveBtnColor;
+                modeButtons[i].GetComponent<Image>().color = inactiveButtonColor;
             }
         }
         mapToggle.isOn = DesignerManager.Instance.MapEnabled;
@@ -79,8 +77,8 @@ public class InspectorPanel : MonoBehaviour
             MoveObj(p, new Vector2(0, rect.anchoredPosition.y + (panelSize * move)), 0.3f);
         }
         
-        modeButtons[activeMode].GetComponent<Image>().color = inactiveBtnColor; 
-        modeButtons[target].GetComponent<Image>().color = activeBtnColor; 
+        modeButtons[activeMode].GetComponent<Image>().color = inactiveButtonColor; 
+        modeButtons[target].GetComponent<Image>().color = activeButtonColor; 
         activeMode = target;
         
 
@@ -102,27 +100,27 @@ public class InspectorPanel : MonoBehaviour
         switch (active)
         {
             case 1:
-                SetColor(activesBtn, activeBtnColor);
-                SetColor(interactableBtn, inactiveBtnColor);
-                SetColor(propsBtn, inactiveBtnColor);
+                SetColor(activesBtn, activeButtonColor);
+                SetColor(interactableBtn, inactiveButtonColor);
+                SetColor(propsBtn, inactiveButtonColor);
                 
                 activesPnl.SetActive(true);
                 interactablePnl.SetActive(false);
                 propsPnl.SetActive(false);
                 break;
             case 2:
-                SetColor(activesBtn, inactiveBtnColor);
-                SetColor(interactableBtn, activeBtnColor);
-                SetColor(propsBtn, inactiveBtnColor);
+                SetColor(activesBtn, inactiveButtonColor);
+                SetColor(interactableBtn, activeButtonColor);
+                SetColor(propsBtn, inactiveButtonColor);
                 
                 activesPnl.SetActive(false);
                 interactablePnl.SetActive(true);
                 propsPnl.SetActive(false);
                 break;
             case 3:
-                SetColor(activesBtn, inactiveBtnColor);
-                SetColor(interactableBtn, inactiveBtnColor);
-                SetColor(propsBtn, activeBtnColor);
+                SetColor(activesBtn, inactiveButtonColor);
+                SetColor(interactableBtn, inactiveButtonColor);
+                SetColor(propsBtn, activeButtonColor);
                 
                 activesPnl.SetActive(false);
                 interactablePnl.SetActive(false);
@@ -163,11 +161,5 @@ public class InspectorPanel : MonoBehaviour
                 _drawingPath = false;
                 break;
         }
-    }
-    
-    //Instantiate event button prefab
-    public void InstantiateEventBtn()
-    {
-        Instantiate(eventPrefab, eventContainer);
     }
 }

@@ -20375,25 +20375,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeMode: 1
   panelSize: 920
-  activeBtnColor: {r: 1, g: 0.38039216, b: 0, a: 1}
-  inactiveBtnColor: {r: 0.30980393, g: 0.30980393, b: 0.30980393, a: 1}
+  activeButtonColor: {r: 1, g: 0.38039216, b: 0, a: 1}
+  inactiveButtonColor: {r: 0.30980393, g: 0.30980393, b: 0.30980393, a: 1}
   mapToggle: {fileID: 1906704895}
-  eventsBtn: {fileID: 2030121131}
   activesBtn: {fileID: 641745138}
   interactableBtn: {fileID: 57225997}
   propsBtn: {fileID: 1499647896}
-  eventPrefab: {fileID: 1375222989060320287, guid: 4211495a9a39657439aeac0696da491a,
-    type: 3}
   modeButtons:
   - {fileID: 1990205551}
   - {fileID: 853760991}
   - {fileID: 423073647}
   drawingPathBtn: {fileID: 1945291360}
-  eventsPnl: {fileID: 1442056469}
   activesPnl: {fileID: 1602125862}
   interactablePnl: {fileID: 1662378829}
   propsPnl: {fileID: 899402784}
-  eventContainer: {fileID: 1808308362}
   modePanels:
   - {fileID: 296701627}
   - {fileID: 1041988041}
@@ -24030,7 +24025,7 @@ GameObject:
   - component: {fileID: 2030121134}
   - component: {fileID: 2030121133}
   m_Layer: 5
-  m_Name: ObjectSettingsTitle
+  m_Name: Title - Edit Mode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
