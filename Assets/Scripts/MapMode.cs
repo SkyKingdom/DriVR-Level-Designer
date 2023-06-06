@@ -1,25 +1,26 @@
 ﻿using Mapbox.Unity.Map;
-using UnityEngine;
 
 public class MapMode : ModeBase
 {
-    public CameraController CameraController;
-    public AbstractMap Map;
+    private readonly CameraController _cameraController;
+    private readonly AbstractMap _map;
     public MapMode(AbstractMap map, CameraController cameraController)
     {
-        Map = map;
-        CameraController = cameraController;
+        _map = map;
+        _cameraController = cameraController;
     }
     public override void OnEnter()
     {
-        CameraController.enabled = true;
-        Map.UpdateMap();
-        Map.ForceUpdateColliders();
+        // Enable camera movement & update map
+        _cameraController.enabled = true;
+        _map.UpdateMap();
+        _map.ForceUpdateColliders();
     }
     
     public override void OnExit()
     {
-        CameraController.enabled = false;
+        // Disable camera movement
+        _cameraController.enabled = false;
     }
 }
 

@@ -38,8 +38,7 @@ public class DesignerManager : StaticInstance<DesignerManager>
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject canvas;
     [SerializeField] private GameObject capsule;
-    [SerializeField] private Toggle mapToggle;
-
+    
     [Header("Objects Blanket")] 
     [SerializeField] private GameObject blanket;
 
@@ -107,9 +106,8 @@ public class DesignerManager : StaticInstance<DesignerManager>
 
     public void LoadMap(float zoom, double posX, double posY)
     {
+        MapManager.ToggleMap(true);
         var center = new Vector2d(posX, posY);
-        MapMode.Map.UpdateMap(center, zoom);
-        mapToggle.isOn = true;
+        MapManager.Map.Initialize(center, (int)zoom);
     }
-    
 }

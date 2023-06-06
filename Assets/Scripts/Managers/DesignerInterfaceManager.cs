@@ -31,6 +31,8 @@ namespace Managers
         #endregion
         
         [field: SerializeField, Space(20)] public LevelSaveModal SaveModal { get; private set; }
+        [SerializeField] private Toggle mapToggle;
+        
 
         private void Start()
         {
@@ -41,6 +43,7 @@ namespace Managers
         private void HandleMapStatusChange(bool value)
         {
             mapModeButton.interactable = value;
+            mapToggle.SetIsOnWithoutNotify(value);
         }
 
         private void HandleModeChange(Mode oldValue, Mode value)

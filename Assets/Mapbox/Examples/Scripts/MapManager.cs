@@ -11,28 +11,23 @@ namespace Mapbox.Examples
 
 	public class MapManager : MonoBehaviour
 	{
-		//Camera
+		[Header("Dependencies")]
+		[SerializeField] private GameObject plane;
+		
 		[Header("Camera"), SerializeField] private Camera sceneCamera;
-
 		private Vector3 _cameraStartPos;
 		
 		[field:Header("Map")]
 		[field: SerializeField] public AbstractMap Map { get; private set; }
-
-		[SerializeField] private bool mapEnabledOnStart;
-		
-		
+		public bool IsMapEnabled => Map.gameObject.activeSelf;
 		[SerializeField] private ForwardGeocodeUserInput forwardGeocoder;
 		
+		[Header("Settings")]
+		[SerializeField] private bool mapEnabledOnStart;
 		[SerializeField] private Slider zoomSlider;
-		[SerializeField] private GameObject plane;
-
-		public bool IsMapEnabled => Map.gameObject.activeSelf;
 
 		private HeroBuildingSelectionUserInput[] _heroBuildingSelectionUserInput;
-
 		private Coroutine _reloadRoutine;
-
 		private const float WaitInSeconds = .3f;
 		
 		public event Action<bool> OnMapStatusChange; 

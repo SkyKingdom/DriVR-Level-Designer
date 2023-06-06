@@ -11970,12 +11970,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c00b1c78fb49f4ebd834aac587275216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  plane: {fileID: 684948977}
   sceneCamera: {fileID: 330585545}
   <Map>k__BackingField: {fileID: 1019011509}
-  mapEnabledOnStart: 0
   forwardGeocoder: {fileID: 150799025}
+  mapEnabledOnStart: 0
   zoomSlider: {fileID: 633819262}
-  plane: {fileID: 684948977}
 --- !u!4 &918440190
 Transform:
   m_ObjectHideFlags: 0
@@ -15334,6 +15334,7 @@ MonoBehaviour:
   editModeButton: {fileID: 853760991}
   previewModeButton: {fileID: 1990205551}
   <SaveModal>k__BackingField: {fileID: 4532283848497636644}
+  mapToggle: {fileID: 1906704895}
 --- !u!1 &1231447009
 GameObject:
   m_ObjectHideFlags: 0
