@@ -1,6 +1,7 @@
 ﻿using System;
 using Objects;
 using UnityEngine;
+using UnityEngine.UI;
 using User_Interface;
 
 namespace Managers
@@ -20,11 +21,26 @@ namespace Managers
         
         #endregion
 
+        #region Mode Buttons
+        
+        [Header("Mode Buttons")]
+        [SerializeField] private Button mapModeButton;
+        [SerializeField] private Button editModeButton;
+        [SerializeField] private Button previewModeButton;
+
+        #endregion
+        
         [field: SerializeField, Space(20)] public LevelSaveModal SaveModal { get; private set; }
 
         private void Start()
         {
             DesignerManager.Instance.OnModeChange += HandleModeChange;
+            DesignerManager.Instance.MapManager.OnMapStatusChange += HandleMapStatusChange;
+        }
+
+        private void HandleMapStatusChange(bool value)
+        {
+            mapModeButton.interactable = value;
         }
 
         private void HandleModeChange(Mode oldValue, Mode value)

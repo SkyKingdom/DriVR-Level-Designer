@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PreviewMode : MonoBehaviour
 {
-    private bool IsPreviewMode => DesignerManager.Instance.Mode == Mode.FirstPerson;
+    private bool IsPreviewMode => DesignerManager.Instance.CurrentMode == Mode.FirstPerson;
     [SerializeField] private InputActionReference escapeAction;
 
     private void OnEnable()

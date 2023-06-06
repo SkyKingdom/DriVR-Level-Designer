@@ -112,7 +112,7 @@ public class LevelLoader : MonoBehaviour
         if (!_saveData.mapEnabled) yield break;
         
         DesignerManager.Instance.LoadMap(_saveData.cameraZoom, _saveData.mapLocationX, _saveData.mapLocationY);
-        DesignerManager.Instance.OnMapEnabledValueChange(true);
+        DesignerManager.Instance.MapManager.ToggleMap(true);
         yield return null;
     }
 

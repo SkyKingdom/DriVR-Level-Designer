@@ -1,5 +1,6 @@
 using System;
 using Managers;
+using Mapbox.Examples;
 using Mapbox.Unity.Map;
 using Mapbox.Utils;
 using Saving;
@@ -21,26 +22,22 @@ public class DesignerManager : StaticInstance<DesignerManager>
 {
     #region Managers
 
-    [field: SerializeField] public DesignerInterfaceManager DesignerUIManager { get; private set; }
+    [field: SerializeField, Header("Dependencies")] public DesignerInterfaceManager DesignerUIManager { get; private set; }
+    [field: SerializeField] public MapManager MapManager { get; private set; }
 
     #endregion
-    
-    public ModeBase CurrentMode { get; private set; }
-    [SerializeField] private Mode mode = Mode.View;
-    public Mode Mode => mode;
-    [SerializeField] private bool mapEnabled;
-    public bool MapEnabled => mapEnabled;
+
+    private ModeBase activeMode;
+    [SerializeField] private Mode currentMode = Mode.View;
+    public Mode CurrentMode => currentMode;
     
     public event Action<Mode, Mode> OnModeChange;
-    
-    [SerializeField] InspectorPanel inspectorPanel;
     
     [Header("FPS Mode")]
     [SerializeField] private GameObject sceneCamera;
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject canvas;
     [SerializeField] private GameObject capsule;
-    [SerializeField] private GameObject plane;
     [SerializeField] private Toggle mapToggle;
 
     [Header("Objects Blanket")] 
@@ -60,65 +57,46 @@ public class DesignerManager : StaticInstance<DesignerManager>
 
     private void Start()
     {
-        _mapMode = new MapMode(FindObjectOfType<AbstractMap>() , FindObjectOfType<CameraController>(), plane);
+        _mapMode = new MapMode(MapManager.Map , FindObjectOfType<CameraController>());
         _editMode = new EditMode(FindObjectOfType<SpawnManager>(), blanket);
         _viewMode = new ViewMode();
         _firstPersonMode = new FirstPersonMode(sceneCamera, mainCamera, canvas, capsule);
-        SetMode(1);
+        SetMode((int)Mode.Edit);
     }
-
-    public void OnMapEnabledValueChange(bool value)
-    {
-        mapEnabled = value;
-        if (!value && CurrentMode == _mapMode)
-        {
-            ChangeMode(_viewMode);
-            inspectorPanel.SwitchToMode((int)Mode.Edit);
-        }
-        inspectorPanel.modeButtons[(int)Mode.Map].interactable = value;
-        MapMode.ToggleMap(value);
-    }
-
+    
     private void ChangeMode(ModeBase newMode)
     {
-        CurrentMode?.OnExit();
-        CurrentMode = newMode;
-        CurrentMode?.OnEnter();
+        activeMode?.OnExit();
+        activeMode = newMode;
+        activeMode?.OnEnter();
     }
 
     public void SetMode(int modeIndex)
     {
-        var oldMode = mode;
+        var oldMode = currentMode;
         switch ((Mode)modeIndex)
         {
             case Mode.Map:
-                if (MapEnabled)
-                {
-                    ChangeMode(_mapMode);
-                    mode = (Mode)modeIndex;
-                }
-                else
-                {
-                    Debug.Log("Map is disabled");
-                }
+                ChangeMode(_mapMode);
+                currentMode = (Mode)modeIndex;
                 break;
             case Mode.Edit:
                 ChangeMode(_editMode);
-                mode = (Mode)modeIndex;
+                currentMode = (Mode)modeIndex;
                 break;
             case Mode.View:
                 ChangeMode(_viewMode);
-                mode = (Mode)modeIndex;
+                currentMode = (Mode)modeIndex;
                 break;
             case Mode.FirstPerson:
                 ChangeMode(_firstPersonMode);
-                mode = (Mode)modeIndex;
+                currentMode = (Mode)modeIndex;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(modeIndex), modeIndex, null);
         }
 
-        OnModeChange?.Invoke(oldMode, mode);
+        OnModeChange?.Invoke(oldMode, currentMode);
     }
 
     public async void ExitToMenu()

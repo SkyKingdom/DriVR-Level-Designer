@@ -39,7 +39,7 @@ public class InputHandler : StaticInstance<InputHandler>
     [SerializeField] private ObjectBase _hoveredObjectBase;
 
     // States
-    private bool InEditMode => DesignerManager.Instance.Mode == Mode.Edit;
+    private bool InEditMode => DesignerManager.Instance.CurrentMode == Mode.Edit;
     
     // Start and end positions of the mouse drag
     private Vector2 _mouseStartPosition;

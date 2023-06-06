@@ -34,6 +34,8 @@ public class InspectorPanel : MonoBehaviour
 
     private void Start()
     {
+        DesignerManager.Instance.OnModeChange += HandleModeChange;
+        
         for (int i = 0; i < modeButtons.Count; i++)
         {
             if (activeMode == i)
@@ -45,10 +47,14 @@ public class InspectorPanel : MonoBehaviour
                 modeButtons[i].GetComponent<Image>().color = inactiveButtonColor;
             }
         }
-        mapToggle.isOn = DesignerManager.Instance.MapEnabled;
     }
 
-    
+    private void HandleModeChange(Mode oldValue, Mode value)
+    {
+        OpenModePanel((int)value);
+    }
+
+
     #region Button Tabs
     public void SwitchToActives()
     {
@@ -67,7 +73,7 @@ public class InspectorPanel : MonoBehaviour
     #endregion
     
     //Map Modes
-    public void SwitchToMode(int target)
+    private void OpenModePanel(int target)
     {
         var move = target - activeMode;
         
@@ -80,8 +86,6 @@ public class InspectorPanel : MonoBehaviour
         modeButtons[activeMode].GetComponent<Image>().color = inactiveButtonColor; 
         modeButtons[target].GetComponent<Image>().color = activeButtonColor; 
         activeMode = target;
-        
-
     }
 
     private void SetOpacity(GameObject element, float opacity, float time)
@@ -140,7 +144,7 @@ public class InspectorPanel : MonoBehaviour
         {
             for (int i = 0; i < modeButtons.Count; i++)
             {
-                if (!DesignerManager.Instance.MapEnabled && i == (int)Mode.Map)
+                if (!DesignerManager.Instance.MapManager.IsMapEnabled && i == (int)Mode.Map)
                     continue;
 
                 modeButtons[i].interactable = true;

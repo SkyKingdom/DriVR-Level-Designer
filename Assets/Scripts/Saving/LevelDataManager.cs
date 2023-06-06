@@ -116,10 +116,10 @@ namespace Saving
         /// </summary>
         private void SaveCamera()
         {
-            if (!DesignerManager.Instance.MapEnabled) return;
+            if (!DesignerManager.Instance.MapManager.IsMapEnabled) return;
             
             _saveData.mapEnabled = true;
-            var cameraData = DesignerManager.Instance.MapMode.GetMapData();
+            var cameraData = DesignerManager.Instance.MapManager.GetMapData();
             _saveData.cameraZoom = cameraData.Zoom;
             _saveData.mapLocationX = cameraData.CenterX;
             _saveData.mapLocationY = cameraData.CenterY;
