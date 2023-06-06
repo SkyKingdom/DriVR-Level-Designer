@@ -15,9 +15,8 @@ namespace Objects
         {
             Owner = objectBase;
         }
-        public void SetInteractionValues(bool answer, float interactionStartTime, float interactionEndTime)
+        public void SetInteractionTime(float interactionStartTime, float interactionEndTime)
         {
-            Answer = answer;
             InteractionStartTime = interactionStartTime;
             InteractionEndTime = interactionEndTime;
         }

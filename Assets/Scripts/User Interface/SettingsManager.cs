@@ -97,7 +97,7 @@ public class SettingsManager : MonoBehaviour
         
         if (selectedObject.Playable)
         {
-            objectPovStart.text = selectedObject.Playable.SwitchViewTime.ToString("F1");
+            objectPovStart.text = selectedObject.Playable.SwitchTime.ToString("F1");
         }
         SaveData();
     }
@@ -114,8 +114,7 @@ public class SettingsManager : MonoBehaviour
 
         if (selectedObject.Interactable)
         {
-            selectedObject.Interactable.SetInteractionValues(
-                isCorrect.isOn,
+            selectedObject.Interactable.SetInteractionTime(
                 float.Parse(objectInteractionStart.text),
                 float.Parse(objectInteractionEnd.text));
             selectedObject.Interactable.SetAlwaysInteractable(alwaysInteractable.isOn, isCorrect.isOn);
@@ -125,7 +124,7 @@ public class SettingsManager : MonoBehaviour
         {
             float time = float.Parse(objectPovStart.text);
             selectedObject.Playable.SetPlayOnStart(time < 1f);
-            selectedObject.Playable.SetViewValues(time);
+            selectedObject.Playable.SetSwitchTime(time);
 
         }
     }

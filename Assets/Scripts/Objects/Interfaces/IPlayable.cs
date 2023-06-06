@@ -2,10 +2,10 @@
 {
     public interface IPlayable
     {
-        public float SwitchViewTime { get; }
+        public float SwitchTime { get; }
         public bool PlayOnStart { get; }
         
-        public void SetViewValues(float switchViewTime);
+        public void SetSwitchTime(float switchTime);
         public void SetPlayOnStart(bool playOnStart);
     }
 }

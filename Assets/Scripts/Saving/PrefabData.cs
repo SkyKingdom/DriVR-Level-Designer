@@ -14,5 +14,10 @@ namespace Saving
             get { return prefabsDictionary; }
             set { prefabsDictionary.CopyFrom(value); }
         }
+
+        public GameObject GetPrefab(string prefabName)
+        {
+            return prefabsDictionary[prefabName];
+        }
     }
 }

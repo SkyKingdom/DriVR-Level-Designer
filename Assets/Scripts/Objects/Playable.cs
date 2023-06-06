@@ -7,7 +7,7 @@ namespace Objects
     public class Playable : MonoBehaviour, IPlayable, IObjectComponent
     {
         public ObjectBase Owner { get; private set; }
-        public float SwitchViewTime { get; private set; }
+        public float SwitchTime { get; private set; }
         public bool PlayOnStart { get; private set;}
         
         public void Initialize(ObjectBase objectBase)
@@ -15,9 +15,9 @@ namespace Objects
             Owner = objectBase;
         }
         
-        public void SetViewValues(float switchViewTime)
+        public void SetSwitchTime(float switchTime)
         {
-            SwitchViewTime = switchViewTime;
+            SwitchTime = switchTime;
         }
 
         public void SetPlayOnStart(bool playOnStart)

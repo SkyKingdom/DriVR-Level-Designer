@@ -14,6 +14,7 @@ public class Node : IDisposable
     public Node(NodeContainer container, ObjectBase owner, Vector3 position)
     {
         Container = container;
+        container.Node = this;
         _renderer = container.GetComponent<MeshRenderer>();
         Owner = owner;
         Position = position;

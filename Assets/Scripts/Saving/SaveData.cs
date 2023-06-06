@@ -30,23 +30,24 @@ namespace Saving
     }
     
     [Serializable]
-    public class InteractableObjectData : DecorativeObjectData
+    public class PathObjectData: DecorativeObjectData
     {
-        public float interactionStartTime;
-        public float interactionEndTime;
-        public bool isCorrect;
-
         public Vector3[] pathPoints;
         public float speed;
         public float animationStartTime;
     }
     
     [Serializable]
-    public class PlayableObjectData : DecorativeObjectData
+    public class InteractableObjectData : PathObjectData
+    {
+        public float interactionStartTime;
+        public float interactionEndTime;
+        public bool isCorrect;
+    }
+    
+    [Serializable]
+    public class PlayableObjectData : PathObjectData
     {
         public float switchTime;
-        public Vector3[] pathPoints;
-        public float speed;
-        public float animationStartTime;
     }
 }
