@@ -53,8 +53,6 @@ namespace User_Interface
             _animRunning = false;
         }
 
-        #region Tutorial
-
         public void GuideButtonPress()
         {
             tutorialPanel.SetActive(true);
@@ -68,50 +66,6 @@ namespace User_Interface
             tutorialPanel.SetActive(false);
             tutorialPanel.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
         }
-    
-        public void NextButtonPress()
-        {
-            if (_tutorialCounter > tutorialMasks.Count-1)
-            {
-                _tutorialCounter = 0;
-            }
-        
-            foreach (var mask in tutorialMasks)
-            {
-                mask.SetActive(false);
-            }
-        
-            tutorialMasks[_tutorialCounter].SetActive(true);
-            SetTutorialText(_tutorialCounter);
-            _tutorialCounter++;
-        }
 
-        private void SetTutorialText(int counter)
-        {
-            switch (counter)
-            {
-                case 0:
-                    tutorialText.SetText("toggle the map to accurately adjust object positions");
-                    break;
-                case 1:
-                    tutorialText.SetText("switch between map modes");
-                    break;
-                case 2:
-                    tutorialText.SetText("switch between various object types to place in your level");
-                    break;
-                case 3:
-                    tutorialText.SetText("adjust object settings based on the type of object selected");
-                    break;
-                case 4:
-                    tutorialText.SetText("make sure to save the changes to your object before saving the level");
-                    break;
-                case 5:
-                    tutorialText.SetText("once your level is done, you may choose to save it to your computer or publish it");
-                    break;
-            }
-        }
-        
-        #endregion
-    
     }
 }
