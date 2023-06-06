@@ -34,7 +34,7 @@ public class LevelLoader : MonoBehaviour
         yield return Helpers.GetWait(2f);
 
         if (_saveData.cameraPosition != Vector3.zero)
-            LevelGeneratorManager.Instance.SceneCameraTransform.position = _saveData.cameraPosition;
+            DesignerManager.Instance.SceneCameraTransform.position = _saveData.cameraPosition;
     }
 
     /// <summary>
@@ -111,8 +111,8 @@ public class LevelLoader : MonoBehaviour
     {
         if (!_saveData.mapEnabled) yield break;
         
-        LevelGeneratorManager.Instance.LoadMap(_saveData.cameraZoom, _saveData.mapLocationX, _saveData.mapLocationY);
-        LevelGeneratorManager.Instance.OnMapEnabledValueChange(true);
+        DesignerManager.Instance.LoadMap(_saveData.cameraZoom, _saveData.mapLocationX, _saveData.mapLocationY);
+        DesignerManager.Instance.OnMapEnabledValueChange(true);
         yield return null;
     }
 

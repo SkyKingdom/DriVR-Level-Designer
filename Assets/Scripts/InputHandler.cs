@@ -39,7 +39,7 @@ public class InputHandler : StaticInstance<InputHandler>
     [SerializeField] private ObjectBase _hoveredObjectBase;
 
     // States
-    private bool InEditMode => LevelGeneratorManager.Instance.Mode == Mode.Edit;
+    private bool InEditMode => DesignerManager.Instance.Mode == Mode.Edit;
     
     // Start and end positions of the mouse drag
     private Vector2 _mouseStartPosition;
@@ -65,7 +65,7 @@ public class InputHandler : StaticInstance<InputHandler>
 
     private void Start()
     {
-        LevelGeneratorManager.Instance.OnModeChange += OnModeChanged;
+        DesignerManager.Instance.OnModeChange += OnModeChanged;
         SpawnManager.Instance.ObjectSpawned += OnObjectSpawned;
         SpawnManager.Instance.EditTypeChanged += OnEditTypeChanged;
     }
@@ -129,7 +129,7 @@ public class InputHandler : StaticInstance<InputHandler>
 
     #region Event Handlers
 
-    private void OnModeChanged()
+    private void OnModeChanged(Mode oldValue, Mode value)
     {
         if (InEditMode) return;
         

@@ -2,19 +2,21 @@ using System;
 using System.Collections.Generic;
 using Actions;
 using Interfaces;
+using Managers;
 using Objects;
 using Saving;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsManager : MonoBehaviour
+public class ObjectInspector : MonoBehaviour
 {
-    //0 name
-    //1 path
-    //2 interaction
-    //3 pov
-    [SerializeField] private List<GameObject> blankets;
+    #region Dependencies
+
+    private DesignerInterfaceManager _uiManager;
+
+    #endregion
+
     [SerializeField] private ObjectBase selectedObject;
     public ObjectBase SelectedObject => selectedObject;
     
@@ -28,7 +30,12 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private Toggle isCorrect;
     [SerializeField] private Toggle animateOnStart;
     [SerializeField] private Toggle alwaysInteractable;
-    
+
+
+    private void Start()
+    {
+        _uiManager = DesignerManager.Instance.DesignerUIManager;
+    }
 
     private void OnEnable()
     {
@@ -55,13 +62,13 @@ public class SettingsManager : MonoBehaviour
         if (obj == null)
         {
             selectedObject = null;
-            UpdateUIBlankets(selectedObject);
+            _uiManager.UpdateDetailsPanelBlankets(selectedObject);
             return;
         }
         
         obj.Select();
         selectedObject = obj;
-        UpdateUIBlankets(selectedObject);
+        _uiManager.UpdateDetailsPanelBlankets(selectedObject);
         PathManager.Instance.SelectObject(selectedObject);
         LoadData();
     }
@@ -73,7 +80,7 @@ public class SettingsManager : MonoBehaviour
         ClearData();
         selectedObject.Deselect();
         selectedObject = null;
-        UpdateUIBlankets(selectedObject);
+        _uiManager.UpdateDetailsPanelBlankets(selectedObject);
         PathManager.Instance.DeselectObject();
     }
 
@@ -140,24 +147,6 @@ public class SettingsManager : MonoBehaviour
         isCorrect.isOn = false;
         animateOnStart.isOn = false;
         alwaysInteractable.isOn = false;
-    }
-
-    
-    private void UpdateUIBlankets(ObjectBase obj)
-    {
-        blankets[0].SetActive(!obj);
-        if (obj)
-        {
-            blankets[1].SetActive(!obj.Path);
-            blankets[2].SetActive(!obj.Interactable);
-            blankets[3].SetActive(!obj.Playable);
-        }
-        else
-        {
-            blankets[1].SetActive(!obj);
-            blankets[2].SetActive(!obj);
-            blankets[3].SetActive(!obj);
-        }
     }
     
     public void DeleteObject()

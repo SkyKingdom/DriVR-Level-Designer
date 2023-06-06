@@ -1,4 +1,5 @@
 using System;
+using Managers;
 using Mapbox.Unity.Map;
 using Mapbox.Utils;
 using Saving;
@@ -16,17 +17,23 @@ public enum Mode
     FirstPerson = 3
 }
 
-public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
+public class DesignerManager : StaticInstance<DesignerManager>
 {
+    #region Managers
+
+    [field: SerializeField] public DesignerInterfaceManager DesignerUIManager { get; private set; }
+
+    #endregion
+    
     public ModeBase CurrentMode { get; private set; }
     [SerializeField] private Mode mode = Mode.View;
     public Mode Mode => mode;
     [SerializeField] private bool mapEnabled;
     public bool MapEnabled => mapEnabled;
     
-    public event Action OnModeChange;
+    public event Action<Mode, Mode> OnModeChange;
     
-    [SerializeField] UiNavigation uiNavigation;
+    [SerializeField] InspectorPanel inspectorPanel;
     
     [Header("FPS Mode")]
     [SerializeField] private GameObject sceneCamera;
@@ -66,9 +73,9 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
         if (!value && CurrentMode == _mapMode)
         {
             ChangeMode(_viewMode);
-            uiNavigation.SwitchToMode((int)Mode.Edit);
+            inspectorPanel.SwitchToMode((int)Mode.Edit);
         }
-        uiNavigation.modeButtons[(int)Mode.Map].interactable = value;
+        inspectorPanel.modeButtons[(int)Mode.Map].interactable = value;
         MapMode.ToggleMap(value);
     }
 
@@ -81,6 +88,7 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
 
     public void SetMode(int modeIndex)
     {
+        var oldMode = mode;
         switch ((Mode)modeIndex)
         {
             case Mode.Map:
@@ -109,7 +117,8 @@ public class LevelGeneratorManager : StaticInstance<LevelGeneratorManager>
             default:
                 throw new ArgumentOutOfRangeException(nameof(modeIndex), modeIndex, null);
         }
-        OnModeChange?.Invoke();
+
+        OnModeChange?.Invoke(oldMode, mode);
     }
 
     public async void ExitToMenu()

@@ -5,12 +5,12 @@ namespace Actions
 {
     class SpawnAction : ActionBase
     {
-        private readonly SettingsManager _settingsManager;
+        private readonly ObjectInspector _objectInspector;
         private ObjectBase _spawnedObject;
 
-        public SpawnAction(SettingsManager settingsManager, ObjectBase spawnedObject)
+        public SpawnAction(ObjectInspector objectInspector, ObjectBase spawnedObject)
         {
-            _settingsManager = settingsManager;
+            _objectInspector = objectInspector;
             _spawnedObject = spawnedObject;
         }
         public override void Execute()
@@ -21,9 +21,9 @@ namespace Actions
 
         public override void Undo()
         {
-            if (_settingsManager.SelectedObject == _spawnedObject)
+            if (_objectInspector.SelectedObject == _spawnedObject)
             {
-                _settingsManager.DeselectObject();
+                _objectInspector.DeselectObject();
             }
             InputHandler.Instance.DropObject(_spawnedObject);
             

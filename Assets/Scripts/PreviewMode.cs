@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PreviewMode : MonoBehaviour
 {
-    private bool IsPreviewMode => LevelGeneratorManager.Instance.Mode == Mode.FirstPerson;
+    private bool IsPreviewMode => DesignerManager.Instance.Mode == Mode.FirstPerson;
     [SerializeField] private InputActionReference escapeAction;
 
     private void OnEnable()
@@ -31,7 +28,7 @@ public class PreviewMode : MonoBehaviour
 
     public void TogglePreview()
     {
-        LevelGeneratorManager.Instance.SetMode(IsPreviewMode ? 1 : 3);
+        DesignerManager.Instance.SetMode(IsPreviewMode ? 1 : 3);
     }
 
 }

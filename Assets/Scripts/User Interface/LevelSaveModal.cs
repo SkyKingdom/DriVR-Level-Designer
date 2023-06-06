@@ -17,21 +17,14 @@ namespace User_Interface
             Description = description;
         }
     }
-    public class LevelInfoModal : StaticInstance<LevelInfoModal>
+    public class LevelSaveModal : MonoBehaviour
     {
         public static bool Success { get; private set; }
         public static LevelInfo Result { get; private set; }
         [SerializeField] private TMP_InputField levelNameInputField;
         [SerializeField] private TMP_InputField levelDescriptionInputField;
         [SerializeField] private GameObject popUp;
-
-
-        protected override void Awake()
-        {
-            base.Awake();
-            Hide();
-        }
-
+        
         public void Show()
         {
             gameObject.SetActive(true);

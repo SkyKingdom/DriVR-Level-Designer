@@ -20,7 +20,7 @@ public class SpawnManager : StaticInstance<SpawnManager>
     private Toggle _activeToggle;
     
     private InputHandler _inputHandler;
-    private SettingsManager _settingsManager;
+    private ObjectInspector _objectInspector;
     
     public event Action<IEditorInteractable> ObjectSpawned;
     public event Action<EditType, EditType> EditTypeChanged;
@@ -30,9 +30,9 @@ public class SpawnManager : StaticInstance<SpawnManager>
 
     private void OnEnable()
     {
-        if (_settingsManager == null)
+        if (_objectInspector == null)
         {
-            _settingsManager = FindObjectOfType<SettingsManager>();
+            _objectInspector = FindObjectOfType<ObjectInspector>();
         }
         if (_inputHandler == null)
         {
@@ -77,7 +77,7 @@ public class SpawnManager : StaticInstance<SpawnManager>
         
         var spawnedObject = Instantiate(prefabToSpawn, pos, Quaternion.identity);
         spawnedObject.Initialize(spawnedObject.gameObject.name, prefabToSpawn.name);
-        var action = new SpawnAction( _settingsManager, spawnedObject);
+        var action = new SpawnAction( _objectInspector, spawnedObject);
         ActionRecorder.Instance.Record(action);
         ObjectSpawned?.Invoke(spawnedObject);
     }

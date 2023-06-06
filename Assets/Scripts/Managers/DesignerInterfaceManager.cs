@@ -1,0 +1,66 @@
+﻿using System;
+using Objects;
+using UnityEngine;
+using User_Interface;
+
+namespace Managers
+{
+    public class DesignerInterfaceManager : MonoBehaviour
+    {
+        #region Blankets
+
+        [Header("Blankets")] 
+        [SerializeField] private GameObject objectsDrawerBlanket;
+
+        [SerializeField] private GameObject objectDetailsBlanket;
+        [SerializeField] private GameObject objectPathBlanket;
+        [SerializeField] private GameObject objectInteractableBlanket;
+        [SerializeField] private GameObject objectPlayableBlanket;
+        
+        #endregion
+
+        [field: SerializeField, Space(20)] public LevelSaveModal SaveModal { get; private set; }
+
+        private void Start()
+        {
+            DesignerManager.Instance.OnModeChange += HandleModeChange;
+        }
+
+        private void HandleModeChange(Mode oldValue, Mode value)
+        {
+            switch (value)
+            {
+                case Mode.View:
+                    break;
+                case Mode.Edit:
+                    break;
+                case Mode.Map:
+                    break;
+                case Mode.FirstPerson:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
+        }
+
+        /// <summary>
+        /// Updates the details panel based on the selected object.
+        /// </summary>
+        /// <param name="selectedObject"></param>
+        public void UpdateDetailsPanelBlankets(ObjectBase selectedObject)
+        {
+            objectDetailsBlanket.SetActive(!selectedObject);
+            if (!selectedObject)
+            {
+                objectPathBlanket.SetActive(true);
+                objectInteractableBlanket.SetActive(true);
+                objectPlayableBlanket.SetActive(true);
+                return;
+            }
+            
+            objectPathBlanket.SetActive(!selectedObject.Path);
+            objectInteractableBlanket.SetActive(!selectedObject.Interactable);
+            objectPlayableBlanket.SetActive(!selectedObject.Playable);
+        }
+    }
+}

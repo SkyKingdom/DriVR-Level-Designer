@@ -116,14 +116,14 @@ namespace Saving
         /// </summary>
         private void SaveCamera()
         {
-            if (!LevelGeneratorManager.Instance.MapEnabled) return;
+            if (!DesignerManager.Instance.MapEnabled) return;
             
             _saveData.mapEnabled = true;
-            var cameraData = LevelGeneratorManager.Instance.MapMode.GetMapData();
+            var cameraData = DesignerManager.Instance.MapMode.GetMapData();
             _saveData.cameraZoom = cameraData.Zoom;
             _saveData.mapLocationX = cameraData.CenterX;
             _saveData.mapLocationY = cameraData.CenterY;
-            _saveData.cameraPosition = LevelGeneratorManager.Instance.SceneCameraTransform.position;
+            _saveData.cameraPosition = DesignerManager.Instance.SceneCameraTransform.position;
         }
         
         /// <summary>
@@ -148,12 +148,12 @@ namespace Saving
         /// <returns></returns>
         IEnumerator SaveFile()
         {
-            yield return LevelInfoModal.Instance.WaitForLevelInfo();
+            yield return DesignerManager.Instance.DesignerUIManager.SaveModal.WaitForLevelInfo();
 
-            if (LevelInfoModal.Success)
+            if (LevelSaveModal.Success)
             {
-                _saveData.levelName = LevelInfoModal.Result.Name;
-                _saveData.levelDescription = LevelInfoModal.Result.Description;
+                _saveData.levelName = LevelSaveModal.Result.Name;
+                _saveData.levelDescription = LevelSaveModal.Result.Description;
             }
             else
             {

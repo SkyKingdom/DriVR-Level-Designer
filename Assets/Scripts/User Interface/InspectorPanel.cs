@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class UiNavigation : MonoBehaviour
+public class InspectorPanel : MonoBehaviour
 {
     [SerializeField] private int activeMode;
     [SerializeField] private float panelSize = 920f;
@@ -47,7 +47,7 @@ public class UiNavigation : MonoBehaviour
                 modeButtons[i].GetComponent<Image>().color = inactiveBtnColor;
             }
         }
-        mapToggle.isOn = LevelGeneratorManager.Instance.MapEnabled;
+        mapToggle.isOn = DesignerManager.Instance.MapEnabled;
     }
 
     
@@ -130,7 +130,7 @@ public class UiNavigation : MonoBehaviour
                 break;
         }
     }
-    
+
     private void MoveObj(GameObject element, Vector2 destination, float time)
     {
         foreach (var b in modeButtons)
@@ -140,14 +140,13 @@ public class UiNavigation : MonoBehaviour
 
         element.GetComponent<RectTransform>().DOAnchorPos(destination, time).onComplete += () =>
         {
-            
-                for (int i = 0; i < modeButtons.Count; i++)
-                {
-                    if (!LevelGeneratorManager.Instance.MapEnabled && i == (int)Mode.Map)
-                        continue;
+            for (int i = 0; i < modeButtons.Count; i++)
+            {
+                if (!DesignerManager.Instance.MapEnabled && i == (int)Mode.Map)
+                    continue;
 
-                    modeButtons[i].interactable = true;
-                }
+                modeButtons[i].interactable = true;
+            }
         };
     }
 
