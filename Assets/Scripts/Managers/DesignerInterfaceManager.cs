@@ -8,6 +8,9 @@ namespace Managers
 {
     public class DesignerInterfaceManager : MonoBehaviour
     {
+        [SerializeField] private GameObject canvas;
+        
+        
         #region Blankets
 
         [Header("Blankets")] 
@@ -46,20 +49,26 @@ namespace Managers
             mapToggle.SetIsOnWithoutNotify(value);
         }
 
+        // Handles the mode change
         private void HandleModeChange(Mode oldValue, Mode value)
         {
+            // Show UI if exiting first person mode
+            if (oldValue == Mode.FirstPerson)
+                ShowUI();
+            
             switch (value)
             {
                 case Mode.View:
-                    objectsDrawerBlanket.SetActive(true);
+                    objectsDrawerBlanket.SetActive(true); // Disable object selection in view mode
                     break;
                 case Mode.Edit:
-                    objectsDrawerBlanket.SetActive(false);
+                    objectsDrawerBlanket.SetActive(false); // Enable object selection in edit mode
                     break;
                 case Mode.Map:
-                    objectsDrawerBlanket.SetActive(true);
+                    objectsDrawerBlanket.SetActive(true); // Disable object selection in map mode
                     break;
                 case Mode.FirstPerson:
+                    HideUI(); // Hide UI when entering first person mode
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value), value, null);
@@ -85,5 +94,12 @@ namespace Managers
             objectInteractableBlanket.SetActive(!selectedObject.Interactable);
             objectPlayableBlanket.SetActive(!selectedObject.Playable);
         }
+        
+        // Hides the UI for the first person mode
+        private void HideUI() => canvas.SetActive(false);
+
+        // Shows the UI for when exiting first person mode
+        public void ShowUI() => canvas.SetActive(true);
+
     }
 }

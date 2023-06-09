@@ -51,7 +51,8 @@ public class InspectorPanel : MonoBehaviour
 
     private void HandleModeChange(Mode oldValue, Mode value)
     {
-        OpenModePanel((int)value);
+        if (value != Mode.FirstPerson)
+            OpenModePanel((int)value);
     }
 
 

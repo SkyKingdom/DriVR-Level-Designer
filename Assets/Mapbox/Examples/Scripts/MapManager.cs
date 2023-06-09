@@ -13,8 +13,9 @@ namespace Mapbox.Examples
 	{
 		[Header("Dependencies")]
 		[SerializeField] private GameObject plane;
+		[SerializeField] private CameraController cameraController;
 		
-		[Header("Camera"), SerializeField] private Camera sceneCamera;
+		[field: Header("Camera"), SerializeField] public Camera SceneCamera { get; private set; }
 		private Vector3 _cameraStartPos;
 		
 		[field:Header("Map")]
@@ -34,7 +35,7 @@ namespace Mapbox.Examples
 
 		private void Awake()
 		{
-			_cameraStartPos = sceneCamera.transform.position;
+			_cameraStartPos = SceneCamera.transform.position;
 			if(Map == null)
 			{
 				Debug.LogError("Error: No Abstract Map component found in scene.");
@@ -61,9 +62,38 @@ namespace Mapbox.Examples
 
 		private void Start()
 		{
-			ToggleMap(mapEnabledOnStart);
+			ToggleMap(mapEnabledOnStart); // Sets the map to be enabled or disabled on start
 		}
 
+		private void OnEnable()
+		{
+			DesignerManager.Instance.OnModeChange += OnModeChange;
+		}
+		
+		private void OnDisable()
+		{
+			DesignerManager.Instance.OnModeChange -= OnModeChange;
+		}
+
+		
+		// Handles mode changes
+		private void OnModeChange(Mode oldValue, Mode value)
+		{
+			if (value == Mode.Map)
+			{
+				// Enables camera controller and updates the map
+				cameraController.enabled = true;
+				Map.UpdateMap();
+				Map.ForceUpdateColliders();
+			}
+			else if (oldValue == Mode.Map)
+			{
+				// Disables camera controller
+				cameraController.enabled = false;
+			}
+		}
+
+		// Updates map zoom when slider value changes even when the game is not running
 		private void OnValidate()
 		{
 			if (Map == null) return;
@@ -71,6 +101,7 @@ namespace Mapbox.Examples
 				zoomSlider.value = Map.Zoom;
 		}
 
+		// Handles search
 		private void ForwardGeocoder_OnGeocoderResponse(ForwardGeocodeResponse response)
 		{
 			if (null != response.Features && response.Features.Count > 0)
@@ -88,7 +119,7 @@ namespace Mapbox.Examples
 			}
 			if (resetCamera)
 			{
-				sceneCamera.transform.position = _cameraStartPos;
+				SceneCamera.transform.position = _cameraStartPos;
 			}
 			ForwardGeocoder_OnGeocoderResponse(response);
 		}
@@ -106,11 +137,12 @@ namespace Mapbox.Examples
 		private IEnumerator ReloadAfterDelay(int zoom)
 		{
 			yield return Helpers.GetWait(WaitInSeconds);
-			sceneCamera.transform.position = _cameraStartPos;
+			SceneCamera.transform.position = _cameraStartPos;
 			Map.UpdateMap(Map.CenterLatitudeLongitude, zoom);
 			_reloadRoutine = null;
 		}
 
+		// Toggles map on and off
 		public void ToggleMap(bool value)
 		{
 			Map.gameObject.SetActive(value);
@@ -125,6 +157,7 @@ namespace Mapbox.Examples
 				DesignerManager.Instance.SetMode((int)Mode.Edit);
 		}
 		
+		// Returns map data, position and zoom, used for saving
 		public MapData GetMapData()
 		{
 			var mapData = new MapData
@@ -137,6 +170,8 @@ namespace Mapbox.Examples
 			return mapData;
 		}
 	}
+	
+	// Map data struct
 	public struct MapData
 	{
 		public float Zoom;

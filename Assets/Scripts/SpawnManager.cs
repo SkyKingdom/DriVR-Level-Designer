@@ -2,7 +2,6 @@
 using Actions;
 using Interfaces;
 using Objects;
-using PathCreation.Examples;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
@@ -19,7 +18,7 @@ public class SpawnManager : StaticInstance<SpawnManager>
     private ObjectBase _clickedObject;
     private Toggle _activeToggle;
     
-    private InputHandler _inputHandler;
+    private InputManager _inputManager;
     private ObjectInspector _objectInspector;
     
     public event Action<IEditorInteractable> ObjectSpawned;
@@ -34,19 +33,19 @@ public class SpawnManager : StaticInstance<SpawnManager>
         {
             _objectInspector = FindObjectOfType<ObjectInspector>();
         }
-        if (_inputHandler == null)
+        if (_inputManager == null)
         {
-            _inputHandler = FindObjectOfType<InputHandler>();
-            if (_inputHandler)
-                _inputHandler.OnSpawn += OnSpawn;
+            _inputManager = FindObjectOfType<InputManager>();
+            if (_inputManager)
+                _inputManager.OnSpawn += OnSpawn;
             return;
         } 
-        _inputHandler.OnSpawn += OnSpawn;
+        _inputManager.OnSpawn += OnSpawn;
     }
 
     private void OnDisable()
     {
-        _inputHandler.OnSpawn -= OnSpawn;
+        _inputManager.OnSpawn -= OnSpawn;
     }
 
     #endregion
@@ -152,10 +151,3 @@ public class SpawnManager : StaticInstance<SpawnManager>
     #endregion
 }
 
-[Serializable]
-public enum EditType
-{
-    Object,
-    Path,
-    Road
-}

@@ -2470,7 +2470,7 @@ Transform:
   - {fileID: 918440190}
   - {fileID: 1220277503}
   m_Father: {fileID: 0}
-  m_RootOrder: 23
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &250228498
 GameObject:
@@ -6637,7 +6637,7 @@ GameObject:
   - component: {fileID: 511019095}
   - component: {fileID: 511019094}
   m_Layer: 0
-  m_Name: InputManagerV2
+  m_Name: InputManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6668,8 +6668,8 @@ MonoBehaviour:
     type: 3}
   dragThreshold: 1
   rotationSpeed: 3
-  _selectedObjectBase: {fileID: 0}
-  _hoveredObjectBase: {fileID: 0}
+  selectedObjectBase: {fileID: 0}
+  hoveredObjectBase: {fileID: 0}
 --- !u!4 &511019095
 Transform:
   m_ObjectHideFlags: 0
@@ -6717,13 +6717,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DesignerUIManager>k__BackingField: {fileID: 1220277504}
   <MapManager>k__BackingField: {fileID: 918440189}
-  currentMode: 0
-  sceneCamera: {fileID: 330585543}
-  mainCamera: {fileID: 1915381838}
-  canvas: {fileID: 1797212726}
-  capsule: {fileID: 388333854}
-  mapToggle: {fileID: 1906704895}
-  blanket: {fileID: 514268987}
+  <InputManager>k__BackingField: {fileID: 511019094}
 --- !u!4 &511080673
 Transform:
   m_ObjectHideFlags: 0
@@ -6751,6 +6745,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d368d9684fc9048b756fc5c4177a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneCamera: {fileID: 330585543}
+  mainCamera: {fileID: 1915381838}
+  capsule: {fileID: 388333854}
   escapeAction: {fileID: -4178751805016200710, guid: bc87c2a060bf3134aadc12cd1e3caf69,
     type: 3}
 --- !u!1 &514268987
@@ -7218,9 +7215,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 511080674}
-        m_TargetAssemblyTypeName: PreviewMode, Assembly-CSharp
-        m_MethodName: TogglePreview
+      - m_Target: {fileID: 511080672}
+        m_TargetAssemblyTypeName: DesignerManager, Assembly-CSharp
+        m_MethodName: ToggleFPS
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9546,7 +9543,7 @@ Transform:
   - {fileID: 2414834885076314955}
   - {fileID: 5180339292695496544}
   m_Father: {fileID: 0}
-  m_RootOrder: 22
+  m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &753269541
 GameObject:
@@ -11971,7 +11968,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plane: {fileID: 684948977}
-  sceneCamera: {fileID: 330585545}
+  cameraController: {fileID: 330585548}
+  <SceneCamera>k__BackingField: {fileID: 330585545}
   <Map>k__BackingField: {fileID: 1019011509}
   forwardGeocoder: {fileID: 150799025}
   mapEnabledOnStart: 0
@@ -15325,6 +15323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d142ac6c96449479f3ea41b94d47330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 1797212726}
   objectsDrawerBlanket: {fileID: 514268987}
   objectDetailsBlanket: {fileID: 1359427243}
   objectPathBlanket: {fileID: 663624959}

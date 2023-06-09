@@ -123,7 +123,7 @@ namespace Saving
             _saveData.cameraZoom = cameraData.Zoom;
             _saveData.mapLocationX = cameraData.CenterX;
             _saveData.mapLocationY = cameraData.CenterY;
-            _saveData.cameraPosition = DesignerManager.Instance.SceneCameraTransform.position;
+            _saveData.cameraPosition = DesignerManager.Instance.MapManager.Map.transform.position;
         }
         
         /// <summary>

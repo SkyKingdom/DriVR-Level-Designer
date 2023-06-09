@@ -6,19 +6,18 @@ using UnityEngine.InputSystem;
 using User_Interface;
 using Utilities;
 
-public class InputHandler : StaticInstance<InputHandler>
+public class InputManager : StaticInstance<InputManager>
 {
     [Header("Ray Casting")]
-    [SerializeField] private RectTransform viewportRenderTexture;
-    [SerializeField] private Camera sceneCamera;
-    [SerializeField] private OverViewportCheck overViewportCheck;
-    [SerializeField] private LayerMask objectsMask;
-    [SerializeField] private LayerMask groundMask;
-
-
+    [SerializeField] private RectTransform viewportRenderTexture; // Render texture viewport
+    [SerializeField] private Camera sceneCamera; // Scene camera to cast ray from
+    [SerializeField] private OverViewportCheck overViewportCheck; // Check if mouse is over viewport
+    [SerializeField] private LayerMask objectsMask; // Layer mask for objects
+    [SerializeField] private LayerMask groundMask; // Layer mask for ground
+    
     [Header("Input")] 
     [SerializeField] private InputActionAsset inputActionAsset;
-    
+
     private InputAction _lmb;
     private InputAction _rmb;
     private InputAction _move;
@@ -27,16 +26,16 @@ public class InputHandler : StaticInstance<InputHandler>
     private bool _rmbDown;
     
     [Header("Settings")] 
-    [SerializeField] private float dragThreshold = 1f;
+    [SerializeField] private float dragThreshold = 1f; // Minimum movement to trigger drag
 
-    [SerializeField] private float rotationSpeed = 3f;
+    [SerializeField] private float rotationSpeed = 3f; // Rotation speed of objects
     
     
     private IEditorInteractable _currentHoveredObject;
     private IEditorInteractable _currentSelectedObject;
 
-    [SerializeField] private ObjectBase _selectedObjectBase;
-    [SerializeField] private ObjectBase _hoveredObjectBase;
+    [SerializeField] private ObjectBase selectedObjectBase;
+    [SerializeField] private ObjectBase hoveredObjectBase;
 
     // States
     private bool InEditMode => DesignerManager.Instance.CurrentMode == Mode.Edit;
@@ -58,6 +57,7 @@ public class InputHandler : StaticInstance<InputHandler>
     {
         base.Awake();
         
+        // Get input actions
         _lmb = inputActionAsset.FindActionMap("Default").FindAction("LMB");
         _rmb = inputActionAsset.FindActionMap("Default").FindAction("RMB");
         _move = inputActionAsset.FindActionMap("Default").FindAction("Move");
@@ -65,13 +65,13 @@ public class InputHandler : StaticInstance<InputHandler>
 
     private void Start()
     {
-        DesignerManager.Instance.OnModeChange += OnModeChanged;
         SpawnManager.Instance.ObjectSpawned += OnObjectSpawned;
         SpawnManager.Instance.EditTypeChanged += OnEditTypeChanged;
     }
 
     private void OnEnable()
     {
+        // Enable input actions
         _lmb.Enable();
         _rmb.Enable();
         _move.Enable();
@@ -87,6 +87,7 @@ public class InputHandler : StaticInstance<InputHandler>
     
     private void OnDisable()
     {
+        // Disable input actions
         _move.performed -= OnMove;
 
         _lmb.started -= OnLMBDown;
@@ -128,13 +129,6 @@ public class InputHandler : StaticInstance<InputHandler>
     #endregion
 
     #region Event Handlers
-
-    private void OnModeChanged(Mode oldValue, Mode value)
-    {
-        if (InEditMode) return;
-        
-        DeselectObject();
-    }
     
     private void OnObjectSpawned(IEditorInteractable obj)
     {
@@ -148,7 +142,7 @@ public class InputHandler : StaticInstance<InputHandler>
         if (exitMode == EditType.Path && enterMode == EditType.Object)
         {
             //_currentSelectedObject?.Deselect();
-            _currentSelectedObject = _selectedObjectBase;
+            _currentSelectedObject = selectedObjectBase;
         }
     }
 
@@ -169,7 +163,7 @@ public class InputHandler : StaticInstance<InputHandler>
         { 
             _currentHoveredObject?.OnPointerExit();
             _currentHoveredObject = null;
-            _hoveredObjectBase = null;
+            hoveredObjectBase = null;
             return;
         }
 
@@ -177,7 +171,7 @@ public class InputHandler : StaticInstance<InputHandler>
         if (!hit.transform.TryGetComponent(out IEditorInteractable interactable)) return;
         interactable.OnPointerEnter();
         _currentHoveredObject = interactable;
-        _hoveredObjectBase = hit.transform.GetComponent<ObjectBase>();
+        hoveredObjectBase = hit.transform.GetComponent<ObjectBase>();
     }
     
     private void OnLMBDown(InputAction.CallbackContext obj)
@@ -327,7 +321,7 @@ public class InputHandler : StaticInstance<InputHandler>
         {
             case EditType.Object:
                 _currentSelectedObject = _currentHoveredObject;
-                _selectedObjectBase = _hoveredObjectBase;
+                selectedObjectBase = hoveredObjectBase;
                 break;
             case EditType.Path:
                 _currentSelectedObject = _currentHoveredObject;
@@ -369,7 +363,7 @@ public class InputHandler : StaticInstance<InputHandler>
     {
         _currentSelectedObject?.Deselect();
         _currentSelectedObject = null;
-        _selectedObjectBase = null;
+        selectedObjectBase = null;
         OnDeselect?.Invoke();
     }
 
@@ -377,7 +371,7 @@ public class InputHandler : StaticInstance<InputHandler>
 
     public void DropObject(ObjectBase obj)
     {
-        if (_selectedObjectBase != obj) return;
+        if (selectedObjectBase != obj) return;
         DeselectObject();
     }
 
@@ -385,8 +379,8 @@ public class InputHandler : StaticInstance<InputHandler>
     {
         _currentSelectedObject?.Deselect();
         _currentSelectedObject = obj;
-        _selectedObjectBase = obj;
+        selectedObjectBase = obj;
         _currentSelectedObject?.Select();
-        OnSelect?.Invoke(_selectedObjectBase);
+        OnSelect?.Invoke(selectedObjectBase);
     }
 }

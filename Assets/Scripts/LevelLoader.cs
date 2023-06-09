@@ -34,7 +34,7 @@ public class LevelLoader : MonoBehaviour
         yield return Helpers.GetWait(2f);
 
         if (_saveData.cameraPosition != Vector3.zero)
-            DesignerManager.Instance.SceneCameraTransform.position = _saveData.cameraPosition;
+            DesignerManager.Instance.MapManager.SceneCamera.transform.position = _saveData.cameraPosition;
     }
 
     /// <summary>

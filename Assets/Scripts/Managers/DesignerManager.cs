@@ -1,12 +1,10 @@
 using System;
 using Managers;
 using Mapbox.Examples;
-using Mapbox.Unity.Map;
 using Mapbox.Utils;
 using Saving;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using Utilities;
 
 [Serializable]
@@ -18,96 +16,63 @@ public enum Mode
     FirstPerson = 3
 }
 
+[Serializable]
+public enum EditType
+{
+    Object = 0,
+    Path = 1,
+    Road = 2
+}
+
 public class DesignerManager : StaticInstance<DesignerManager>
 {
     #region Managers
 
     [field: SerializeField, Header("Dependencies")] public DesignerInterfaceManager DesignerUIManager { get; private set; }
     [field: SerializeField] public MapManager MapManager { get; private set; }
+    
+    [field: SerializeField] public InputManager InputManager { get; private set; }
 
     #endregion
-
-    private ModeBase activeMode;
-    [SerializeField] private Mode currentMode = Mode.View;
-    public Mode CurrentMode => currentMode;
     
+    // Stores the current mode
+    public Mode CurrentMode { get; private set; }
+    
+    // Event for when the mode changes
     public event Action<Mode, Mode> OnModeChange;
     
-    [Header("FPS Mode")]
-    [SerializeField] private GameObject sceneCamera;
-    [SerializeField] private GameObject mainCamera;
-    [SerializeField] private GameObject canvas;
-    [SerializeField] private GameObject capsule;
-    
-    [Header("Objects Blanket")] 
-    [SerializeField] private GameObject blanket;
-
-    public Transform SceneCameraTransform => sceneCamera.transform;
-    // Modes
-    private MapMode _mapMode;
-    public MapMode MapMode => _mapMode;
-    private EditMode _editMode;
-    public EditMode EditMode => _editMode;
-    private ViewMode _viewMode;
-    public ViewMode ViewMode => _viewMode;
-
-    private FirstPersonMode _firstPersonMode;
-    public FirstPersonMode FirstPersonMode => _firstPersonMode;
-
     private void Start()
     {
-        _mapMode = new MapMode(MapManager.Map , FindObjectOfType<CameraController>());
-        _editMode = new EditMode(FindObjectOfType<SpawnManager>(), blanket);
-        _viewMode = new ViewMode();
-        _firstPersonMode = new FirstPersonMode(sceneCamera, mainCamera, canvas, capsule);
-        SetMode((int)Mode.Edit);
+        SetMode((int)Mode.Edit); // Default to Edit mode
     }
     
-    private void ChangeMode(ModeBase newMode)
-    {
-        activeMode?.OnExit();
-        activeMode = newMode;
-        activeMode?.OnEnter();
-    }
-
+    // Sets the current mode
     public void SetMode(int modeIndex)
     {
-        var oldMode = currentMode;
-        switch ((Mode)modeIndex)
-        {
-            case Mode.Map:
-                ChangeMode(_mapMode);
-                currentMode = (Mode)modeIndex;
-                break;
-            case Mode.Edit:
-                ChangeMode(_editMode);
-                currentMode = (Mode)modeIndex;
-                break;
-            case Mode.View:
-                ChangeMode(_viewMode);
-                currentMode = (Mode)modeIndex;
-                break;
-            case Mode.FirstPerson:
-                ChangeMode(_firstPersonMode);
-                currentMode = (Mode)modeIndex;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(modeIndex), modeIndex, null);
-        }
-
-        OnModeChange?.Invoke(oldMode, currentMode);
+        var oldMode = CurrentMode;
+        CurrentMode = (Mode)modeIndex;
+        // Event passes the old mode and the new mode
+        OnModeChange?.Invoke(oldMode, CurrentMode);
     }
 
+    // Exits to the main menu
     public async void ExitToMenu()
     {
         await LevelDataManager.Instance.Cleanup();
         SceneManager.LoadScene(1);
     }
 
+    // Loads the map with the given zoom and position
     public void LoadMap(float zoom, double posX, double posY)
     {
         MapManager.ToggleMap(true);
         var center = new Vector2d(posX, posY);
         MapManager.Map.Initialize(center, (int)zoom);
+    }
+    
+    // Enters first person mode
+    public void ToggleFPS()
+    {
+        SetMode((int)Mode.FirstPerson);
     }
 }

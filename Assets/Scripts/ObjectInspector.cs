@@ -39,14 +39,14 @@ public class ObjectInspector : MonoBehaviour
 
     private void OnEnable()
     {
-        InputHandler.Instance.OnSelect += SelectObject;
-        InputHandler.Instance.OnDeselect += DeselectObject;
+        InputManager.Instance.OnSelect += SelectObject;
+        InputManager.Instance.OnDeselect += DeselectObject;
     }
 
     private void OnDisable()
     {
-        InputHandler.Instance.OnSelect -= SelectObject;
-        InputHandler.Instance.OnDeselect -= DeselectObject;
+        InputManager.Instance.OnSelect -= SelectObject;
+        InputManager.Instance.OnDeselect -= DeselectObject;
     }
 
     public void SelectObject(IEditorInteractable interactable)
