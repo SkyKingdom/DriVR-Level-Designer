@@ -1,386 +1,133 @@
 ﻿using System;
 using Interfaces;
-using Objects;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using User_Interface;
-using Utilities;
 
-public class InputManager : StaticInstance<InputManager>
+namespace Managers
 {
-    [Header("Ray Casting")]
-    [SerializeField] private RectTransform viewportRenderTexture; // Render texture viewport
-    [SerializeField] private Camera sceneCamera; // Scene camera to cast ray from
-    [SerializeField] private OverViewportCheck overViewportCheck; // Check if mouse is over viewport
-    [SerializeField] private LayerMask objectsMask; // Layer mask for objects
-    [SerializeField] private LayerMask groundMask; // Layer mask for ground
-    
-    [Header("Input")] 
-    [SerializeField] private InputActionAsset inputActionAsset;
-
-    private InputAction _lmb;
-    private InputAction _rmb;
-    private InputAction _move;
-
-    private bool _lmbDown;
-    private bool _rmbDown;
-    
-    [Header("Settings")] 
-    [SerializeField] private float dragThreshold = 1f; // Minimum movement to trigger drag
-
-    [SerializeField] private float rotationSpeed = 3f; // Rotation speed of objects
-    
-    
-    private IEditorInteractable _currentHoveredObject;
-    private IEditorInteractable _currentSelectedObject;
-
-    [SerializeField] private ObjectBase selectedObjectBase;
-    [SerializeField] private ObjectBase hoveredObjectBase;
-
-    // States
-    private bool InEditMode => DesignerManager.Instance.CurrentMode == Mode.Edit;
-    
-    // Start and end positions of the mouse drag
-    private Vector2 _mouseStartPosition;
-    private Vector2 _mouseEndPosition;
-    private Vector2 _lastMousePosition;
-    
-    // Events
-    public event Action<IEditorInteractable> OnSelect;
-    public event Action OnDeselect;
-    public event Action<Vector3> OnSpawn;
-
-
-    #region Unity Methods
-
-    protected override void Awake()
+    public class InputManager : MonoBehaviour
     {
-        base.Awake();
-        
-        // Get input actions
-        _lmb = inputActionAsset.FindActionMap("Default").FindAction("LMB");
-        _rmb = inputActionAsset.FindActionMap("Default").FindAction("RMB");
-        _move = inputActionAsset.FindActionMap("Default").FindAction("Move");
-    }
-
-    private void Start()
-    {
-        SpawnManager.Instance.ObjectSpawned += OnObjectSpawned;
-        SpawnManager.Instance.EditTypeChanged += OnEditTypeChanged;
-    }
-
-    private void OnEnable()
-    {
-        // Enable input actions
-        _lmb.Enable();
-        _rmb.Enable();
-        _move.Enable();
-        
-        _move.performed += OnMove;
-
-        _lmb.started += OnLMBDown;
-        _lmb.canceled += OnLMBUp;
-        
-        _rmb.started += OnRMBDown;
-        _rmb.canceled += OnRMBUp;
-    }
+        [Header("Ray Casting")]
+        [SerializeField] private RectTransform viewportRenderTexture; // Render texture viewport
+        [SerializeField] private Camera sceneCamera; // Scene camera to cast ray from
+        [SerializeField] private LayerMask objectsMask; // Layer mask for objects
+        [SerializeField] private LayerMask groundMask; // Layer mask for ground
     
-    private void OnDisable()
-    {
-        // Disable input actions
-        _move.performed -= OnMove;
+        [Header("Input")] 
+        [SerializeField] private InputActionAsset inputActionAsset;
 
-        _lmb.started -= OnLMBDown;
-        _lmb.canceled -= OnLMBUp;
-        
-        _rmb.started -= OnRMBDown;
-        _rmb.canceled -= OnRMBUp;
-        
-        _lmb.Disable();
-        _rmb.Disable();
-        _move.Disable();
-    }
+        private InputAction _lmb;
+        private InputAction _rmb;
+        private InputAction _move;
 
-    private void Update()
-    {
-        if (_currentSelectedObject == null) return;
-        if (!overViewportCheck.IsOverViewport)
+        [Header("Settings")] 
+        [SerializeField] private float dragThreshold = 1f; // Minimum movement to trigger drag
+
+        [SerializeField] private float rotationSpeed = 3f; // Rotation speed of objects
+
+    
+        #region Events
+
+        public event Action<IEditorInteractable, Vector3> OnMouseMove;
+        public event Action OnLmbDown;
+        public event Action OnLmbUp;
+        public event Action OnRmbDown;
+        public event Action OnRmbUp;
+
+        #endregion
+
+        #region Unity Methods
+
+        protected void Awake()
         {
-            if (_lmbDown)
-            {
-                OnLMBUp();
-                return;
+            // Get input actions
+            _lmb = inputActionAsset.FindActionMap("Default").FindAction("LMB");
+            _rmb = inputActionAsset.FindActionMap("Default").FindAction("RMB");
+            _move = inputActionAsset.FindActionMap("Default").FindAction("Move");
+        }
+
+        private void OnEnable()
+        {
+            // Enable input actions
+            _lmb.Enable();
+            _rmb.Enable();
+            _move.Enable();
+        
+            _move.performed += OnMove;
+
+            _lmb.started += OnLMBDown;
+            _lmb.canceled += OnLMBUp;
+        
+            _rmb.started += OnRMBDown;
+            _rmb.canceled += OnRMBUp;
+        }
+    
+        private void OnDisable()
+        {
+            // Disable input actions
+            _move.performed -= OnMove;
+
+            _lmb.started -= OnLMBDown;
+            _lmb.canceled -= OnLMBUp;
+        
+            _rmb.started -= OnRMBDown;
+            _rmb.canceled -= OnRMBUp;
+        
+            _lmb.Disable();
+            _rmb.Disable();
+            _move.Disable();
+        }
+    
+        #endregion
+
+        #region Input Methods
+
+        private void OnMove(InputAction.CallbackContext obj)
+        {
+            var ray = GetRayFromMousePosition(obj.ReadValue<Vector2>());
+            IEditorInteractable editorObj = null;
+            Vector3 pos = Vector3.zero;
+            // Remove hover from previous object if raycast doesn't hit anything
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, objectsMask))
+            { 
+                editorObj = hit.transform.GetComponent<IEditorInteractable>();
             }
+            pos = GetGroundHitPosition(ray);
+            OnMouseMove?.Invoke(editorObj, pos);
         }
-        var mousePos = Mouse.current.position.ReadValue();
-        if (_lmbDown && Vector2.Distance(_mouseStartPosition, mousePos) > dragThreshold && overViewportCheck.IsOverViewport)
+
+        private void OnLMBDown(InputAction.CallbackContext obj) => OnLmbDown?.Invoke();
+
+        private void OnLMBUp(InputAction.CallbackContext obj) => OnLmbUp?.Invoke();
+
+        private void OnRMBDown(InputAction.CallbackContext obj) => OnRmbDown?.Invoke();
+
+        private void OnRMBUp(InputAction.CallbackContext obj) => OnRmbUp?.Invoke();
+
+        #endregion
+    
+
+        #region Helper Methods
+
+        private Ray GetRayFromMousePosition(Vector2 mousePosition)
         {
-            _currentSelectedObject.OnDrag(GetGroundHitPosition(GetRayFromMousePosition(mousePos)));
-            return;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(viewportRenderTexture, mousePosition, null,
+                out var localPoint);
+            var rect = viewportRenderTexture.rect;
+            var pivot = viewportRenderTexture.pivot;
+            localPoint.x = (localPoint.x / rect.width) + pivot.x;
+            localPoint.y = (localPoint.y / rect.height) + pivot.x;
+            return sceneCamera.ViewportPointToRay(localPoint);
         }
-
-        if (_rmbDown && Vector2.Distance(_mouseStartPosition, mousePos) > dragThreshold)
+    
+        private Vector3 GetGroundHitPosition(Ray ray)
         {
-            float mouseTravel = CalculateMouseTravel(mousePos);
-            _currentSelectedObject.OnRotate(mouseTravel);
-        }
-    }
-    
-    #endregion
-
-    #region Event Handlers
-    
-    private void OnObjectSpawned(IEditorInteractable obj)
-    {
-        _currentSelectedObject = obj;
-        _currentSelectedObject.Select();
-    }
-    
-    
-    private void OnEditTypeChanged(EditType exitMode, EditType enterMode)
-    {
-        if (exitMode == EditType.Path && enterMode == EditType.Object)
-        {
-            //_currentSelectedObject?.Deselect();
-            _currentSelectedObject = selectedObjectBase;
-        }
-    }
-
-    #endregion
-    
-    #region Input Methods
-
-    private void OnMove(InputAction.CallbackContext obj)
-    {
-        if (!InEditMode) return;
-        if (!overViewportCheck.IsOverViewport) return;
-        if (_rmbDown || _lmbDown) return;
-        
-        var ray = GetRayFromMousePosition(obj.ReadValue<Vector2>());
-        
-        // Remove hover from previous object if raycast doesn't hit anything
-        if (!Physics.Raycast(ray, out var hit, Mathf.Infinity, objectsMask))
-        { 
-            _currentHoveredObject?.OnPointerExit();
-            _currentHoveredObject = null;
-            hoveredObjectBase = null;
-            return;
+            if (!Physics.Raycast(ray, out var hit, Mathf.Infinity, groundMask)) return Vector3.zero;
+            var hitPos = hit.point;
+            hitPos.y = 0;
+            return hitPos;
         }
 
-        // If hovered object is interactable, hover over it
-        if (!hit.transform.TryGetComponent(out IEditorInteractable interactable)) return;
-        interactable.OnPointerEnter();
-        _currentHoveredObject = interactable;
-        hoveredObjectBase = hit.transform.GetComponent<ObjectBase>();
-    }
-    
-    private void OnLMBDown(InputAction.CallbackContext obj)
-    {
-        if (!InEditMode) return;
-        if (!overViewportCheck.IsOverViewport) return;
-        if (_rmbDown) return;
-        
-        _lmbDown = true;
-        _mouseStartPosition = Mouse.current.position.ReadValue();
-        
-        HandleClick();
-    }
-    
-    private void OnLMBUp(InputAction.CallbackContext obj)
-    {
-        if (!InEditMode) return;
-        if (!overViewportCheck.IsOverViewport) return;
-        if (_rmbDown) return;
-        
-        _lmbDown = false;
-        _mouseEndPosition = Mouse.current.position.ReadValue();
-        
-        bool isDrag = Vector2.Distance(_mouseStartPosition, _mouseEndPosition) > dragThreshold;
-
-        if (isDrag)
-        {
-            _currentSelectedObject?.OnDragRelease();
-        }
-    }
-
-    private void OnLMBUp()
-    {
-        if (!InEditMode) return;
-        if (_rmbDown) return;
-        
-        _lmbDown = false;
-        _mouseEndPosition = Mouse.current.position.ReadValue();
-        
-        bool isDrag = Vector2.Distance(_mouseStartPosition, _mouseEndPosition) > dragThreshold;
-
-        if (isDrag)
-        {
-            _currentSelectedObject?.OnDragRelease();
-        }
-    }
-    
-    private void OnRMBDown(InputAction.CallbackContext obj)
-    {
-        if (!InEditMode) return;
-        if (!overViewportCheck.IsOverViewport) return;
-        if (_lmbDown) return;
-        
-        if (SpawnManager.Instance.EditType == EditType.Path || SpawnManager.Instance.EditType == EditType.Road)
-        {
-            _currentSelectedObject?.Deselect();
-            _currentSelectedObject = null;
-            _currentHoveredObject?.OnRotate(0f);
-            return;
-        }
-        
-        _rmbDown = true;
-        _mouseStartPosition = Mouse.current.position.ReadValue();
-        HandleClick();
-    }
-    
-    private void OnRMBUp(InputAction.CallbackContext obj)
-    {
-        if (!InEditMode) return;
-        if (_lmbDown) return;
-        
-        _rmbDown = false;
-        _mouseEndPosition = Mouse.current.position.ReadValue();
-        
-        bool isDrag = Vector2.Distance(_mouseStartPosition, _mouseEndPosition) > dragThreshold;
-
-        if (isDrag)
-        {
-            _currentSelectedObject?.OnRotateRelease();
-        }
-    }
-
-    #endregion
-
-    #region Private Methods
-    
-    private void HandleClick()
-    {
-        if (_currentHoveredObject != null)
-        {
-            SelectHoveredObject();
-            return;
-        }
-        
-        var ray = GetRayFromMousePosition(Mouse.current.position.ReadValue());
-
-        // Check if raycast hits ground
-        if (!Physics.Raycast(ray, out var spawnHit)) return;
-
-        if (SpawnManager.Instance.EditType == EditType.Object && !SpawnManager.Instance.PrefabToSpawn)
-        {
-            DeselectObject();
-                return;
-        }
-        
-        var pos = spawnHit.point;
-        pos.y = 0;
-        
-        switch (SpawnManager.Instance.EditType)
-        {
-            case EditType.Object:
-                OnSpawn?.Invoke(pos);
-                return;
-            case EditType.Path:
-                OnSpawn?.Invoke(pos);
-                return;
-            case EditType.Road:
-                OnSpawn?.Invoke(pos);
-                return;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
-    
-    private float CalculateMouseTravel(Vector2 mousePos)
-    {
-        var distance = _lastMousePosition.x - mousePos.x;
-        if (Mathf.Abs(distance) > dragThreshold)
-        {
-            // Change rotation direction based on distance direction
-            distance = distance switch
-            {
-                > 0 => rotationSpeed,
-                < 0 => -rotationSpeed,
-                _ => distance
-            };
-        }
-        // Update mouse start position to current position
-        _lastMousePosition = mousePos;
-        return distance;
-    }
-    
-    private void SelectHoveredObject()
-    {
-        _currentSelectedObject?.Deselect();
-        switch (SpawnManager.Instance.EditType)
-        {
-            case EditType.Object:
-                _currentSelectedObject = _currentHoveredObject;
-                selectedObjectBase = hoveredObjectBase;
-                break;
-            case EditType.Path:
-                _currentSelectedObject = _currentHoveredObject;
-                break;
-            case EditType.Road:
-                _currentSelectedObject = _currentHoveredObject;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-        OnSelect?.Invoke(_currentSelectedObject);
-        _currentSelectedObject?.Select();
-    }
-
-    #endregion
-
-    #region Helper Methods
-
-    private Ray GetRayFromMousePosition(Vector2 mousePosition)
-    {
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(viewportRenderTexture, mousePosition, null,
-            out var localPoint);
-        var rect = viewportRenderTexture.rect;
-        var pivot = viewportRenderTexture.pivot;
-        localPoint.x = (localPoint.x / rect.width) + pivot.x;
-        localPoint.y = (localPoint.y / rect.height) + pivot.x;
-        return sceneCamera.ViewportPointToRay(localPoint);
-    }
-    
-    private Vector3 GetGroundHitPosition(Ray ray)
-    {
-        if (!Physics.Raycast(ray, out var hit, Mathf.Infinity, groundMask)) return Vector3.zero;
-        var hitPos = hit.point;
-        hitPos.y = 0;
-        return hitPos;
-    }
-
-    private void DeselectObject()
-    {
-        _currentSelectedObject?.Deselect();
-        _currentSelectedObject = null;
-        selectedObjectBase = null;
-        OnDeselect?.Invoke();
-    }
-
-    #endregion
-
-    public void DropObject(ObjectBase obj)
-    {
-        if (selectedObjectBase != obj) return;
-        DeselectObject();
-    }
-
-    public void SelectObject(ObjectBase obj)
-    {
-        _currentSelectedObject?.Deselect();
-        _currentSelectedObject = obj;
-        selectedObjectBase = obj;
-        _currentSelectedObject?.Select();
-        OnSelect?.Invoke(selectedObjectBase);
+        #endregion
     }
 }

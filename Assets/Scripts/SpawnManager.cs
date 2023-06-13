@@ -1,6 +1,7 @@
 ﻿using System;
 using Actions;
 using Interfaces;
+using Managers;
 using Objects;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,8 +9,8 @@ using Utilities;
 
 public class SpawnManager : StaticInstance<SpawnManager>
 {
-    [SerializeField] private EditType editType = EditType.Object;
-    public EditType EditType => editType;
+    [SerializeField] private EditMode editMode = EditMode.Object;
+    public EditMode EditMode => editMode;
     
     [SerializeField] private ObjectBase prefabToSpawn;
     public ObjectBase PrefabToSpawn => prefabToSpawn;
@@ -22,55 +23,10 @@ public class SpawnManager : StaticInstance<SpawnManager>
     private ObjectInspector _objectInspector;
     
     public event Action<IEditorInteractable> ObjectSpawned;
-    public event Action<EditType, EditType> EditTypeChanged;
-        
-
-    #region Unity Methods
-
-    private void OnEnable()
-    {
-        if (_objectInspector == null)
-        {
-            _objectInspector = FindObjectOfType<ObjectInspector>();
-        }
-        if (_inputManager == null)
-        {
-            _inputManager = FindObjectOfType<InputManager>();
-            if (_inputManager)
-                _inputManager.OnSpawn += OnSpawn;
-            return;
-        } 
-        _inputManager.OnSpawn += OnSpawn;
-    }
-
-    private void OnDisable()
-    {
-        _inputManager.OnSpawn -= OnSpawn;
-    }
-
-    #endregion
     
-    private void OnSpawn(Vector3 position)
-    {
-        switch (editType)
-        {
-            case EditType.Object:
-                SpawnObject(position);
-                break;
-            case EditType.Path:
-                SpawnPathPoint(position);
-                break;
-            case EditType.Road:
-                SpawnRoad(position);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
-
     #region Spawning Methods
 
-    private void SpawnObject(Vector3 pos)
+    public void SpawnObject(Vector3 pos)
     {
         if (prefabToSpawn == null) return;
         
@@ -86,7 +42,7 @@ public class SpawnManager : StaticInstance<SpawnManager>
         PathManager.Instance.HandlePathPointSpawn(pos);
     }
 
-    private void SpawnRoad(Vector3 pos)
+    public void AddRoadPoint(Vector3 pos)
     {
         var action = new RoadPointAction(pos);
         ActionRecorder.Instance.Record(action);
@@ -95,11 +51,6 @@ public class SpawnManager : StaticInstance<SpawnManager>
     #endregion
 
     #region Mode Methods
-
-    public void ToggleRoadTool(bool value)
-    {
-        HandleEditTypeChange(value ? EditType.Road : EditType.Object);
-    }
     
     public void SelectObject(ObjectBase prefab)
     {
@@ -124,30 +75,6 @@ public class SpawnManager : StaticInstance<SpawnManager>
         _activeToggle.isOn = false;
     }
     
-    public void TogglePathTool()
-    {
-        HandleEditTypeChange(editType == EditType.Path ? EditType.Object : EditType.Path);
-    }
-
-    public void HandleEditTypeChange(EditType type)
-    {
-        EditTypeChanged?.Invoke(editType, type);
-        editType = type;
-        switch (type)
-        {
-            case EditType.Object:
-                break;
-            case EditType.Path:
-                prefabToSpawn = null;
-                break;
-            case EditType.Road:
-                prefabToSpawn = null;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(type), type, null);
-        }
-    }
-
     #endregion
 }
 

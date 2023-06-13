@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Buffers;
 using Actions;
 using Interfaces;
-using Objects;
 using UnityEngine;
 
 public class RoadPointContainer : MonoBehaviour, IEditorInteractable
 {
     private RoadPoint _roadPoint;
+    public RoadPoint RoadPoint => _roadPoint;
 
     [SerializeField] private Material defaultMaterial;
     [SerializeField] private Material hoverMaterial;
@@ -46,8 +45,7 @@ public class RoadPointContainer : MonoBehaviour, IEditorInteractable
 
     public void OnDrag(Vector3 position)
     {
-        if (SpawnManager.Instance.EditType == EditType.Road)
-            transform.position = position;
+        transform.position = position;
     }
 
     public void OnDragRelease()
@@ -66,7 +64,7 @@ public class RoadPointContainer : MonoBehaviour, IEditorInteractable
 
     public void OnRotate(float angle)
     {
-        if (SpawnManager.Instance.EditType != EditType.Road) return;
+        if (SpawnManager.Instance.EditMode != EditMode.Road) return;
         var action = new RoadDeleteAction(_roadPoint);
         ActionRecorder.Instance.Record(action);
     }
@@ -89,8 +87,8 @@ public class RoadPointContainer : MonoBehaviour, IEditorInteractable
         _renderer.material = defaultMaterial;
     }
 
-    public ObjectBase GetObject()
+    public Transform GetTransform()
     {
-        return null;
+        return transform;
     }
 }

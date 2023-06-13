@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Actions;
 using Interfaces;
 using Managers;
@@ -19,8 +17,10 @@ public class ObjectInspector : MonoBehaviour
 
     [SerializeField] private ObjectBase selectedObject;
     public ObjectBase SelectedObject => selectedObject;
-    
-    [Header("Object Details")]
+
+    #region UI References
+
+    [Header("Object Details UI")]
     [SerializeField] private TMP_InputField objectName;
     [SerializeField] private TMP_InputField objectSpeed;
     [SerializeField] private TMP_InputField objectPathStart;
@@ -31,6 +31,8 @@ public class ObjectInspector : MonoBehaviour
     [SerializeField] private Toggle animateOnStart;
     [SerializeField] private Toggle alwaysInteractable;
 
+    #endregion
+
 
     private void Start()
     {
@@ -39,19 +41,18 @@ public class ObjectInspector : MonoBehaviour
 
     private void OnEnable()
     {
-        InputManager.Instance.OnSelect += SelectObject;
-        InputManager.Instance.OnDeselect += DeselectObject;
+
     }
 
     private void OnDisable()
     {
-        InputManager.Instance.OnSelect -= SelectObject;
-        InputManager.Instance.OnDeselect -= DeselectObject;
+
     }
 
+    // TODO: Refactor after implementing selection manager
     public void SelectObject(IEditorInteractable interactable)
     {
-        var obj = interactable.GetObject();
+        var obj = interactable.GetTransform();
         if (selectedObject != null)
         {
             SaveData();
@@ -66,13 +67,14 @@ public class ObjectInspector : MonoBehaviour
             return;
         }
         
-        obj.Select();
-        selectedObject = obj;
+        //obj.Select();
+        //selectedObject = obj;
         _uiManager.UpdateDetailsPanelBlankets(selectedObject);
         PathManager.Instance.SelectObject(selectedObject);
         LoadData();
     }
 
+    // TODO: Refactor after implementing selection manager
     public void DeselectObject()
     {
         if (selectedObject == null) return;
@@ -84,6 +86,9 @@ public class ObjectInspector : MonoBehaviour
         PathManager.Instance.DeselectObject();
     }
 
+    /// <summary>
+    /// Loads the data of the selected object into the inspector
+    /// </summary>
     private void LoadData()
     {
         objectName.text = selectedObject.ObjectName;
@@ -106,9 +111,14 @@ public class ObjectInspector : MonoBehaviour
         {
             objectPovStart.text = selectedObject.Playable.SwitchTime.ToString("F1");
         }
+        
+        // Avoids the data resetting when clicking on a loaded object
         SaveData();
     }
     
+    /// <summary>
+    /// Saves the data of the selected object into the inspector
+    /// </summary>
     public void SaveData()
     {
         selectedObject.Rename(objectName.text);
@@ -136,6 +146,9 @@ public class ObjectInspector : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Clears the data of the inspector
+    /// </summary>
     private void ClearData()
     {
         objectName.text = "";
@@ -149,6 +162,7 @@ public class ObjectInspector : MonoBehaviour
         alwaysInteractable.isOn = false;
     }
     
+    // TODO: Refactor
     public void DeleteObject()
     {
         if (selectedObject == null) return;
@@ -157,8 +171,8 @@ public class ObjectInspector : MonoBehaviour
         DeselectObject();
     }
 
-    public void SaveLevel()
-    {
-        LevelDataManager.Instance.SaveLevel();
-    }
+    /// <summary>
+    /// Calls the level data manager to save the level
+    /// </summary>
+    public void SaveLevel() => LevelDataManager.Instance.SaveLevel();
 }

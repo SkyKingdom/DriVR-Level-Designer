@@ -1,4 +1,5 @@
-﻿using Objects;
+﻿using Managers;
+using Objects;
 using UnityEngine;
 
 namespace Actions
@@ -15,17 +16,15 @@ namespace Actions
         }
         public override void Execute()
         {
-            //_settingsManager.SelectObject(_spawnedObject);
-            InputManager.Instance.SelectObject(_spawnedObject);
+
         }
 
         public override void Undo()
         {
-            if (_objectInspector.SelectedObject == _spawnedObject)
-            {
-                _objectInspector.DeselectObject();
-            }
-            InputManager.Instance.DropObject(_spawnedObject);
+            // if (_objectInspector.SelectedObject == _spawnedObject)
+            // {
+            //     _objectInspector.DeselectObject();
+            // }
             
             _spawnedObject.Delete();
         }

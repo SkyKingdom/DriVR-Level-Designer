@@ -152,7 +152,7 @@ namespace Objects
 
     public void OnDrag(Vector3 position)
     {
-      if (SpawnManager.Instance.EditType == EditType.Object && !SpawnManager.Instance.PrefabToSpawn)
+      if (SpawnManager.Instance.EditMode == EditMode.Object && !SpawnManager.Instance.PrefabToSpawn)
         transform.position = position;
     }
 
@@ -170,7 +170,7 @@ namespace Objects
 
     public void OnRotate(float angle)
     {
-      if (SpawnManager.Instance.EditType == EditType.Object && !SpawnManager.Instance.PrefabToSpawn)
+      if (SpawnManager.Instance.EditMode == EditMode.Object && !SpawnManager.Instance.PrefabToSpawn)
         transform.Rotate(0f, angle, 0f);
     }
 
@@ -212,9 +212,9 @@ namespace Objects
       }
     }
 
-    public ObjectBase GetObject()
+    public Transform GetTransform()
     {
-      return this;
+      return transform;
     }
 
     #endregion

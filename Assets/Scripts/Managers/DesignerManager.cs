@@ -17,7 +17,7 @@ public enum Mode
 }
 
 [Serializable]
-public enum EditType
+public enum EditMode
 {
     Object = 0,
     Path = 1,
@@ -32,14 +32,18 @@ public class DesignerManager : StaticInstance<DesignerManager>
     [field: SerializeField] public MapManager MapManager { get; private set; }
     
     [field: SerializeField] public InputManager InputManager { get; private set; }
+    
+    [field: SerializeField] public SpawnManager SpawnManager { get; private set; }
 
     #endregion
     
     // Stores the current mode
     public Mode CurrentMode { get; private set; }
+    public EditMode CurrentEditMode { get; private set; }
     
     // Event for when the mode changes
     public event Action<Mode, Mode> OnModeChange;
+    public event Action<EditMode, EditMode> OnEditTypeChange;
     
     private void Start()
     {
@@ -53,6 +57,14 @@ public class DesignerManager : StaticInstance<DesignerManager>
         CurrentMode = (Mode)modeIndex;
         // Event passes the old mode and the new mode
         OnModeChange?.Invoke(oldMode, CurrentMode);
+    }
+    
+    public void SetEditMode(int editModeIndex)
+    {
+        var oldMode = CurrentEditMode;
+        CurrentEditMode = (EditMode)editModeIndex;
+        // Event passes the old mode and the new mode
+        OnEditTypeChange?.Invoke(oldMode, CurrentEditMode);
     }
 
     // Exits to the main menu
@@ -74,5 +86,27 @@ public class DesignerManager : StaticInstance<DesignerManager>
     public void ToggleFPS()
     {
         SetMode((int)Mode.FirstPerson);
+    }
+
+    public void ToggleRoadEdit(bool value)
+    {
+        if (value)
+        {
+            SetEditMode((int) EditMode.Road);
+            return;
+        }
+        
+        SetEditMode((int) EditMode.Object);
+    }
+    
+    public void TogglePathMode(bool value)
+    {
+        if (value)
+        {
+            SetEditMode((int) EditMode.Path);
+            return;
+        }
+        
+        SetEditMode((int) EditMode.Object);
     }
 }

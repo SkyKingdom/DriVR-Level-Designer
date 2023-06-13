@@ -45,7 +45,7 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
 
     public void OnDrag(Vector3 position)
     {
-        if (SpawnManager.Instance.EditType != EditType.Path) return;
+        if (SpawnManager.Instance.EditMode != EditMode.Path) return;
         transform.position = position;
     }
 
@@ -63,7 +63,7 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
 
     public void OnRotate(float angle)
     {
-        if (SpawnManager.Instance.EditType != EditType.Path) return;
+        if (SpawnManager.Instance.EditMode != EditMode.Path) return;
         
         var action = new PathDeleteAction(Node);
         ActionRecorder.Instance.Record(action);
@@ -90,9 +90,9 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
         Node.Owner.Path.UnhighlightPath(this);
     }
 
-    public ObjectBase GetObject()
+    public Transform GetTransform()
     {
-        return Node.Owner;
+        return Node.Owner.transform;
     }
 
     public void Highlight()

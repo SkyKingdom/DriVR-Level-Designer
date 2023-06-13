@@ -2469,6 +2469,7 @@ Transform:
   - {fileID: 511080673}
   - {fileID: 918440190}
   - {fileID: 1220277503}
+  - {fileID: 1218429882}
   m_Father: {fileID: 0}
   m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6657,7 +6658,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewportRenderTexture: {fileID: 451669699}
   sceneCamera: {fileID: 330585545}
-  overViewportCheck: {fileID: 930018701}
   objectsMask:
     serializedVersion: 2
     m_Bits: 55
@@ -6668,8 +6668,6 @@ MonoBehaviour:
     type: 3}
   dragThreshold: 1
   rotationSpeed: 3
-  selectedObjectBase: {fileID: 0}
-  hoveredObjectBase: {fileID: 0}
 --- !u!4 &511019095
 Transform:
   m_ObjectHideFlags: 0
@@ -6718,6 +6716,7 @@ MonoBehaviour:
   <DesignerUIManager>k__BackingField: {fileID: 1220277504}
   <MapManager>k__BackingField: {fileID: 918440189}
   <InputManager>k__BackingField: {fileID: 511019094}
+  <SpawnManager>k__BackingField: {fileID: 1660685786}
 --- !u!4 &511080673
 Transform:
   m_ObjectHideFlags: 0
@@ -10888,9 +10887,9 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1660685786}
-        m_TargetAssemblyTypeName: ObjectManager, Assembly-CSharp
-        m_MethodName: ToggleRoadTool
+      - m_Target: {fileID: 511080672}
+        m_TargetAssemblyTypeName: DesignerManager, Assembly-CSharp
+        m_MethodName: ToggleRoadEdit
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15279,6 +15278,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1202554367}
   m_CullTransparentMesh: 1
+--- !u!1 &1218429881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1218429882}
+  - component: {fileID: 1218429883}
+  m_Layer: 0
+  m_Name: ObjectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1218429882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218429881}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 243194647}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1218429883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218429881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e19ebc9ad8048f8ae96a8d026173802, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overViewportCheck: {fileID: 930018701}
+  <DragThreshold>k__BackingField: 1
+  <RotationSpeed>k__BackingField: 3
 --- !u!1 &1220277502
 GameObject:
   m_ObjectHideFlags: 0
@@ -20016,7 +20062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff3465e741840ccb5512bdc790b1b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editType: 0
+  editMode: 0
   prefabToSpawn: {fileID: 0}
 --- !u!4 &1660685787
 Transform:
@@ -22159,17 +22205,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1660685786}
-        m_TargetAssemblyTypeName: ObjectManager, Assembly-CSharp
-        m_MethodName: TogglePathTool
-        m_Mode: 1
+      - m_Target: {fileID: 511080672}
+        m_TargetAssemblyTypeName: DesignerManager, Assembly-CSharp
+        m_MethodName: TogglePathMode
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 1797212727}
         m_TargetAssemblyTypeName: UiNavigation, Assembly-CSharp
@@ -22194,18 +22240,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 514268987}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1863562471
 MonoBehaviour:
@@ -23219,7 +23253,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1202554369}
   m_HandleRect: {fileID: 1202554368}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -23821,10 +23855,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1660685786}
-        m_TargetAssemblyTypeName: SpawnManager, Assembly-CSharp
-        m_MethodName: TogglePathTool
-        m_Mode: 1
+      - m_Target: {fileID: 511080672}
+        m_TargetAssemblyTypeName: DesignerManager, Assembly-CSharp
+        m_MethodName: TogglePathMode
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -23837,18 +23871,6 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UiNavigation, Assembly-CSharp
         m_MethodName: ToggleDrawPath
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 514268987}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

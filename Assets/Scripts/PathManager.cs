@@ -28,7 +28,7 @@ public class PathManager : StaticInstance<PathManager>
     {
         _selectedObject = null;
         
-        if (SpawnManager.Instance.EditType == EditType.Path)
+        if (SpawnManager.Instance.EditMode == EditMode.Path)
             stopEditingButton.onClick.Invoke();
     }
 
