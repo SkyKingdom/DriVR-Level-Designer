@@ -19,12 +19,6 @@ namespace Managers
         private InputAction _lmb;
         private InputAction _rmb;
         private InputAction _move;
-
-        [Header("Settings")] 
-        [SerializeField] private float dragThreshold = 1f; // Minimum movement to trigger drag
-
-        [SerializeField] private float rotationSpeed = 3f; // Rotation speed of objects
-
     
         #region Events
 
@@ -105,8 +99,7 @@ namespace Managers
         private void OnRMBUp(InputAction.CallbackContext obj) => OnRmbUp?.Invoke();
 
         #endregion
-    
-
+        
         #region Helper Methods
 
         private Ray GetRayFromMousePosition(Vector2 mousePosition)

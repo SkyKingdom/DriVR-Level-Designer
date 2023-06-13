@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.orkunmanap.runtime-transform-handles": {
+      "version": "https://github.com/manaporkun/UnityRuntimeTransformHandles.git?path=/Packages/runtime-transform-handles",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "4cf2a8b44ba6ab1cbf3d14caf365f49fb53225ee"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,

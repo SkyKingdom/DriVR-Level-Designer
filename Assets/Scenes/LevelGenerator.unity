@@ -2508,6 +2508,7 @@ Transform:
   - {fileID: 1220277503}
   - {fileID: 1218429882}
   - {fileID: 774432576}
+  - {fileID: 1495243884}
   m_Father: {fileID: 0}
   m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6990,8 +6991,6 @@ MonoBehaviour:
     m_Bits: 8
   inputActionAsset: {fileID: -944628639613478452, guid: bc87c2a060bf3134aadc12cd1e3caf69,
     type: 3}
-  dragThreshold: 1
-  rotationSpeed: 3
 --- !u!4 &511019095
 Transform:
   m_ObjectHideFlags: 0
@@ -19224,6 +19223,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: -8, y: -5, z: -8, w: -5}
   m_Softness: {x: 0, y: 0}
+--- !u!1 &1495243883
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1495243884}
+  - component: {fileID: 1495243885}
+  m_Layer: 0
+  m_Name: TransformHandle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1495243884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495243883}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 243194647}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1495243885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495243883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7694f95372f24070a60485edb1e7b9fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  transformHandlePrefab: {fileID: 0}
+  ghostPrefab: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
+  positionShortcut: 119
+  rotationShortcut: 101
+  scaleShortcut: 114
+  allShortcut: 97
+  spaceShortcut: 120
+  pivotShortcut: 122
 --- !u!1 &1495291237
 GameObject:
   m_ObjectHideFlags: 0
