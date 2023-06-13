@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
@@ -29,12 +30,14 @@ public class InspectorPanel : MonoBehaviour
     public GameObject interactablePnl;
     public GameObject propsPnl;
     public List<GameObject> modePanels;
+    [SerializeField] private GameObject roadModePanel;
 
     private bool _drawingPath = false;
 
     private void Start()
     {
         DesignerManager.Instance.OnModeChange += HandleModeChange;
+        DesignerManager.Instance.OnEditTypeChange += HandleEditModeChange;
         
         for (int i = 0; i < modeButtons.Count; i++)
         {
@@ -47,6 +50,11 @@ public class InspectorPanel : MonoBehaviour
                 modeButtons[i].GetComponent<Image>().color = inactiveButtonColor;
             }
         }
+    }
+
+    private void HandleEditModeChange(EditMode arg1, EditMode arg2)
+    {
+        roadModePanel.SetActive(arg2 == EditMode.Road);
     }
 
     private void HandleModeChange(Mode oldValue, Mode value)
