@@ -232,7 +232,7 @@ namespace Saving
         /// </summary>
         IEnumerator LoadLevelAsync(SaveData data)
         {
-            var asyncLoad = SceneManager.LoadSceneAsync(0);
+            var asyncLoad = SceneManager.LoadSceneAsync(1);
             while (!asyncLoad.isDone)
             {
                 yield return null;

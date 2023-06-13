@@ -28,7 +28,7 @@ namespace User_Interface
 
         public void NewLevelButton()
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
         }
     
         //animations
