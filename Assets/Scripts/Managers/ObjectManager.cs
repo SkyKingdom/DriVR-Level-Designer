@@ -55,7 +55,7 @@ namespace Managers
 
         private void OnEditTypeChanged(EditMode oldValue, EditMode value)
         {
-            inputHandlerDelegate?.CleanUp();
+            inputHandlerDelegate?.CleanUp(value);
             switch (value)
             {
                 case EditMode.Object:

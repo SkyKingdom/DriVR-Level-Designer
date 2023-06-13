@@ -18,6 +18,7 @@ namespace ObjectInputHandlers
             ObjectManager = objectManager;
         }
         
+        // Handles mouse movement
         public override void HandleMove(IEditorInteractable editorInteractable, Vector3 groundPos)
         {
             if (!ObjectManager.IsOverCanvas)
@@ -53,6 +54,7 @@ namespace ObjectInputHandlers
             LastHoveredObject?.OnPointerEnter();
         }
 
+        // Returns true if LMB is down and object is being rotated
         private bool HandleRmbDownMove()
         {
             if (!IsRmbDown) return false;
@@ -78,6 +80,7 @@ namespace ObjectInputHandlers
             return true;
         }
 
+        // Returns true if LMB is down and object is being dragged
         private bool HandleLmbDownMove()
         {
             if (!IsLmbDown) return false;
@@ -93,7 +96,7 @@ namespace ObjectInputHandlers
             return true;
 
         }
-
+        
         public override void HandleLmbDown()
         {
             if (!ObjectManager.IsOverCanvas) return;
@@ -106,7 +109,7 @@ namespace ObjectInputHandlers
                 SelectedObject?.Deselect();
                 SelectedObject = null;
                 _objectBase = null;
-                
+                DesignerManager.Instance.SelectionManager.DeselectObject();
                 // Spawn new object
                 DesignerManager.Instance.SpawnManager.SpawnObject(LastGroundPos);
                 return;
@@ -131,6 +134,7 @@ namespace ObjectInputHandlers
             CompleteDrag();
         }
 
+        // Records drag action
         private void CompleteDrag()
         {
             var action = new DragAction(_initialPosition, _objectBase.GetPosition(), _objectBase);
@@ -170,6 +174,7 @@ namespace ObjectInputHandlers
             CompleteRotation();
         }
 
+        // Records rotation action
         private void CompleteRotation()
         {
             var action = new RotateAction(_initialRotation, _objectBase.GetRotation(), _objectBase);
@@ -177,24 +182,39 @@ namespace ObjectInputHandlers
             ShouldCallDragCommand = false;
         }
 
-        public override void CleanUp()
+        
+        // Cleans up on mode change
+        public override void CleanUp(EditMode editMode)
         {
             IsLmbDown = false;
             IsRmbDown = false;
             ShouldCallDragCommand = false;
             LastHoveredObject?.OnPointerExit();
             LastHoveredObject = null;
-            SelectedObject?.Deselect();
+            if (editMode == EditMode.Road)
+            {
+                SelectedObject?.Deselect();
+                DesignerManager.Instance.SelectionManager.DeselectObject();
+            }
+
             SelectedObject = null;
             _objectBase = null;
         }
         
+        /// <summary>
+        /// Handles mouse going out of canvas
+        /// </summary>
         private void HandleOutOfCanvas()
         {
+            
+            if (ShouldCallDragCommand)
+            {
+                if(IsRmbDown) CompleteRotation();
+                else CompleteDrag();
+            }
+            
             IsLmbDown = false;
             IsRmbDown = false;
-            
-            if (!ShouldCallDragCommand) return;
         }
     }
 }

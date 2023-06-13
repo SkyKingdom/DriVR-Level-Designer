@@ -190,7 +190,7 @@ namespace Objects
     {
       IsSelected = true;
       _outline.enabled = true;
-      
+      DesignerManager.Instance.SelectionManager.SelectObject(this);
       // Store last position and rotation
       var transform1 = transform;
       _lastPosition = transform1.position;

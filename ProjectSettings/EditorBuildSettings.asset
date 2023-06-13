@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/LoadingScene.unity
     guid: a005bf2a66153eb41abf52290c358189
   - enabled: 0
-    path: Assets/Scenes/LevelGenerator_Obselete.unity
-    guid: 19f2871d28121cc428234bd1b3fdb088
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}

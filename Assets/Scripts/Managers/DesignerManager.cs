@@ -34,6 +34,8 @@ public class DesignerManager : StaticInstance<DesignerManager>
     [field: SerializeField] public InputManager InputManager { get; private set; }
     
     [field: SerializeField] public SpawnManager SpawnManager { get; private set; }
+    
+    [field: SerializeField] public SelectionManager SelectionManager { get; private set; }
 
     #endregion
     

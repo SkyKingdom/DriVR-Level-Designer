@@ -15,7 +15,7 @@ namespace ObjectInputHandlers
         protected ObjectManager ObjectManager;
         
         
-        public abstract void CleanUp();
+        public abstract void CleanUp(EditMode editMode);
         
         public abstract void HandleMove(IEditorInteractable editorInteractable, Vector3 groundPos);
 

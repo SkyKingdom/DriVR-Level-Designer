@@ -2507,6 +2507,7 @@ Transform:
   - {fileID: 918440190}
   - {fileID: 1220277503}
   - {fileID: 1218429882}
+  - {fileID: 774432576}
   m_Father: {fileID: 0}
   m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7040,6 +7041,7 @@ MonoBehaviour:
   <MapManager>k__BackingField: {fileID: 918440189}
   <InputManager>k__BackingField: {fileID: 511019094}
   <SpawnManager>k__BackingField: {fileID: 1660685786}
+  <SelectionManager>k__BackingField: {fileID: 774432577}
 --- !u!4 &511080673
 Transform:
   m_ObjectHideFlags: 0
@@ -10191,6 +10193,50 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &774432575
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 774432576}
+  - component: {fileID: 774432577}
+  m_Layer: 0
+  m_Name: SelectionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &774432576
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774432575}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 243194647}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &774432577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774432575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8df4cad2a7e047c2a0710ce5d500dee3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &789165434
 GameObject:
   m_ObjectHideFlags: 0
@@ -14617,7 +14663,19 @@ MonoBehaviour:
   m_Value: 0.1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 224572292}
+        m_TargetAssemblyTypeName: RoadTool, Assembly-CSharp
+        m_MethodName: ChangeRoadWidth
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1065705293
 GameObject:
   m_ObjectHideFlags: 0
@@ -15191,7 +15249,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1798667126}
+        m_TargetAssemblyTypeName: PathManager, Assembly-CSharp
+        m_MethodName: UpdatePathSnappingThreshold
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1111331675
 GameObject:
   m_ObjectHideFlags: 0
@@ -22719,8 +22789,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pathPointPrefab: {fileID: 8210753997060480708, guid: a350aea17deafdc478f63b272631475e,
     type: 3}
-  selected: {fileID: 2100000, guid: 973cbf2254bbaec45b99b2227a3092de, type: 2}
-  deselected: {fileID: 2100000, guid: 25308b12285cc1d419acaea61d0d7e03, type: 2}
   stopEditingButton: {fileID: 1945291362}
   pathPrefab: {fileID: 5441053598509911056, guid: c0dca71de226a85419c7e6915bf9cf96,
     type: 3}

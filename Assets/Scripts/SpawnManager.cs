@@ -31,13 +31,13 @@ public class SpawnManager : StaticInstance<SpawnManager>
         if (prefabToSpawn == null) return;
         
         var spawnedObject = Instantiate(prefabToSpawn, pos, Quaternion.identity);
-        spawnedObject.Initialize(spawnedObject.gameObject.name, prefabToSpawn.name);
+        spawnedObject.Initialize(spawnedObject.gameObject.name, prefabToSpawn.name, false);
         var action = new SpawnAction( _objectInspector, spawnedObject);
         ActionRecorder.Instance.Record(action);
         ObjectSpawned?.Invoke(spawnedObject);
     }
 
-    private void SpawnPathPoint(Vector3 pos)
+    public void SpawnPathPoint(Vector3 pos)
     {
         PathManager.Instance.HandlePathPointSpawn(pos);
     }

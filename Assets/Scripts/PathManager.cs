@@ -1,4 +1,6 @@
-﻿using Actions;
+﻿using System;
+using Actions;
+using Managers;
 using Objects;
 using PathCreation;
 using UnityEngine;
@@ -7,30 +9,41 @@ using Utilities;
 
 public class PathManager : StaticInstance<PathManager>
 {
+    #region Dependencies
+
+    private SelectionManager _selectionManager;
+
+    #endregion
+    
     private ObjectBase _selectedObject;
     public NodeContainer pathPointPrefab;
-
-    [SerializeField] private Material selected;
-    [SerializeField] private Material deselected;
     
-    public Material Selected => selected;
-
-    public Material Deselected => deselected;
-
     [SerializeField] private Button stopEditingButton;
     [SerializeField] private PathCreator pathPrefab;
 
     [SerializeField] private float snappingDistanceThreshold = 0.5f;
-    
-    public void SelectObject(ObjectBase obj) => _selectedObject = obj;
 
-    public void DeselectObject()
+    protected override void Awake()
     {
-        _selectedObject = null;
-        
-        if (SpawnManager.Instance.EditMode == EditMode.Path)
-            stopEditingButton.onClick.Invoke();
+        base.Awake();
+        _selectionManager = DesignerManager.Instance.SelectionManager;
     }
+
+    private void OnEnable()
+    {
+        _selectionManager.OnObjectSelected += SelectObject;
+        _selectionManager.OnObjectDeselected += DeselectObject;
+    }
+    
+    private void OnDisable()
+    {
+        _selectionManager.OnObjectSelected -= SelectObject;
+        _selectionManager.OnObjectDeselected -= DeselectObject;
+    }
+
+    private void SelectObject(ObjectBase obj) => _selectedObject = obj;
+
+    private void DeselectObject() => _selectedObject = null;
 
     public void HandlePathPointSpawn(Vector3 pos)
     {
@@ -63,6 +76,11 @@ public class PathManager : StaticInstance<PathManager>
     public PathCreator GetNewPath()
     {
         return Instantiate(pathPrefab);
+    }
+    
+    public void UpdatePathSnappingThreshold(float value)
+    {
+        snappingDistanceThreshold = value;
     }
     
 }

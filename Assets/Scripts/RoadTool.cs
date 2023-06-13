@@ -19,6 +19,8 @@ public class RoadTool : StaticInstance<RoadTool>
 
     public Vector3[] RoadPoints => GetPointPositions();
     public bool HasRoad => points.Count >= 2;
+    
+    private float _roadWidth = 1f;
 
     public RoadPoint AddPoint(Vector3 pos)
     {
@@ -78,6 +80,13 @@ public class RoadTool : StaticInstance<RoadTool>
     private Vector3[] GetPointPositions()
     {
         return points.Select(p => p.position).ToArray();
+    }
+    
+    public void ChangeRoadWidth(float width)
+    {
+        _roadWidth = width;
+        roadMesh.roadWidth = width;
+        roadMesh.TriggerUpdate();
     }
 }
 

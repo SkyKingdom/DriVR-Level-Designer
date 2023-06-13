@@ -45,7 +45,6 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
 
     public void OnDrag(Vector3 position)
     {
-        if (SpawnManager.Instance.EditMode != EditMode.Path) return;
         transform.position = position;
     }
 
@@ -78,7 +77,7 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
     {
         IsSelected = true;
         _renderer.material = selectedMaterial;
-        
+        DesignerManager.Instance.SelectionManager.SelectObject(Node.Owner);
         _lastPosition = transform.position;
         Node.Owner.Path.HighlightPath(this);
     }
@@ -92,7 +91,7 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
 
     public Transform GetTransform()
     {
-        return Node.Owner.transform;
+        return transform;
     }
 
     public void Highlight()

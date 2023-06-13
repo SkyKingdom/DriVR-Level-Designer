@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Objects.Interfaces;
 using PathCreation;
 using PathCreation.Examples;
-using UnityEditor.Timeline;
 using UnityEngine;
 
 namespace Objects

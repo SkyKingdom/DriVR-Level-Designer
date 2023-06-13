@@ -12,6 +12,7 @@ public class ObjectInspector : MonoBehaviour
     #region Dependencies
 
     private DesignerInterfaceManager _uiManager;
+    private SelectionManager _selectionManager;
 
     #endregion
 
@@ -34,56 +35,45 @@ public class ObjectInspector : MonoBehaviour
     #endregion
 
 
-    private void Start()
+    private void Awake()
     {
         _uiManager = DesignerManager.Instance.DesignerUIManager;
+        _selectionManager = DesignerManager.Instance.SelectionManager;
     }
 
     private void OnEnable()
     {
-
+        _selectionManager.OnObjectSelected += SelectObject;
+        _selectionManager.OnObjectDeselected += DeselectObject;
     }
 
     private void OnDisable()
     {
-
+        _selectionManager.OnObjectSelected -= SelectObject;
+        _selectionManager.OnObjectDeselected -= DeselectObject;
     }
 
     // TODO: Refactor after implementing selection manager
-    public void SelectObject(IEditorInteractable interactable)
+    public void SelectObject(ObjectBase obj)
     {
-        var obj = interactable.GetTransform();
         if (selectedObject != null)
         {
             SaveData();
-            selectedObject.Deselect();
             ClearData();
         }
         
-        if (obj == null)
-        {
-            selectedObject = null;
-            _uiManager.UpdateDetailsPanelBlankets(selectedObject);
-            return;
-        }
-        
-        //obj.Select();
-        //selectedObject = obj;
+        selectedObject = obj;
         _uiManager.UpdateDetailsPanelBlankets(selectedObject);
-        PathManager.Instance.SelectObject(selectedObject);
         LoadData();
     }
 
-    // TODO: Refactor after implementing selection manager
-    public void DeselectObject()
+    private void DeselectObject()
     {
         if (selectedObject == null) return;
         SaveData();
         ClearData();
-        selectedObject.Deselect();
         selectedObject = null;
         _uiManager.UpdateDetailsPanelBlankets(selectedObject);
-        PathManager.Instance.DeselectObject();
     }
 
     /// <summary>
@@ -161,8 +151,7 @@ public class ObjectInspector : MonoBehaviour
         animateOnStart.isOn = false;
         alwaysInteractable.isOn = false;
     }
-    
-    // TODO: Refactor
+
     public void DeleteObject()
     {
         if (selectedObject == null) return;

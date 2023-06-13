@@ -127,7 +127,7 @@ namespace ObjectInputHandlers
         
         
         // Cleans up selected or hovered road points on exit
-        public override void CleanUp()
+        public override void CleanUp(EditMode editMode)
         {
             if (SelectedObject != null)
             {
