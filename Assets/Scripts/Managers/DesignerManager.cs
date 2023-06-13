@@ -73,7 +73,7 @@ public class DesignerManager : StaticInstance<DesignerManager>
     public async void ExitToMenu()
     {
         await LevelDataManager.Instance.Cleanup();
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 
     // Loads the map with the given zoom and position
