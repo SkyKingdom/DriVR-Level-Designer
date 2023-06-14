@@ -1,6 +1,5 @@
-﻿using Actions;
+﻿using System;
 using Interfaces;
-using Mapbox.Unity;
 using Saving;
 using ThirdPartyAssets.QuickOutline.Scripts;
 using UnityEngine;
@@ -20,6 +19,8 @@ namespace Objects
     private Transform _mTransform;
     
     public bool IsDeleted { get; private set; }
+    
+    public event Action OnObjectDeleted;
     
 
     private void SetupComponents()
@@ -104,11 +105,13 @@ namespace Objects
     
     public void Delete()
     {
+      OnObjectDeleted?.Invoke();
       if (Path)
       {
         Path.DeletePath();
       }
       LevelDataManager.Instance.DeregisterObject(this);
+      OnObjectDeleted = null;
       Destroy(gameObject);
     }
 
@@ -158,14 +161,7 @@ namespace Objects
 
     public void OnDragRelease()
     {
-      if (transform.position == _lastPosition) return;
-      
-      // Create action
-      var action = new DragAction(_lastPosition, transform.position, this);
-      // Add action to undo stack
-      ActionRecorder.Instance.Record(action);
-      
-      _lastPosition = transform.position;
+
     }
 
     public void OnRotate(float angle)
@@ -176,14 +172,6 @@ namespace Objects
 
     public void OnRotateRelease()
     {
-      if (transform.rotation.eulerAngles == _lastRotation) return;
-      
-      // Create action
-      var action = new RotateAction(_lastRotation, transform.rotation.eulerAngles, this);
-      // Add action to undo stack
-      ActionRecorder.Instance.Record(action);
-      
-      _lastRotation = transform.rotation.eulerAngles;
     }
 
     public void Select()
@@ -210,6 +198,7 @@ namespace Objects
       {
         Path.UnhighlightPath(null);
       }
+      DesignerManager.Instance.SelectionManager.DeselectObject();
     }
 
     public Transform GetTransform()

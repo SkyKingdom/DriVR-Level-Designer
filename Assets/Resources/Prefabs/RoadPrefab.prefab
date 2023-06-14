@@ -186,8 +186,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pathCreator: {fileID: 7393341308629168429}
   autoUpdate: 1
-  roadWidth: 1.25
-  thickness: 0.15
+  roadWidth: 0.1
+  thickness: 0.136
   flattenSurface: 1
   roadMaterial: {fileID: 2100000, guid: e7a540804e5a17d4d84ef026b6ce93a5, type: 2}
   undersideMaterial: {fileID: 2100000, guid: c1d8d882244c5344fa86a8fd23246f81, type: 2}

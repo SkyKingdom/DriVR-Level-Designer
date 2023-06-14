@@ -3,6 +3,7 @@ using Managers;
 using Mapbox.Examples;
 using Mapbox.Utils;
 using Saving;
+using TransformHandles;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
@@ -36,6 +37,8 @@ public class DesignerManager : StaticInstance<DesignerManager>
     [field: SerializeField] public SpawnManager SpawnManager { get; private set; }
     
     [field: SerializeField] public SelectionManager SelectionManager { get; private set; }
+    
+    [field: SerializeField] public TransformHandleManager TransformHandleManager { get; private set; }
 
     #endregion
     

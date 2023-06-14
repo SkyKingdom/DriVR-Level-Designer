@@ -1,4 +1,5 @@
-﻿using Objects;
+﻿using System;
+using Objects;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -6,6 +7,7 @@ namespace Interfaces
 {
     public interface IEditorInteractable
     {
+        public event Action OnObjectDeleted;
         public bool IsSelected { get; }
         public void OnPointerEnter();
         public void OnPointerExit();

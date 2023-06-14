@@ -24,6 +24,7 @@ public class RoadPointContainer : MonoBehaviour, IEditorInteractable
         _roadPoint.SetOwner(this);
     }
 
+    public event Action OnObjectDeleted;
     public bool IsSelected { get; private set;}
     
     private Vector3 _lastPosition;

@@ -32,6 +32,10 @@ namespace Managers
         [SerializeField] private Button previewModeButton;
 
         #endregion
+
+        [SerializeField] private GameObject objectButtons;
+        [SerializeField] private GameObject objectPanel;
+        
         
         [field: SerializeField, Space(20)] public LevelSaveModal SaveModal { get; private set; }
         [SerializeField] private Toggle mapToggle;
@@ -41,6 +45,38 @@ namespace Managers
         {
             DesignerManager.Instance.OnModeChange += HandleModeChange;
             DesignerManager.Instance.MapManager.OnMapStatusChange += HandleMapStatusChange;
+            DesignerManager.Instance.OnEditTypeChange += HandleEditTypeChange;
+        }
+
+        private void HandleEditTypeChange(EditMode oldValue, EditMode value)
+        {
+            switch (oldValue)
+            {
+                case EditMode.Object:
+                    break;
+                case EditMode.Path:
+                    break;
+                case EditMode.Road:
+                    objectButtons.SetActive(true);
+                    objectPanel.SetActive(true);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(oldValue), oldValue, null);
+            }
+            
+            switch (value)
+            {
+                case EditMode.Object:
+                    break;
+                case EditMode.Path:
+                    break;
+                case EditMode.Road:
+                    objectButtons.SetActive(false);
+                    objectPanel.SetActive(false);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
         }
 
         private void HandleMapStatusChange(bool value)

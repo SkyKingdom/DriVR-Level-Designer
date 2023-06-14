@@ -2,6 +2,7 @@
 using Interfaces;
 using Managers;
 using UnityEngine;
+using User_Interface;
 
 namespace ObjectInputHandlers
 {
@@ -16,7 +17,7 @@ namespace ObjectInputHandlers
         
         public override void HandleMove(IEditorInteractable editorInteractable, Vector3 groundPos)
         {
-            if (!ObjectManager.IsOverCanvas)
+            if (!OverViewportCheck.IsOverViewport)
             {
                 HandleOutOfCanvas();
 
@@ -69,7 +70,7 @@ namespace ObjectInputHandlers
 
         public override void HandleLmbDown()
         {
-            if (!ObjectManager.IsOverCanvas) return;
+            if (!OverViewportCheck.IsOverViewport) return;
             IsLmbDown = true;
 
             // Check if NOT hovering over road point
@@ -95,7 +96,7 @@ namespace ObjectInputHandlers
 
         public override void HandleLmbUp()
         {
-            if (!ObjectManager.IsOverCanvas) return;
+            if (!OverViewportCheck.IsOverViewport) return;
             IsLmbDown = false;
             
             // Check if drag command should be called
@@ -105,7 +106,7 @@ namespace ObjectInputHandlers
 
         public override void HandleRmbDown()
         {
-            if (!ObjectManager.IsOverCanvas) return;
+            if (!OverViewportCheck.IsOverViewport) return;
             IsRmbDown = true;
             
             // Check if hovering over road point
@@ -121,7 +122,7 @@ namespace ObjectInputHandlers
 
         public override void HandleRmbUp()
         {
-            if (!ObjectManager.IsOverCanvas) return;
+            if (!OverViewportCheck.IsOverViewport) return;
             IsRmbDown = false;
         }
         

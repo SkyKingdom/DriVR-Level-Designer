@@ -6,17 +6,15 @@ namespace User_Interface
 {
     public class OverViewportCheck : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private bool isOverViewport;
-        public bool IsOverViewport => isOverViewport;
-
+        public static bool IsOverViewport;
         public void OnPointerEnter(PointerEventData eventData)
         {
-            isOverViewport = true;
+            IsOverViewport = false;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            isOverViewport = false;
+            IsOverViewport = true;
         }
     }
 }

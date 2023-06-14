@@ -6,7 +6,6 @@ public class FPSMode : MonoBehaviour
     // Needed references for enabling/disabling FPS mode
     [Header("FPS Mode")]
     [SerializeField] private GameObject sceneCamera;
-    [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject capsule;
     
     // Check if we are in FPS mode
@@ -43,7 +42,6 @@ public class FPSMode : MonoBehaviour
     private void HandleSwitching(bool isEntering)
     {
         sceneCamera.SetActive(!isEntering); // Enable/disable scene camera
-        mainCamera.SetActive(!isEntering); // Enable/disable main (UI) camera
         capsule.SetActive(isEntering); // Enable/disable FPS capsule
         Cursor.visible = !isEntering; // Show/hide cursor
         Cursor.lockState = isEntering ? CursorLockMode.Locked : CursorLockMode.None; // Lock/unlock cursor

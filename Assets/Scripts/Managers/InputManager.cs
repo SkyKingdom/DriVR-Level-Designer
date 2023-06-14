@@ -8,10 +8,10 @@ namespace Managers
     public class InputManager : MonoBehaviour
     {
         [Header("Ray Casting")]
-        [SerializeField] private RectTransform viewportRenderTexture; // Render texture viewport
         [SerializeField] private Camera sceneCamera; // Scene camera to cast ray from
         [SerializeField] private LayerMask objectsMask; // Layer mask for objects
         [SerializeField] private LayerMask groundMask; // Layer mask for ground
+        [SerializeField] private LayerMask handlesMask;
     
         [Header("Input")] 
         [SerializeField] private InputActionAsset inputActionAsset;
@@ -78,7 +78,7 @@ namespace Managers
 
         private void OnMove(InputAction.CallbackContext obj)
         {
-            var ray = GetRayFromMousePosition(obj.ReadValue<Vector2>());
+            var ray = GetRayFromMousePosition();
             IEditorInteractable editorObj = null;
             Vector3 pos = Vector3.zero;
             // Remove hover from previous object if raycast doesn't hit anything
@@ -90,27 +90,37 @@ namespace Managers
             OnMouseMove?.Invoke(editorObj, pos);
         }
 
-        private void OnLMBDown(InputAction.CallbackContext obj) => OnLmbDown?.Invoke();
+        private void OnLMBDown(InputAction.CallbackContext obj)
+        {
+            if (IsOverHandle()) return;
+            OnLmbDown?.Invoke();
+        }
 
-        private void OnLMBUp(InputAction.CallbackContext obj) => OnLmbUp?.Invoke();
+        private void OnLMBUp(InputAction.CallbackContext obj)
+        {
+            if (IsOverHandle()) return;
+            OnLmbUp?.Invoke();
+        }
 
-        private void OnRMBDown(InputAction.CallbackContext obj) => OnRmbDown?.Invoke();
+        private void OnRMBDown(InputAction.CallbackContext obj)
+        {
+            if (IsOverHandle()) return;
+            OnRmbDown?.Invoke();
+        }
 
-        private void OnRMBUp(InputAction.CallbackContext obj) => OnRmbUp?.Invoke();
+        private void OnRMBUp(InputAction.CallbackContext obj)
+        {
+            if (IsOverHandle()) return;
+            OnRmbUp?.Invoke();
+        }
 
         #endregion
         
         #region Helper Methods
 
-        private Ray GetRayFromMousePosition(Vector2 mousePosition)
+        private Ray GetRayFromMousePosition()
         {
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(viewportRenderTexture, mousePosition, null,
-                out var localPoint);
-            var rect = viewportRenderTexture.rect;
-            var pivot = viewportRenderTexture.pivot;
-            localPoint.x = (localPoint.x / rect.width) + pivot.x;
-            localPoint.y = (localPoint.y / rect.height) + pivot.x;
-            return sceneCamera.ViewportPointToRay(localPoint);
+            return sceneCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         }
     
         private Vector3 GetGroundHitPosition(Ray ray)
@@ -119,6 +129,12 @@ namespace Managers
             var hitPos = hit.point;
             hitPos.y = 0;
             return hitPos;
+        }
+        
+        private bool IsOverHandle()
+        {
+            var ray = GetRayFromMousePosition();
+            return Physics.Raycast(ray, out var hit, Mathf.Infinity, handlesMask);
         }
 
         #endregion

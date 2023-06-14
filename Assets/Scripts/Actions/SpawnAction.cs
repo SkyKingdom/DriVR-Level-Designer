@@ -21,10 +21,9 @@ namespace Actions
 
         public override void Undo()
         {
-            // if (_objectInspector.SelectedObject == _spawnedObject)
-            // {
-            //     _objectInspector.DeselectObject();
-            // }
+            var selectionManager = DesignerManager.Instance.SelectionManager;
+            if (selectionManager.SelectedObject == _spawnedObject)
+                selectionManager.DeselectObject();
             
             _spawnedObject.Delete();
         }

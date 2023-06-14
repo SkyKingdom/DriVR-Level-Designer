@@ -1,4 +1,5 @@
-﻿using Actions;
+﻿using System;
+using Actions;
 using Interfaces;
 using Objects;
 using UnityEngine;
@@ -11,7 +12,8 @@ public class NodeContainer : MonoBehaviour, IEditorInteractable
     public Material selectedMaterial;
     
     private Renderer _renderer;
-    
+
+    public event Action OnObjectDeleted;
     public bool IsSelected { get; private set; }
     
     private Vector3 _lastPosition;

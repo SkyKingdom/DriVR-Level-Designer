@@ -10,9 +10,6 @@ namespace Managers
     {
         private InputManager _inputManager;
         private ObjectInputHandlerBase inputHandlerDelegate;
-        [SerializeField] private OverViewportCheck overViewportCheck;
-        
-        public bool IsOverCanvas => overViewportCheck.IsOverViewport;
 
         #region Settings
 
