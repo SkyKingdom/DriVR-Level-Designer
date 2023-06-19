@@ -22,10 +22,6 @@ namespace TransformHandles
         [Header("Shortcuts")]
         [SerializeField] private KeyCode positionShortcut = KeyCode.W;
         [SerializeField] private KeyCode rotationShortcut = KeyCode.E;
-        [SerializeField] private KeyCode scaleShortcut = KeyCode.R;
-        [SerializeField] private KeyCode allShortcut = KeyCode.A;
-        [SerializeField] private KeyCode spaceShortcut = KeyCode.X;
-        [SerializeField] private KeyCode pivotShortcut = KeyCode.Z;
 
         private RaycastHit[] _rayHits;
         
@@ -305,43 +301,11 @@ namespace TransformHandles
                 }
             }
             
-            if (Input.GetKeyDown(rotationShortcut))
+            if (Input.GetKeyDown(rotationShortcut) && DesignerManager.Instance.InEditType(EditMode.Object))
             {
                 foreach (var handle in _handleGroupMap.Keys)
                 {
                     ChangeHandleType(handle, HandleType.Rotation);
-                }
-            }
-            
-            if (Input.GetKeyDown(scaleShortcut))
-            {
-                foreach (var handle in _handleGroupMap.Keys)
-                {
-                    ChangeHandleType(handle, HandleType.Scale);
-                }
-            }
-            
-            if (Input.GetKeyDown(allShortcut))
-            {
-                foreach (var handle in _handleGroupMap.Keys)
-                {
-                    ChangeHandleType(handle, HandleType.All);
-                }
-            }
-
-            if (Input.GetKeyDown(spaceShortcut))
-            {
-                foreach (var handle in _handleGroupMap.Keys)
-                {
-                    ChangeHandleSpace(handle, handle.space == Space.World ? Space.Self : Space.World);
-                }
-            }
-
-            if (Input.GetKeyDown(pivotShortcut))
-            {
-                foreach (var group in _handleGroupMap.Values)
-                {
-                    ChangeHandlePivot(group, !group.IsOriginOnCenter);
                 }
             }
         }

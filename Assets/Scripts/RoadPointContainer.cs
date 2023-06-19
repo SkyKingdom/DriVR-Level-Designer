@@ -27,8 +27,6 @@ public class RoadPointContainer : MonoBehaviour, IEditorInteractable
     public event Action OnObjectDeleted;
     public bool IsSelected { get; private set;}
     
-    private Vector3 _lastPosition;
-    
     public void OnPointerEnter()
     {
         if (IsSelected)
@@ -43,49 +41,19 @@ public class RoadPointContainer : MonoBehaviour, IEditorInteractable
         
         _renderer.material = defaultMaterial;
     }
-
-    public void OnDrag(Vector3 position)
-    {
-        transform.position = position;
-    }
-
-    public void OnDragRelease()
-    {
-        if (transform.position == _lastPosition) return;
-        
-        var position = transform.position;
-        
-        // Create action
-        var action = new RoadDragAction(_lastPosition, position, _roadPoint);
-        ActionRecorder.Instance.Record(action);
-        
-        // Store last position
-        _lastPosition = position;
-    }
-
-    public void OnRotate(float angle)
-    {
-        if (SpawnManager.Instance.EditMode != EditMode.Road) return;
-        var action = new RoadDeleteAction(_roadPoint);
-        ActionRecorder.Instance.Record(action);
-    }
-
-    public void OnRotateRelease()
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public void Select()
     {
         IsSelected = true;
         _renderer.material = hoverMaterial;
-        _lastPosition = transform.position;
+        DesignerManager.Instance.SelectionManager.SelectRoadPoint(this);
     }
 
     public void Deselect()
     {
         IsSelected = false;
         _renderer.material = defaultMaterial;
+        DesignerManager.Instance.SelectionManager.DeselectRoadPoint();
     }
 
     public Transform GetTransform()

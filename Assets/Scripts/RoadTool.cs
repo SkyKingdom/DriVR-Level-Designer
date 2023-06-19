@@ -108,4 +108,10 @@ public class RoadPoint
     {
         owner = o;
     }
+
+    public void SetPosition(Vector3 pos)
+    {
+        position = pos;
+        owner.transform.position = pos;
+    }
 }

@@ -44,7 +44,7 @@ public class SpawnManager : StaticInstance<SpawnManager>
 
     public void AddRoadPoint(Vector3 pos)
     {
-        var action = new RoadPointAction(pos);
+        var action = new RoadAddAction(pos);
         ActionRecorder.Instance.Record(action);
     }
 

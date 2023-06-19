@@ -13,13 +13,11 @@ namespace Actions
         public override void Execute()
         {
             _deletedObject.SetDeleted(true);
-            _deletedObject.gameObject.SetActive(false);
         }
 
         public override void Undo()
         {
             _deletedObject.SetDeleted(false);
-            _deletedObject.gameObject.SetActive(true);
         }
     }
 }

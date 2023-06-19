@@ -12,6 +12,9 @@
         
         public override void Execute()
         {
+            var selectionManager = DesignerManager.Instance.SelectionManager;
+            if (selectionManager.SelectedRoadPoint == _roadPoint.owner)
+                selectionManager.DeselectRoadPoint();
             _index = RoadTool.Instance.RemovePointTemporarily(_roadPoint);
             _roadPoint.gameObject.SetActive(false);
         }

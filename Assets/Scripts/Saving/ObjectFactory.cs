@@ -94,9 +94,9 @@ namespace Saving
         /// <summary>
         /// Instantiates path point and returns container
         /// </summary>
-        public static NodeContainer InstantiateNodeContainer(GameObject prefab, Vector3 pos)
+        public static PathPointContainer InstantiateNodeContainer(GameObject prefab, Vector3 pos)
         {
-            var container = Object.Instantiate(prefab, pos, Quaternion.identity).GetComponent<NodeContainer>();
+            var container = Object.Instantiate(prefab, pos, Quaternion.identity).GetComponent<PathPointContainer>();
             return container;
         }
     }

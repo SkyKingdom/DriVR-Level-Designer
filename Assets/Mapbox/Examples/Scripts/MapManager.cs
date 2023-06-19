@@ -146,7 +146,9 @@ namespace Mapbox.Examples
 		public void ToggleMap(bool value)
 		{
 			Map.gameObject.SetActive(value);
-			Map.Terrain.EnableCollider(value);
+			if (value)
+				Map.ForceUpdateColliders();
+			
 			plane.SetActive(!value);
 			
 			OnMapStatusChange?.Invoke(value);

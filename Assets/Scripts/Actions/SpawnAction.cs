@@ -1,6 +1,4 @@
-﻿using Managers;
-using Objects;
-using UnityEngine;
+﻿using Objects;
 
 namespace Actions
 {

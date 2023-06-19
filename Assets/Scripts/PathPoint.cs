@@ -1,20 +1,20 @@
 using System;using Objects;
 using UnityEngine;
 
-public class Node : IDisposable
+public class PathPoint : IDisposable
 {
     public ObjectBase Owner { get; private set; }
-    public NodeContainer Container { get; private set; }
+    public PathPointContainer Container { get; private set; }
     public Vector3 Position { get; private set; }
     
     private bool _disposed = false;
     
     private MeshRenderer _renderer;
 
-    public Node(NodeContainer container, ObjectBase owner, Vector3 position)
+    public PathPoint(PathPointContainer container, ObjectBase owner, Vector3 position)
     {
         Container = container;
-        container.Node = this;
+        container.PathPoint = this;
         _renderer = container.GetComponent<MeshRenderer>();
         Owner = owner;
         Position = position;
@@ -57,7 +57,7 @@ public class Node : IDisposable
         }
     }
     
-    ~Node()
+    ~PathPoint()
     {
         Dispose(false);
     }

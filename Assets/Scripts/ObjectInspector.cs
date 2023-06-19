@@ -62,6 +62,8 @@ public class ObjectInspector : MonoBehaviour
             ClearData();
         }
         
+        if (selectedObject == obj) return;
+        
         selectedObject = obj;
         _uiManager.UpdateDetailsPanelBlankets(selectedObject);
         LoadData();

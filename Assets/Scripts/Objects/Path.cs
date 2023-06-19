@@ -9,7 +9,7 @@ namespace Objects
     public class Path : MonoBehaviour, IPath, IObjectComponent
     {
         public ObjectBase Owner { get; private set; }
-        public  List<Node> PathPoints { get; private set; }
+        public  List<PathPoint> PathPoints { get; private set; }
         
         public bool AnimateOnStart { get; private set; }
         public float AnimationStartTime { get; private set; }
@@ -24,7 +24,7 @@ namespace Objects
         public void Initialize(ObjectBase objectBase)
         {
             Owner = objectBase;
-            PathPoints = new List<Node>();
+            PathPoints = new List<PathPoint>();
         }
 
         public void SetPath(PathCreator pathCreator)
@@ -35,46 +35,46 @@ namespace Objects
 
         public void Spawn(bool select = true)
         {
-            NodeContainer cont = Instantiate(PathManager.Instance.pathPointPrefab, Owner.GetPosition(),
+            PathPointContainer cont = Instantiate(PathManager.Instance.pathPointPrefab, Owner.GetPosition(),
                 Quaternion.Euler(Owner.GetRotation()));
-            Node n = new Node(cont, Owner, Owner.GetPosition());
-            cont.Node = n;
+            PathPoint n = new PathPoint(cont, Owner, Owner.GetPosition());
+            cont.PathPoint = n;
             AddPathPoint(n, select);
         }
 
-        public void AddPathPoint(Node node, bool select = true)
+        public void AddPathPoint(PathPoint pathPoint, bool select = true)
         {
-            PathPoints.Add(node);
+            PathPoints.Add(pathPoint);
             UpdatePath();
         }
 
-        public void RemovePathPoint(Node node)
+        public void RemovePathPoint(PathPoint pathPoint)
         {
-            PathPoints.Remove(node);
-            node.Dispose();
+            PathPoints.Remove(pathPoint);
+            pathPoint.Dispose();
             UpdatePath();
         }
         
-        public int RemovePathTemporarily(Node node)
+        public int RemovePathTemporarily(PathPoint pathPoint)
         {
-            var i = PathPoints.IndexOf(node);
-            PathPoints.Remove(node);
+            var i = PathPoints.IndexOf(pathPoint);
+            PathPoints.Remove(pathPoint);
             UpdatePath();
             return i;
         }
         
-        public void AddPathPoint(Node node, int index)
+        public void AddPathPoint(PathPoint pathPoint, int index)
         {
-            PathPoints.Insert(index, node);
+            PathPoints.Insert(index, pathPoint);
             UpdatePath();
         }
 
-        public void RepositionPathPoint(Node node) => UpdatePath();
+        public void RepositionPathPoint(PathPoint pathPoint) => UpdatePath();
 
 
         public void HandleObjectReposition(Vector3 position) => PathPoints[0].SetPosition(position);
         
-        public void HighlightPath(NodeContainer initiator)
+        public void HighlightPath(PathPointContainer initiator)
         {
             Highlighted = true;
             foreach (var p in PathPoints)
@@ -85,7 +85,7 @@ namespace Objects
             }
         }
         
-        public void UnhighlightPath(NodeContainer initiator)
+        public void UnhighlightPath(PathPointContainer initiator)
         {
             Highlighted = false;
             foreach (var p in PathPoints)

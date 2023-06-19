@@ -23,7 +23,6 @@ public class InspectorPanel : MonoBehaviour
 
     [Header("Map Mode Buttons")]
     public List<Button> modeButtons;
-    public GameObject drawingPathBtn;
 
     [Header("Panels")]
     public GameObject activesPnl;
@@ -31,8 +30,6 @@ public class InspectorPanel : MonoBehaviour
     public GameObject propsPnl;
     public List<GameObject> modePanels;
     [SerializeField] private GameObject roadModePanel;
-
-    private bool _drawingPath = false;
 
     private void Start()
     {
@@ -159,20 +156,5 @@ public class InspectorPanel : MonoBehaviour
                 modeButtons[i].interactable = true;
             }
         };
-    }
-
-    public void ToggleDrawPath()
-    {
-        switch (_drawingPath)
-        {
-            case false:
-                drawingPathBtn.SetActive(true);
-                _drawingPath = true;
-                break;
-            default:
-                drawingPathBtn.SetActive(false);
-                _drawingPath = false;
-                break;
-        }
     }
 }

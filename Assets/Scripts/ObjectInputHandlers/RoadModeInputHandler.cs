@@ -8,8 +8,6 @@ namespace ObjectInputHandlers
 {
     class RoadModeInputHandler : ObjectInputHandlerBase
     {
-        private RoadPointContainer _roadPointContainer;
-        private Vector3 _initialPosition;
         public RoadModeInputHandler(ObjectManager objectManager)
         {
             ObjectManager = objectManager;
@@ -17,22 +15,13 @@ namespace ObjectInputHandlers
         
         public override void HandleMove(IEditorInteractable editorInteractable, Vector3 groundPos)
         {
-            if (!OverViewportCheck.IsOverViewport)
-            {
-                HandleOutOfCanvas();
+            if (!OverViewportCheck.IsOverViewport) return;
 
-                return;
-            }
+            // Check if road container
+            var isRoadContainer = editorInteractable is RoadPointContainer;
             
             // Store last ground position
             LastGroundPos = groundPos;
-            
-            // Check if road container
-            var isRoadContainer = editorInteractable is RoadPointContainer;
-
-            // Handle movement if LMB is down
-            if (HandleLmbDownMove()) return;
-            
             
             // Check if NOT hovering over road point
             if (editorInteractable == null || !isRoadContainer)
@@ -51,23 +40,6 @@ namespace ObjectInputHandlers
             LastHoveredObject.OnPointerEnter();
         }
 
-        private bool HandleLmbDownMove()
-        {
-            if (!IsLmbDown) return false;
-            bool isDrag = false;
-            if (SelectedObject != null)
-            {
-                isDrag = Vector3.Distance(LastGroundPos, _initialPosition) > ObjectManager.DragThreshold;
-            }
-
-            if (!isDrag) return true;
-            // Check if object is selected
-            SelectedObject?.OnDrag(LastGroundPos);
-            ShouldCallDragCommand = true;
-            return true;
-        }
-
-
         public override void HandleLmbDown()
         {
             if (!OverViewportCheck.IsOverViewport) return;
@@ -76,32 +48,39 @@ namespace ObjectInputHandlers
             // Check if NOT hovering over road point
             if (LastHoveredObject == null)
             {
-                // Deselect selected object if any
-                SelectedObject?.Deselect();
-                SelectedObject = null;
-                _roadPointContainer = null;
-
+                ClearSelection();
                 // Spawn road point
                 DesignerManager.Instance.SpawnManager.AddRoadPoint(LastGroundPos);
                 return;
             }
 
+            // Check if hovering over same road point
+            if (LastHoveredObject == SelectedObject) return;
+            
             // If hovering over road point, select it and deselect last selected object
-            SelectedObject?.Deselect();
+            ClearSelection();
             SelectedObject = LastHoveredObject;
             SelectedObject.Select();
-            _roadPointContainer = (RoadPointContainer) SelectedObject;
-            _initialPosition = _roadPointContainer.transform.position;
+            SelectedObject.OnObjectDeleted += ClearObject;
+        }
+        
+        private void ClearSelection()
+        {
+            if (SelectedObject == null) return;
+            SelectedObject.OnObjectDeleted -= ClearObject;
+            SelectedObject.Deselect();
+            SelectedObject = null;
+        }
+
+        private void ClearObject()
+        {
+            SelectedObject.OnObjectDeleted -= ClearObject;
+            SelectedObject = null;
         }
 
         public override void HandleLmbUp()
         {
-            if (!OverViewportCheck.IsOverViewport) return;
             IsLmbDown = false;
-            
-            // Check if drag command should be called
-            if (!ShouldCallDragCommand) return;
-            CompleteDrag();
         }
 
         public override void HandleRmbDown()
@@ -117,12 +96,10 @@ namespace ObjectInputHandlers
             // Delete road point
             var deleteAction = new RoadDeleteAction(roadPointContainer.RoadPoint);
             ActionRecorder.Instance.Record(deleteAction);
-            
         }
 
         public override void HandleRmbUp()
         {
-            if (!OverViewportCheck.IsOverViewport) return;
             IsRmbDown = false;
         }
         
@@ -130,38 +107,12 @@ namespace ObjectInputHandlers
         // Cleans up selected or hovered road points on exit
         public override void CleanUp(EditMode editMode)
         {
-            if (SelectedObject != null)
-            {
-                SelectedObject?.Deselect();
-                SelectedObject = null;
-            }
-
-            if (LastHoveredObject == null) return;
-            LastHoveredObject?.OnPointerExit();
-            LastHoveredObject = null;
-        }
-
-        /// <summary>
-        /// Create drag action and record it
-        /// </summary>
-        private void CompleteDrag()
-        {
-            // Create action
-            var action = new RoadDragAction(_initialPosition, SelectedObject.GetTransform().position, _roadPointContainer.RoadPoint);
-            ActionRecorder.Instance.Record(action);
-            ShouldCallDragCommand = false;
-        }
-        
-        /// <summary>
-        /// Handles mouse going out of canvas
-        /// </summary>
-        private void HandleOutOfCanvas()
-        {
             IsLmbDown = false;
             IsRmbDown = false;
-            if (!ShouldCallDragCommand) return;
-            CompleteDrag();
+            ShouldCallDragCommand = false;
+            LastHoveredObject?.OnPointerExit();
+            LastHoveredObject = null;
+            ClearSelection();
         }
-        
     }
 }

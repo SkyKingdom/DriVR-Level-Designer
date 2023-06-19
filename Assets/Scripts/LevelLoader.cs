@@ -125,7 +125,7 @@ public class LevelLoader : MonoBehaviour
         foreach (var point in pathPoints)
         {
             var nodeContainer = ObjectFactory.InstantiateNodeContainer(_prefabData.GetPrefab("PathPoint"), point);
-            var node = new Node(nodeContainer, objBase, point);
+            var node = new PathPoint(nodeContainer, objBase, point);
             objBase.Path.AddPathPoint(node, false);
         }
     }

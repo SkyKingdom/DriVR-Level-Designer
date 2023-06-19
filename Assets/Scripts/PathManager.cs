@@ -16,7 +16,7 @@ public class PathManager : StaticInstance<PathManager>
     #endregion
     
     private ObjectBase _selectedObject;
-    public NodeContainer pathPointPrefab;
+    public PathPointContainer pathPointPrefab;
     
     [SerializeField] private Button stopEditingButton;
     [SerializeField] private PathCreator pathPrefab;
@@ -55,9 +55,9 @@ public class PathManager : StaticInstance<PathManager>
         }
         
         var cont = Instantiate(pathPointPrefab, pos, Quaternion.identity);
-        var node = new Node(cont, _selectedObject, pos);
+        var node = new PathPoint(cont, _selectedObject, pos);
         cont.SetNode(node);
-        var action = new NodeAddAction(node, _selectedObject);
+        var action = new PathAddAction(node, _selectedObject);
         ActionRecorder.Instance.Record(action);
     }
 

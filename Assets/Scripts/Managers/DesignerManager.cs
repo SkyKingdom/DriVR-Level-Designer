@@ -53,6 +53,7 @@ public class DesignerManager : StaticInstance<DesignerManager>
     private void Start()
     {
         SetMode((int)Mode.Edit); // Default to Edit mode
+        SetEditMode((int)EditMode.Object); // Default to Object edit mode
     }
     
     // Sets the current mode
@@ -113,5 +114,10 @@ public class DesignerManager : StaticInstance<DesignerManager>
         }
         
         SetEditMode((int) EditMode.Object);
+    }
+    
+    public bool InEditType(EditMode editMode)
+    {
+        return CurrentEditMode == editMode;
     }
 }

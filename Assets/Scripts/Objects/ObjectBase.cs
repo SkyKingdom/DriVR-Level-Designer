@@ -105,6 +105,10 @@ namespace Objects
     
     public void Delete()
     {
+      if (IsSelected && DesignerManager.Instance.InEditType(EditMode.Path))
+      {
+        DesignerManager.Instance.SetEditMode((int)EditMode.Object);
+      }
       OnObjectDeleted?.Invoke();
       if (Path)
       {
@@ -117,6 +121,7 @@ namespace Objects
 
     private void Hide()
     {
+      Deselect();
       if (Path)
       {
         Path.HidePath();
@@ -138,9 +143,6 @@ namespace Objects
 
     public bool IsSelected { get; private set; }
 
-    private Vector3 _lastPosition;
-    private Vector3 _lastRotation;
-
     public void OnPointerEnter()
     {
       if (IsSelected) return;
@@ -153,37 +155,12 @@ namespace Objects
       _outline.enabled = false;
     }
 
-    public void OnDrag(Vector3 position)
-    {
-      if (SpawnManager.Instance.EditMode == EditMode.Object && !SpawnManager.Instance.PrefabToSpawn)
-        transform.position = position;
-    }
-
-    public void OnDragRelease()
-    {
-
-    }
-
-    public void OnRotate(float angle)
-    {
-      if (SpawnManager.Instance.EditMode == EditMode.Object && !SpawnManager.Instance.PrefabToSpawn)
-        transform.Rotate(0f, angle, 0f);
-    }
-
-    public void OnRotateRelease()
-    {
-    }
-
     public void Select()
     {
       IsSelected = true;
       _outline.enabled = true;
       DesignerManager.Instance.SelectionManager.SelectObject(this);
-      // Store last position and rotation
-      var transform1 = transform;
-      _lastPosition = transform1.position;
-      _lastRotation = transform1.rotation.eulerAngles;
-      
+
       if (Path)
       {
         Path.HighlightPath(null);
@@ -198,7 +175,8 @@ namespace Objects
       {
         Path.UnhighlightPath(null);
       }
-      DesignerManager.Instance.SelectionManager.DeselectObject();
+      if (DesignerManager.Instance.SelectionManager.SelectedObject == this)
+        DesignerManager.Instance.SelectionManager.DeselectObject();
     }
 
     public Transform GetTransform()

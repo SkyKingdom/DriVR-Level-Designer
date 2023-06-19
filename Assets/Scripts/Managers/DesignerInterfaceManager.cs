@@ -35,7 +35,13 @@ namespace Managers
 
         [SerializeField] private GameObject objectButtons;
         [SerializeField] private GameObject objectPanel;
-        
+
+        #region Path Buttons
+
+        [SerializeField] private GameObject editPathButton;
+        [SerializeField] private GameObject stopEditPathButton;
+
+        #endregion
         
         [field: SerializeField, Space(20)] public LevelSaveModal SaveModal { get; private set; }
         [SerializeField] private Toggle mapToggle;
@@ -55,6 +61,7 @@ namespace Managers
                 case EditMode.Object:
                     break;
                 case EditMode.Path:
+                    stopEditPathButton.SetActive(false);
                     break;
                 case EditMode.Road:
                     objectButtons.SetActive(true);
@@ -69,6 +76,7 @@ namespace Managers
                 case EditMode.Object:
                     break;
                 case EditMode.Path:
+                    stopEditPathButton.SetActive(true);
                     break;
                 case EditMode.Road:
                     objectButtons.SetActive(false);

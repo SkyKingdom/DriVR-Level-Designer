@@ -19,8 +19,10 @@ namespace ObjectInputHandlers
         {
             if (!OverViewportCheck.IsOverViewport) return;
 
+            // Check if object
             var isObject = editorInteractable is ObjectBase;
             
+            // Store last ground position
             LastGroundPos = groundPos;
             
             // Check if NOT hovering over object
@@ -51,7 +53,6 @@ namespace ObjectInputHandlers
             {
                 // If not hovering over object, deselect object
                 ClearSelection();
-                SelectedObject = null;
                 // Spawn new object
                 DesignerManager.Instance.SpawnManager.SpawnObject(LastGroundPos);
                 return;
@@ -67,12 +68,15 @@ namespace ObjectInputHandlers
             SelectedObject.OnObjectDeleted += ClearObject;
         }
 
-        private void ClearSelection()
+        private void ClearSelection(bool shouldDeselect = true)
         {
             if (SelectedObject == null) return;
             // Unsubscribe from event
             SelectedObject.OnObjectDeleted -= ClearObject;
-            SelectedObject.Deselect();
+            
+            if (shouldDeselect)
+                SelectedObject.Deselect();
+            SelectedObject = null;
         }
 
         private void ClearObject()
@@ -94,11 +98,8 @@ namespace ObjectInputHandlers
             IsRmbDown = true;
             
             // Check if hovering over object
-            if (LastHoveredObject == null)
-            {
-                return;
-            }
-            
+            if (LastHoveredObject == null) return;
+
             // If same object, return
             if (LastHoveredObject == SelectedObject) return;
             
@@ -123,12 +124,7 @@ namespace ObjectInputHandlers
             ShouldCallDragCommand = false;
             LastHoveredObject?.OnPointerExit();
             LastHoveredObject = null;
-            if (editMode == EditMode.Road)
-            {
-                ClearSelection();
-            }
-
-            SelectedObject = null;
+            ClearSelection(editMode == EditMode.Road);
         }
 
     }

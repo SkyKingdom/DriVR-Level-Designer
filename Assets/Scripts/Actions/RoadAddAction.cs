@@ -2,12 +2,12 @@
 
 namespace Actions
 {
-    class RoadPointAction : ActionBase
+    class RoadAddAction : ActionBase
     {
         private readonly Vector3 _position;
         private RoadPoint point;
         
-        public RoadPointAction(Vector3 position)
+        public RoadAddAction(Vector3 position)
         {
             _position = position;
         }
@@ -19,6 +19,9 @@ namespace Actions
 
         public override void Undo()
         {
+            var selectionManager = DesignerManager.Instance.SelectionManager;
+            if (selectionManager.SelectedRoadPoint == point.owner)
+                selectionManager.DeselectRoadPoint();
             RoadTool.Instance.RemovePoint(point);
         }
     }

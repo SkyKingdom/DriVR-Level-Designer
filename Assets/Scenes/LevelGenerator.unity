@@ -6871,7 +6871,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1923562699}
   m_HandleRect: {fileID: 1923562698}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -12380,7 +12380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.10588236, g: 0.078431375, b: 0.07450981, a: 1}
+  m_Color: {r: 0.10588236, g: 0.078431375, b: 0.07450981, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13945,7 +13945,7 @@ MonoBehaviour:
           Id: mapbox.terrain-rgb
           Modified: 
           UserName: 
-      elevationLayerType: 0
+      elevationLayerType: 2
       requiredOptions:
         exaggerationFactor: 0
       colliderOptions:
@@ -15436,7 +15436,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -149.50317, y: 143}
+  m_SizeDelta: {x: -160, y: 143}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1122653570
 MonoBehaviour:
@@ -16387,6 +16387,8 @@ MonoBehaviour:
   previewModeButton: {fileID: 1990205551}
   objectButtons: {fileID: 220497214}
   objectPanel: {fileID: 1385414022}
+  editPathButton: {fileID: 1863562468}
+  stopEditPathButton: {fileID: 1945291360}
   <SaveModal>k__BackingField: {fileID: 4532283848497636644}
   mapToggle: {fileID: 1906704895}
 --- !u!1 &1231447009
@@ -19247,10 +19249,6 @@ MonoBehaviour:
   highlightColor: {r: 1, g: 1, b: 1, a: 1}
   positionShortcut: 119
   rotationShortcut: 101
-  scaleShortcut: 114
-  allShortcut: 97
-  spaceShortcut: 120
-  pivotShortcut: 122
 --- !u!1 &1495291237
 GameObject:
   m_ObjectHideFlags: 0
@@ -22679,7 +22677,6 @@ MonoBehaviour:
   - {fileID: 1990205551}
   - {fileID: 853760991}
   - {fileID: 423073647}
-  drawingPathBtn: {fileID: 1945291360}
   activesPnl: {fileID: 1602125862}
   interactablePnl: {fileID: 1662378829}
   propsPnl: {fileID: 899402784}
@@ -23557,18 +23554,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1797212727}
-        m_TargetAssemblyTypeName: UiNavigation, Assembly-CSharp
-        m_MethodName: ToggleDrawPath
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1660685786}
         m_TargetAssemblyTypeName: SpawnManager, Assembly-CSharp
@@ -25098,18 +25083,6 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: DesignerManager, Assembly-CSharp
         m_MethodName: TogglePathMode
         m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1797212727}
-        m_TargetAssemblyTypeName: UiNavigation, Assembly-CSharp
-        m_MethodName: ToggleDrawPath
-        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
