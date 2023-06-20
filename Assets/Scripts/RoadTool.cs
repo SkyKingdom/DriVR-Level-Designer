@@ -22,6 +22,24 @@ public class RoadTool : StaticInstance<RoadTool>
     
     private float _roadWidth = 1f;
 
+    private void OnEnable()
+    {
+        DesignerManager.Instance.OnEditTypeChange += HandleEditModeChange;
+    }
+
+    private void HandleEditModeChange(EditMode oldValue, EditMode value)
+    {
+        if (oldValue == EditMode.Road)
+        {
+            HideRoadPoints();
+        }
+        
+        if (value == EditMode.Road)
+        {
+            ShowRoadPoints();
+        }
+    }
+
     public RoadPoint AddPoint(Vector3 pos)
     {
         var container = Instantiate(roadNode, pos, Quaternion.identity);
@@ -34,6 +52,7 @@ public class RoadTool : StaticInstance<RoadTool>
     
     public void RemovePoint(RoadPoint point)
     {
+        point.owner.Delete();
         Destroy(point.gameObject);
         points.Remove(point);
         UpdateRoad();
@@ -88,6 +107,22 @@ public class RoadTool : StaticInstance<RoadTool>
         _roadWidth = width;
         roadMesh.roadWidth = width;
         roadMesh.TriggerUpdate();
+    }
+    
+    private void HideRoadPoints()
+    {
+        foreach (var p in points)
+        {
+            p.gameObject.SetActive(false);
+        }
+    }
+    
+    private void ShowRoadPoints()
+    {
+        foreach (var p in points)
+        {
+            p.gameObject.SetActive(true);
+        }
     }
 }
 

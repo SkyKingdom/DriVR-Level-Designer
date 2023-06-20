@@ -6953,7 +6953,7 @@ MonoBehaviour:
     m_Bits: 8
   handlesMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   inputActionAsset: {fileID: -944628639613478452, guid: bc87c2a060bf3134aadc12cd1e3caf69,
     type: 3}
 --- !u!4 &511019095
@@ -7006,7 +7006,7 @@ MonoBehaviour:
   <InputManager>k__BackingField: {fileID: 511019094}
   <SpawnManager>k__BackingField: {fileID: 1660685786}
   <SelectionManager>k__BackingField: {fileID: 774432577}
-  <TransformHandleManager>k__BackingField: {fileID: 0}
+  <TransformHandleManager>k__BackingField: {fileID: 1495243885}
 --- !u!4 &511080673
 Transform:
   m_ObjectHideFlags: 0
@@ -16385,10 +16385,10 @@ MonoBehaviour:
   mapModeButton: {fileID: 423073647}
   editModeButton: {fileID: 853760991}
   previewModeButton: {fileID: 1990205551}
-  objectButtons: {fileID: 0}
-  objectPanel: {fileID: 0}
-  editPathButton: {fileID: 0}
-  stopEditPathButton: {fileID: 0}
+  objectButtons: {fileID: 220497214}
+  objectPanel: {fileID: 1385414022}
+  editPathButton: {fileID: 1863562468}
+  stopEditPathButton: {fileID: 1945291360}
   <SaveModal>k__BackingField: {fileID: 4532283848497636644}
   mapToggle: {fileID: 1906704895}
 --- !u!1 &1231447009
