@@ -5,6 +5,9 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace Interfaces
 {
+    /// <summary>
+    /// Interface for objects that can be interacted with in the editor
+    /// </summary>
     public interface IEditorInteractable
     {
         public event Action OnObjectDeleted;
