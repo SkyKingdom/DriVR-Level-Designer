@@ -92,7 +92,8 @@ namespace ObjectInputHandlers
             if (LastHoveredObject == null) return;
             
             var roadPointContainer = (RoadPointContainer) LastHoveredObject;
-            
+            LastHoveredObject?.OnPointerExit();
+            LastHoveredObject = null;
             // Delete road point
             var deleteAction = new RoadDeleteAction(roadPointContainer.RoadPoint);
             ActionRecorder.Instance.Record(deleteAction);

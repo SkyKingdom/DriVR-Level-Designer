@@ -25,6 +25,7 @@ public enum EditMode
     Road = 2
 }
 
+[DefaultExecutionOrder(-100)]
 public class DesignerManager : StaticInstance<DesignerManager>
 {
     #region Managers

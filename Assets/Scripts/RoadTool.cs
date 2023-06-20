@@ -8,23 +8,43 @@ using Utilities;
 
 public class RoadTool : StaticInstance<RoadTool>
 {
-    [SerializeField] private PathCreator roadPrefab;
+    // Road prefab
+    [Header("Prefab References") ,SerializeField] private PathCreator roadPrefab;
+    // Road point prefab
     [SerializeField] private RoadPointContainer roadNode;
 
+    // Reference to road spline
     private PathCreator road;
     public PathCreator Road => road;
+    
+    // Reference to road mesh
     private RoadMeshCreator roadMesh;
+    
+    // List of road points
     private List<RoadPoint> points = new();
-    [SerializeField] private float tilingMultiplier = 7f;
-
+    
+    // Road material tiling multiplier
+    [Header("Settings"), SerializeField] private float tilingMultiplier = 7f;
+    
+    // Number of points to use for road mesh
+    [SerializeField] private int numPointsForMesh = 3;
+    
+    // Returns a list of the road points' positions
     public Vector3[] RoadPoints => GetPointPositions();
-    public bool HasRoad => points.Count >= 2;
+    
+    // returns if road mesh is active
+    public bool HasRoad => points.Count >= 3;
     
     private float _roadWidth = 1f;
 
     private void OnEnable()
     {
         DesignerManager.Instance.OnEditTypeChange += HandleEditModeChange;
+    }
+
+    private void OnDisable()
+    {
+        DesignerManager.Instance.OnEditTypeChange -= HandleEditModeChange;
     }
 
     private void HandleEditModeChange(EditMode oldValue, EditMode value)
@@ -82,8 +102,8 @@ public class RoadTool : StaticInstance<RoadTool>
             roadMesh.TriggerUpdate();
         }
 
-        road.gameObject.SetActive(points.Count >= 2);
-        if (points.Count < 2)
+        road.gameObject.SetActive(points.Count >= numPointsForMesh);
+        if (points.Count < numPointsForMesh)
             return;
         var positions = GetPointPositions();
         BezierPath bezierPath = new BezierPath(positions, false, PathSpace.xz);
@@ -113,7 +133,7 @@ public class RoadTool : StaticInstance<RoadTool>
     {
         foreach (var p in points)
         {
-            p.gameObject.SetActive(false);
+            p.owner.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         }
     }
     
@@ -121,7 +141,7 @@ public class RoadTool : StaticInstance<RoadTool>
     {
         foreach (var p in points)
         {
-            p.gameObject.SetActive(true);
+            p.owner.transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
         }
     }
 }
