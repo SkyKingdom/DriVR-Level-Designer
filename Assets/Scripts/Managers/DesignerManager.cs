@@ -22,7 +22,8 @@ public enum EditMode
 {
     Object = 0,
     Path = 1,
-    Road = 2
+    Road = 2,
+    None = 3,
 }
 
 [DefaultExecutionOrder(-100)]

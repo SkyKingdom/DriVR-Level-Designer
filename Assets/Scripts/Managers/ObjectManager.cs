@@ -30,11 +30,24 @@ namespace Managers
         {
             // Subscribe to events
             DesignerManager.Instance.OnEditTypeChange += OnEditTypeChanged;
+            DesignerManager.Instance.OnModeChange += OnModeChange;
             _inputManager.OnLmbDown += OnLMBDown;
             _inputManager.OnLmbUp += OnLMBUp;
             _inputManager.OnRmbDown += OnRMBDown;
             _inputManager.OnRmbUp += OnRMBUp;
             _inputManager.OnMouseMove += OnMouseMove;
+        }
+
+        private void OnModeChange(Mode oldValue, Mode value)
+        {
+            if (value != Mode.Edit)
+            {
+                inputHandlerDelegate.CleanUp(EditMode.None);
+                inputHandlerDelegate = new NoEditInputHandler();
+                return;
+            }
+
+            inputHandlerDelegate = new ObjectModeInputHandler(this);
         }
 
         private void OnDisable()

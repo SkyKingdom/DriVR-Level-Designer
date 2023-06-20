@@ -113,6 +113,11 @@ public class ObjectInspector : MonoBehaviour
     /// </summary>
     public void SaveData()
     {
+        if (selectedObject == null)
+        {
+            return;
+        }
+
         selectedObject.Rename(objectName.text);
         if (selectedObject.Path)
         {
@@ -129,13 +134,10 @@ public class ObjectInspector : MonoBehaviour
             selectedObject.Interactable.SetAlwaysInteractable(alwaysInteractable.isOn, isCorrect.isOn);
         }
 
-        if (selectedObject.Playable)
-        {
-            float time = float.Parse(objectPovStart.text);
-            selectedObject.Playable.SetPlayOnStart(time < 1f);
-            selectedObject.Playable.SetSwitchTime(time);
-
-        }
+        if (!selectedObject.Playable) return;
+        float time = float.Parse(objectPovStart.text);
+        selectedObject.Playable.SetPlayOnStart(time < 1f);
+        selectedObject.Playable.SetSwitchTime(time);
     }
     
     /// <summary>

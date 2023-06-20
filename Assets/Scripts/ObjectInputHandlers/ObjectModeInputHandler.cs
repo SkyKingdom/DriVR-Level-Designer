@@ -123,7 +123,7 @@ namespace ObjectInputHandlers
             IsRmbDown = false;
             LastHoveredObject?.OnPointerExit();
             LastHoveredObject = null;
-            ClearSelection(editMode == EditMode.Road);
+            ClearSelection(editMode == EditMode.Road || editMode == EditMode.None);
         }
 
         public override void SetSelectedObject(IEditorInteractable editorInteractable)
