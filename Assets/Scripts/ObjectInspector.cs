@@ -121,21 +121,35 @@ public class ObjectInspector : MonoBehaviour
         selectedObject.Rename(objectName.text);
         if (selectedObject.Path)
         {
-            selectedObject.Path.SetSpeed(float.Parse(objectSpeed.text));
+            if (float.TryParse(objectSpeed.text, out var objectSpeedFloat))
+            {
+                selectedObject.Path.SetSpeed(objectSpeedFloat);
+            }
+
             selectedObject.Path.SetAnimateOnStart(animateOnStart.isOn);
-            selectedObject.Path.SetAnimationStartTime(float.Parse(objectPathStart.text));
+
+            if (float.TryParse(objectPathStart.text, out var objectPathStartFloat))
+            {
+                selectedObject.Path.SetAnimationStartTime(objectPathStartFloat);
+            }
         }
 
         if (selectedObject.Interactable)
         {
-            selectedObject.Interactable.SetInteractionTime(
-                float.Parse(objectInteractionStart.text),
-                float.Parse(objectInteractionEnd.text));
+            if (float.TryParse(objectInteractionStart.text, out var objectInteractionStartFloat) &&
+                float.TryParse(objectInteractionEnd.text, out var objectInteractionEndFloat))
+            {
+                selectedObject.Interactable.SetInteractionTime(
+                    objectInteractionStartFloat,
+                    objectInteractionEndFloat);
+            }
+
             selectedObject.Interactable.SetAlwaysInteractable(alwaysInteractable.isOn, isCorrect.isOn);
         }
 
         if (!selectedObject.Playable) return;
-        float time = float.Parse(objectPovStart.text);
+
+        if (!float.TryParse(objectPovStart.text, out var time)) return;
         selectedObject.Playable.SetPlayOnStart(time < 1f);
         selectedObject.Playable.SetSwitchTime(time);
     }
