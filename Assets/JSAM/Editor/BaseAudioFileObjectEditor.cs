@@ -90,8 +90,8 @@ namespace JSAM.JSAMEditor
         public void Draw() => list.DoLayoutList();
     }
 
-    public abstract class BaseAudioFileObjectEditor<EditorType> : Editor
-        where EditorType : Editor
+    public abstract class BaseAudioFileObjectEditor<EditorType> : UnityEditor.Editor
+        where EditorType : UnityEditor.Editor
     {
         public enum LoopPointTool
         {

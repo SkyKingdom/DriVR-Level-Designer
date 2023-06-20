@@ -41,6 +41,8 @@ public class DesignerManager : StaticInstance<DesignerManager>
     [field: SerializeField] public SelectionManager SelectionManager { get; private set; }
     
     [field: SerializeField] public TransformHandleManager TransformHandleManager { get; private set; }
+    [field: SerializeField] public RoadTool RoadTool { get; private set; }
+    [field: SerializeField] public PathManager PathManager { get; private set; }
 
     #endregion
     

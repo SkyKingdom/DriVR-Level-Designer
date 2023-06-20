@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace JSAM.JSAMEditor
 {
-    public abstract class BaseAudioEditor<T> : Editor where T : BaseAudioFileObject
+    public abstract class BaseAudioEditor<T> : UnityEditor.Editor where T : BaseAudioFileObject
     {
         protected List<string> options = new List<string>();
         protected List<List<string>> moreOptions = new List<List<string>>();

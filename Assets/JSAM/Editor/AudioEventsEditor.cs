@@ -6,7 +6,7 @@ using UnityEditor;
 namespace JSAM.JSAMEditor
 {
     [CustomEditor(typeof(AudioEvents))]
-    public class AudioEventsEditor : Editor
+    public class AudioEventsEditor : UnityEditor.Editor
     {
         static bool showHowTo;
 

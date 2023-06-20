@@ -96,7 +96,7 @@ namespace Objects
       }
     }
 
-    public void OnReposition(Vector3 position)
+    public void SetPosition(Vector3 position)
     {
       transform.position = position;
       if (!Path) return;

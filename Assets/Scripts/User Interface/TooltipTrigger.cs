@@ -6,15 +6,16 @@ namespace User_Interface
 {
     public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {      
-        private const float HOVER_TIME = 2f;
-        private float _timer;
-        private bool _isHovering = false;
-        [SerializeField] private bool displayAtMousePosition;
-        [SerializeField, TextArea()] private string textToDisplay;
+        private const float HoverTime = 2f;
+        
+        [SerializeField, TextArea(3, 6)] private string textToDisplay;
+        [Header("Positioning"), SerializeField] private bool displayAtMousePosition;
         [SerializeField] private Vector3 tooltipPosition;
+        
         private int _screenWidth;
         private int _screenHeight;
-
+        private float _timer;
+        private bool _isHovering;
         private void Start()
         {
             _screenWidth = Screen.width;
@@ -27,7 +28,7 @@ namespace User_Interface
             
             _timer += Time.deltaTime;
             
-            if (_timer >= HOVER_TIME)
+            if (_timer >= HoverTime)
             {
                 if (displayAtMousePosition)
                 {
