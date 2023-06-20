@@ -42,7 +42,7 @@ public class PathManager : StaticInstance<PathManager>
 
     private void DeselectObject() => _selectedObject = null;
 
-    public void HandlePathPointSpawn(Vector3 pos)
+    public PathPoint InstantiatePathPoint(Vector3 pos)
     {
         var point = ShouldSnapRoad(pos);
         
@@ -52,10 +52,10 @@ public class PathManager : StaticInstance<PathManager>
         }
         
         var cont = Instantiate(pathPointPrefab, pos, Quaternion.identity);
-        var node = new PathPoint(cont, _selectedObject, pos);
-        cont.SetNode(node);
-        var action = new PathAddAction(node, _selectedObject);
-        ActionRecorder.Instance.Record(action);
+        var pathPoint = new PathPoint(cont, _selectedObject, pos);
+        cont.SetNode(pathPoint);
+
+        return pathPoint;
     }
 
     private ClosePointData? ShouldSnapRoad(Vector3 pos)

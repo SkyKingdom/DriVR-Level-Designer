@@ -16,14 +16,18 @@ namespace Actions
         }
         public override void Execute()
         {
-            _obj.OnReposition(_endTransform.Position);
+            // Updates object position and rotation.
+            _obj.SetPosition(_endTransform.Position);
             _obj.SetRotation(_endTransform.Rotation);
         }
 
         public override void Undo()
         {
-            _obj.OnReposition(_startTransform.Position);
+            // Updates object position and rotation to the start values.
+            _obj.SetPosition(_startTransform.Position);
             _obj.SetRotation(_startTransform.Rotation);
+            
+            // Updates handle position if object is selected.
             var selectionManager = DesignerManager.Instance.SelectionManager;
             if (selectionManager.SelectedObject == _obj)
                 selectionManager.UpdateHandlePosition();

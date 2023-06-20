@@ -7,15 +7,12 @@ public class PathPoint : IDisposable
     public PathPointContainer Container { get; private set; }
     public Vector3 Position { get; private set; }
     
-    private bool _disposed = false;
-    
-    private MeshRenderer _renderer;
+    private bool _disposed;
 
     public PathPoint(PathPointContainer container, ObjectBase owner, Vector3 position)
     {
         Container = container;
         container.PathPoint = this;
-        _renderer = container.GetComponent<MeshRenderer>();
         Owner = owner;
         Position = position;
     }

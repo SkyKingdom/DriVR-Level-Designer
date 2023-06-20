@@ -11,7 +11,7 @@ namespace JSAM.JSAMEditor
     /// https://forum.unity.com/threads/custom-editor-not-saving-changes.424675/
     /// </summary>
     [CustomEditor(typeof(AudioManager))]
-    public class AudioManagerEditor : Editor
+    public class AudioManagerEditor : UnityEditor.Editor
     {
         static Color buttonPressedColor = new Color(1, 1, 1);
 

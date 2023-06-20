@@ -6,7 +6,7 @@ using UnityEditor;
 namespace JSAM.JSAMEditor
 {
     [CustomEditor(typeof(AudioManagerInternal))]
-    public class AudioManagerInternalEditor : Editor
+    public class AudioManagerInternalEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

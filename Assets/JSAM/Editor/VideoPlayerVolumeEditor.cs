@@ -4,7 +4,7 @@ using UnityEngine;
 namespace JSAM.JSAMEditor
 {
     [CustomEditor(typeof(VideoPlayerVolume))]
-    public class VideoPlayerVolumeEditor : Editor
+    public class VideoPlayerVolumeEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace JSAM.JSAMEditor
 {
-    public class EditorCompatability : Editor
+    public class EditorCompatability : UnityEditor.Editor
     {
         [System.Serializable]
         public struct AgnosticGUID<T> where T : UnityEngine.Object

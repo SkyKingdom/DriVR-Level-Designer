@@ -1540,7 +1540,7 @@ namespace JSAM.JSAMEditor
     }
 
     [CustomEditor(typeof(AudioLibrary))]
-    public class AudioLibraryInspector : Editor
+    public class AudioLibraryInspector : UnityEditor.Editor
     {
         bool DEBUG_MODE = false;
         public override void OnInspectorGUI()

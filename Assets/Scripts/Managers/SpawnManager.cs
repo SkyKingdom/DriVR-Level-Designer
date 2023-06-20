@@ -29,12 +29,9 @@ public class SpawnManager : StaticInstance<SpawnManager>
     public void SpawnObject(Vector3 pos)
     {
         if (prefabToSpawn == null) return; // If no prefab is selected, return
-        
-        var spawnedObject = Instantiate(prefabToSpawn, pos, Quaternion.identity);
-        spawnedObject.Initialize(spawnedObject.gameObject.name, prefabToSpawn.name, false);
-        
-        // Record action
-        var action = new SpawnAction(spawnedObject);
+
+        // Create action and record it
+        var action = new ObjectSpawnAction(prefabToSpawn, pos);
         ActionRecorder.Instance.Record(action);
 
         // Deselect toggle if shift is not pressed
@@ -47,12 +44,15 @@ public class SpawnManager : StaticInstance<SpawnManager>
     // Spawns path point at given position
     public void SpawnPathPoint(Vector3 pos)
     {
-        PathManager.Instance.HandlePathPointSpawn(pos);
+        // Create action and record it
+        var action = new PathAddAction(pos);
+        ActionRecorder.Instance.Record(action);
     }
 
     // Spawns road point at given position
     public void AddRoadPoint(Vector3 pos)
     {
+        // Create action and record it
         var action = new RoadAddAction(pos);
         ActionRecorder.Instance.Record(action);
     }

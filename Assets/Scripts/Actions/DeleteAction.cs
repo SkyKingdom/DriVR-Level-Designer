@@ -12,11 +12,13 @@ namespace Actions
         }
         public override void Execute()
         {
+            // Hides object, and flags it for deletion.
             _deletedObject.SetDeleted(true);
         }
 
         public override void Undo()
         {
+            // shows object, and removes deletion flag.
             _deletedObject.SetDeleted(false);
         }
     }
