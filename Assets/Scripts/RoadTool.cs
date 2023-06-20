@@ -37,16 +37,19 @@ public class RoadTool : StaticInstance<RoadTool>
     
     private float _roadWidth = 1f;
 
+    // Subscribe to edit mode change event
     private void OnEnable()
     {
         DesignerManager.Instance.OnEditTypeChange += HandleEditModeChange;
     }
 
+    // Unsubscribe from edit mode change event
     private void OnDisable()
     {
         DesignerManager.Instance.OnEditTypeChange -= HandleEditModeChange;
     }
 
+    // Handles edit mode change
     private void HandleEditModeChange(EditMode oldValue, EditMode value)
     {
         if (oldValue == EditMode.Road)
@@ -60,6 +63,7 @@ public class RoadTool : StaticInstance<RoadTool>
         }
     }
 
+    // Creates a road point at the given position
     public RoadPoint AddPoint(Vector3 pos)
     {
         var container = Instantiate(roadNode, pos, Quaternion.identity);
@@ -70,6 +74,7 @@ public class RoadTool : StaticInstance<RoadTool>
         return roadPoint;
     }
     
+    // Removes a road point
     public void RemovePoint(RoadPoint point)
     {
         point.owner.Delete();
@@ -78,6 +83,11 @@ public class RoadTool : StaticInstance<RoadTool>
         UpdateRoad();
     }
     
+    /// <summary>
+    /// Temporary removes a road point<br/>
+    /// Triggers when a road point is deleted with right click <br/>
+    /// Allows for undoing
+    /// </summary>
     public int RemovePointTemporarily(RoadPoint point)
     {
         var i = points.IndexOf(point);
@@ -87,12 +97,14 @@ public class RoadTool : StaticInstance<RoadTool>
         return i;
     }
     
+    // Adds
     public void AddPoint(int index, RoadPoint point)
     {
         points.Insert(index, point);
         UpdateRoad();
     }
 
+    // Updates the road mesh
     public void UpdateRoad()
     {
         if (!road)
@@ -117,11 +129,13 @@ public class RoadTool : StaticInstance<RoadTool>
         }
     }
 
+    // Returns a list of the road points' positions
     private Vector3[] GetPointPositions()
     {
         return points.Select(p => p.position).ToArray();
     }
     
+    // Changes the road mesh width
     public void ChangeRoadWidth(float width)
     {
         _roadWidth = width;
@@ -129,6 +143,7 @@ public class RoadTool : StaticInstance<RoadTool>
         roadMesh.TriggerUpdate();
     }
     
+    // Makes road points smaller
     private void HideRoadPoints()
     {
         foreach (var p in points)
@@ -137,6 +152,7 @@ public class RoadTool : StaticInstance<RoadTool>
         }
     }
     
+    // Makes road points normal size
     private void ShowRoadPoints()
     {
         foreach (var p in points)
