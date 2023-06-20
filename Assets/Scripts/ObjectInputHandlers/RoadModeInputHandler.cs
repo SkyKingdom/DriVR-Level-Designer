@@ -109,7 +109,6 @@ namespace ObjectInputHandlers
         {
             IsLmbDown = false;
             IsRmbDown = false;
-            ShouldCallDragCommand = false;
             LastHoveredObject?.OnPointerExit();
             LastHoveredObject = null;
             ClearSelection();

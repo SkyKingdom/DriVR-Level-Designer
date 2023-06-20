@@ -74,4 +74,10 @@ public class PathPointContainer : MonoBehaviour, IEditorInteractable
     {
         _renderer.material = defaultMaterial;
     }
+    
+    public void Delete()
+    {
+        OnObjectDeleted?.Invoke();
+        Unhighlight();
+    }
 }

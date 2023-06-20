@@ -15,6 +15,7 @@ namespace Actions
         public override void Execute()
         {
             _owner.Path.AddPathPoint(_pathPoint);
+            _owner.Path.HighlightPath(null);
         }
 
         public override void Undo()

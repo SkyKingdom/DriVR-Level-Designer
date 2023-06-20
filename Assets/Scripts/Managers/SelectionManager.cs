@@ -15,6 +15,7 @@ namespace Managers
         #endregion
         
         public ObjectBase SelectedObject { get; private set; }
+        public ObjectBase LastSelectedObject { get; private set; }
         public RoadPointContainer SelectedRoadPoint { get; private set; }
         
         public PathPointContainer SelectedPathPoint { get; private set; }
@@ -47,6 +48,22 @@ namespace Managers
 
         private void OnEditTypeChange(EditMode oldValue, EditMode value)
         {
+            switch (oldValue)
+            {
+                case EditMode.Object:
+                    LastSelectedObject = SelectedObject;
+                    break;
+                case EditMode.Path:
+                    if (LastSelectedObject)
+                    {
+                        SelectedObject = LastSelectedObject;
+                    }
+                    break;
+                case EditMode.Road:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(oldValue), oldValue, null);
+            }
             if (_handle != null)
                 RemoveHandle();
             switch (value)

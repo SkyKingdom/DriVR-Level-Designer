@@ -121,11 +121,19 @@ namespace ObjectInputHandlers
         {
             IsLmbDown = false;
             IsRmbDown = false;
-            ShouldCallDragCommand = false;
             LastHoveredObject?.OnPointerExit();
             LastHoveredObject = null;
             ClearSelection(editMode == EditMode.Road);
         }
 
+        public override void SetSelectedObject(IEditorInteractable editorInteractable)
+        {
+            if (SelectedObject != null)
+            {
+                SelectedObject.Deselect();
+            }
+            SelectedObject = editorInteractable;
+            SelectedObject.Select();
+        }
     }
 }

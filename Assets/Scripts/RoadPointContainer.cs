@@ -60,4 +60,10 @@ public class RoadPointContainer : MonoBehaviour, IEditorInteractable
     {
         return transform;
     }
+    
+    public void Delete()
+    {
+        OnObjectDeleted?.Invoke();
+        _renderer.material = defaultMaterial;
+    }
 }

@@ -4,12 +4,10 @@ namespace Actions
 {
     class SpawnAction : ActionBase
     {
-        private readonly ObjectInspector _objectInspector;
         private ObjectBase _spawnedObject;
 
-        public SpawnAction(ObjectInspector objectInspector, ObjectBase spawnedObject)
+        public SpawnAction(ObjectBase spawnedObject)
         {
-            _objectInspector = objectInspector;
             _spawnedObject = spawnedObject;
         }
         public override void Execute()

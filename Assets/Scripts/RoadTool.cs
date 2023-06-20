@@ -42,6 +42,7 @@ public class RoadTool : StaticInstance<RoadTool>
     public int RemovePointTemporarily(RoadPoint point)
     {
         var i = points.IndexOf(point);
+        point.owner.Delete();
         points.Remove(point);
         UpdateRoad();
         return i;

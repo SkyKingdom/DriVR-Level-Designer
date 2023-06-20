@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Shift",
+                    "type": "Button",
+                    "id": "cf9aaddb-4102-4d1e-8984-357e6c285b58",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -84,6 +93,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e000b9a7-04e1-40d5-9764-435f675653a7",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shift",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

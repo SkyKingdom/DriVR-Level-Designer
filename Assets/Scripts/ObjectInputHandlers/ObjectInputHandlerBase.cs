@@ -1,5 +1,6 @@
 ﻿using Interfaces;
 using Managers;
+using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
 namespace ObjectInputHandlers
@@ -8,7 +9,6 @@ namespace ObjectInputHandlers
     {
         protected bool IsLmbDown;
         protected bool IsRmbDown;
-        protected bool ShouldCallDragCommand;
         protected IEditorInteractable LastHoveredObject;
         protected IEditorInteractable SelectedObject;
         protected Vector3 LastGroundPos;
@@ -26,5 +26,10 @@ namespace ObjectInputHandlers
         public abstract void HandleRmbDown();
         
         public abstract void HandleRmbUp();
+        
+        public virtual void SetSelectedObject(IEditorInteractable editorInteractable)
+        {
+
+        }
     }
 }

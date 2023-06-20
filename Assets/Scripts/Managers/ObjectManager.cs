@@ -52,11 +52,15 @@ namespace Managers
 
         private void OnEditTypeChanged(EditMode oldValue, EditMode value)
         {
+
             inputHandlerDelegate?.CleanUp(value);
             switch (value)
             {
                 case EditMode.Object:
                     inputHandlerDelegate = new ObjectModeInputHandler(this);
+                    var lastSelected = DesignerManager.Instance.SelectionManager.LastSelectedObject;
+                    if (lastSelected != null)
+                        inputHandlerDelegate.SetSelectedObject(lastSelected);
                     break;
                 case EditMode.Path:
                     inputHandlerDelegate = new PathModeInputHandler(this);

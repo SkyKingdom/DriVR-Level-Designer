@@ -1,10 +1,8 @@
-﻿using System;
-using Actions;
+﻿using Actions;
 using Managers;
 using Objects;
 using PathCreation;
 using UnityEngine;
-using UnityEngine.UI;
 using Utilities;
 
 public class PathManager : StaticInstance<PathManager>
@@ -17,8 +15,7 @@ public class PathManager : StaticInstance<PathManager>
     
     private ObjectBase _selectedObject;
     public PathPointContainer pathPointPrefab;
-    
-    [SerializeField] private Button stopEditingButton;
+
     [SerializeField] private PathCreator pathPrefab;
 
     [SerializeField] private float snappingDistanceThreshold = 0.5f;

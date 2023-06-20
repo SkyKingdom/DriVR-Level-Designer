@@ -19,6 +19,7 @@ namespace Managers
         private InputAction _lmb;
         private InputAction _rmb;
         private InputAction _move;
+        private InputAction _shift;
     
         #region Events
 
@@ -27,6 +28,10 @@ namespace Managers
         public event Action OnLmbUp;
         public event Action OnRmbDown;
         public event Action OnRmbUp;
+        
+        public event Action OnShiftDown;
+        
+        public event Action OnShiftUp;
 
         #endregion
 
@@ -38,6 +43,7 @@ namespace Managers
             _lmb = inputActionAsset.FindActionMap("Default").FindAction("LMB");
             _rmb = inputActionAsset.FindActionMap("Default").FindAction("RMB");
             _move = inputActionAsset.FindActionMap("Default").FindAction("Move");
+            _shift = inputActionAsset.FindActionMap("Default").FindAction("Shift");
         }
 
         private void OnEnable()
@@ -46,6 +52,7 @@ namespace Managers
             _lmb.Enable();
             _rmb.Enable();
             _move.Enable();
+            _shift.Enable();
         
             _move.performed += OnMove;
 
@@ -54,8 +61,11 @@ namespace Managers
         
             _rmb.started += OnRMBDown;
             _rmb.canceled += OnRMBUp;
+            
+            _shift.started += ShiftDown;
+            _shift.canceled += ShiftUp;
         }
-    
+
         private void OnDisable()
         {
             // Disable input actions
@@ -66,19 +76,24 @@ namespace Managers
         
             _rmb.started -= OnRMBDown;
             _rmb.canceled -= OnRMBUp;
+            
+            _shift.started -= ShiftDown;
+            _shift.canceled -= ShiftUp;
         
             _lmb.Disable();
             _rmb.Disable();
             _move.Disable();
+            _shift.Disable();
         }
     
         #endregion
 
         #region Input Methods
 
+        // Handles mouse move event
         private void OnMove(InputAction.CallbackContext obj)
         {
-            var ray = GetRayFromMousePosition();
+            var ray = GetRayFromMousePosition(); // Get ray from mouse position
             IEditorInteractable editorObj = null;
             Vector3 pos = Vector3.zero;
             // Remove hover from previous object if raycast doesn't hit anything
@@ -113,16 +128,28 @@ namespace Managers
             if (IsOverHandle()) return;
             OnRmbUp?.Invoke();
         }
+        
+        private void ShiftDown(InputAction.CallbackContext obj)
+        {
+            OnShiftDown?.Invoke();
+        }
+        
+        private void ShiftUp(InputAction.CallbackContext obj)
+        {
+            OnShiftUp?.Invoke();
+        }
 
         #endregion
         
         #region Helper Methods
 
+        // Get ray from mouse position
         private Ray GetRayFromMousePosition()
         {
             return sceneCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         }
     
+        // Get ground hit position
         private Vector3 GetGroundHitPosition(Ray ray)
         {
             if (!Physics.Raycast(ray, out var hit, Mathf.Infinity, groundMask)) return Vector3.zero;
@@ -131,6 +158,7 @@ namespace Managers
             return hitPos;
         }
         
+        // Check if mouse is over transform handle
         private bool IsOverHandle()
         {
             var ray = GetRayFromMousePosition();

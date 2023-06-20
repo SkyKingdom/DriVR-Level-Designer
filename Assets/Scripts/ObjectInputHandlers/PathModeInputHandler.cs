@@ -62,6 +62,7 @@ namespace ObjectInputHandlers
             ClearSelection();
             SelectedObject = LastHoveredObject;
             SelectedObject.Select();
+            SelectedObject.OnObjectDeleted += ClearObject;
         }
         
         private void ClearSelection()
@@ -108,7 +109,6 @@ namespace ObjectInputHandlers
         {
             IsLmbDown = false;
             IsRmbDown = false;
-            ShouldCallDragCommand = false;
             LastHoveredObject?.OnPointerExit();
             LastHoveredObject = null;
             ClearSelection();

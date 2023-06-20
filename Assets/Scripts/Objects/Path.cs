@@ -58,6 +58,7 @@ namespace Objects
         public int RemovePathTemporarily(PathPoint pathPoint)
         {
             var i = PathPoints.IndexOf(pathPoint);
+            pathPoint.Container.Delete();
             PathPoints.Remove(pathPoint);
             UpdatePath();
             return i;

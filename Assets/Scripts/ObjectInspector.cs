@@ -56,14 +56,14 @@ public class ObjectInspector : MonoBehaviour
     // TODO: Refactor after implementing selection manager
     public void SelectObject(ObjectBase obj)
     {
+        if (selectedObject == obj) return;
+        
         if (selectedObject != null)
         {
             SaveData();
             ClearData();
         }
-        
-        if (selectedObject == obj) return;
-        
+
         selectedObject = obj;
         _uiManager.UpdateDetailsPanelBlankets(selectedObject);
         LoadData();
