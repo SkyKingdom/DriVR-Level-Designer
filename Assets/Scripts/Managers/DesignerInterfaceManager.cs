@@ -8,8 +8,9 @@ namespace Managers
 {
     public class DesignerInterfaceManager : MonoBehaviour
     {
+    
+        [field: SerializeField] public TooltipManager TooltipManager { get; private set; }
         [SerializeField] private GameObject canvas;
-        
         
         #region Blankets
 
