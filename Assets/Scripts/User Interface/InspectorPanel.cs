@@ -20,6 +20,7 @@ public class InspectorPanel : MonoBehaviour
     public GameObject activesBtn;
     public GameObject interactableBtn;
     public GameObject propsBtn;
+    [SerializeField] private Image switchModeBlanket;
 
     [Header("Map Mode Buttons")]
     public List<Button> modeButtons;
@@ -64,17 +65,22 @@ public class InspectorPanel : MonoBehaviour
     #region Button Tabs
     public void SwitchToActives()
     {
-        SetActiveButton(1);
+        switchModeBlanket.gameObject.SetActive(true);
+        switchModeBlanket.DOFade(1, 0.1f).OnComplete(() => SetActiveButton(1));
     }
     
     public void SwitchToInteractables()
     {
-        SetActiveButton(2);
+        switchModeBlanket.gameObject.SetActive(true);
+        switchModeBlanket.DOFade(1, 0.1f).OnComplete(() => SetActiveButton(2));
+
     }
     
     public void SwitchToProps()
     {
-        SetActiveButton(3);
+        switchModeBlanket.gameObject.SetActive(true);
+        switchModeBlanket.DOFade(1, 0.1f).OnComplete(() => SetActiveButton(3));
+
     }
     #endregion
     
@@ -117,6 +123,7 @@ public class InspectorPanel : MonoBehaviour
                 activesPnl.SetActive(true);
                 interactablePnl.SetActive(false);
                 propsPnl.SetActive(false);
+                switchModeBlanket.DOFade(0, 0.1f).OnComplete(() => switchModeBlanket.gameObject.SetActive(false));
                 break;
             case 2:
                 SetColor(activesBtn, inactiveButtonColor);
@@ -126,6 +133,7 @@ public class InspectorPanel : MonoBehaviour
                 activesPnl.SetActive(false);
                 interactablePnl.SetActive(true);
                 propsPnl.SetActive(false);
+                switchModeBlanket.DOFade(0, 0.1f).OnComplete(() => switchModeBlanket.gameObject.SetActive(false));
                 break;
             case 3:
                 SetColor(activesBtn, inactiveButtonColor);
@@ -135,6 +143,7 @@ public class InspectorPanel : MonoBehaviour
                 activesPnl.SetActive(false);
                 interactablePnl.SetActive(false);
                 propsPnl.SetActive(true);
+                switchModeBlanket.DOFade(0, 0.1f).OnComplete(() => switchModeBlanket.gameObject.SetActive(false));
                 break;
         }
     }
