@@ -122,8 +122,9 @@ public class LevelLoader : MonoBehaviour
     /// </summary>
     private void SpawnObjectPath(ObjectBase objBase, Vector3[] pathPoints)
     {
-        foreach (var point in pathPoints)
+        for (var index = 1; index < pathPoints.Length; index++)
         {
+            var point = pathPoints[index];
             var nodeContainer = ObjectFactory.InstantiateNodeContainer(_prefabData.GetPrefab("PathPoint"), point);
             var node = new PathPoint(nodeContainer, objBase, point);
             objBase.Path.AddPathPoint(node, false);
