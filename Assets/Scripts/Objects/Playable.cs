@@ -1,10 +1,9 @@
 ﻿using Objects.Interfaces;
 using UnityEngine;
-using IPlayable = Objects.Interfaces.IPlayable;
 
 namespace Objects
 {
-    public class Playable : MonoBehaviour, IPlayable, IObjectComponent
+    public class Playable : MonoBehaviour, IObjectComponent
     {
         public ObjectBase Owner { get; private set; }
         public float SwitchTime { get; private set; }

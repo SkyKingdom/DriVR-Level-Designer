@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Objects
 {
-    public class Path : MonoBehaviour, IPath, IObjectComponent
+    public class Path : MonoBehaviour, IObjectComponent
     {
         public ObjectBase Owner { get; private set; }
         public  List<PathPoint> PathPoints { get; private set; }

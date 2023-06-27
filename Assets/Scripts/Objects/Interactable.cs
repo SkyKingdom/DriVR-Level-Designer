@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Objects
 {
-    public class Interactable : MonoBehaviour, IInteractable, IObjectComponent
+    public class Interactable : MonoBehaviour, IObjectComponent
     {
         public ObjectBase Owner { get; private set; }
         public bool Answer { get; private set; }
