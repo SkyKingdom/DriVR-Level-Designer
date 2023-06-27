@@ -1,10 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using JSAM;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// Plays a sound when a button is pressed
+/// </summary>
 public class ButtonSound : MonoBehaviour
 {
     public GeneratorMusicSounds buttonSounds;

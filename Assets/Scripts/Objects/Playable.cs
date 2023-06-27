@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Objects
 {
+    /// <summary>
+    /// Playable object component.<br/>
+    /// </summary>
     public class Playable : MonoBehaviour, IObjectComponent
     {
         public ObjectBase Owner { get; private set; }

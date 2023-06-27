@@ -9,6 +9,7 @@ namespace Managers
     public class DesignerInterfaceManager : MonoBehaviour
     {
         [field: SerializeField, Header("Dependencies")] public TooltipManager TooltipManager { get; private set; }
+        [field: SerializeField] public SelectionManager SelectionManager { get; private set; }
         
         [Space(20)]
         [SerializeField] private GameObject canvas;
@@ -38,6 +39,10 @@ namespace Managers
 
         [Header("Objects"), SerializeField] private GameObject objectButtons;
         [SerializeField] private GameObject objectPanel;
+        [SerializeField] private RectTransform tooltipAnchor;
+        [SerializeField, TextArea(4, 6)] private string objectTooltipText;
+        
+        
 
         #region Path Buttons
 
@@ -52,10 +57,24 @@ namespace Managers
 
         private void Start()
         {
+            SelectionManager = DesignerManager.Instance.SelectionManager;
+            // Subscribe to selection events
+            SelectionManager.OnObjectSelected += HandleObjectSelected;
+            SelectionManager.OnObjectDeselected += HandleObjectDeselected;
             // Subscribe to events
             DesignerManager.Instance.OnModeChange += HandleModeChange;
             DesignerManager.Instance.MapManager.OnMapStatusChange += HandleMapStatusChange;
             DesignerManager.Instance.OnEditTypeChange += HandleEditTypeChange;
+        }
+        
+
+        private void OnDisable()
+        {
+            SelectionManager.OnObjectSelected -= HandleObjectSelected;
+            SelectionManager.OnObjectDeselected -= HandleObjectDeselected;
+            DesignerManager.Instance.OnModeChange -= HandleModeChange;
+            DesignerManager.Instance.MapManager.OnMapStatusChange -= HandleMapStatusChange;
+            DesignerManager.Instance.OnEditTypeChange -= HandleEditTypeChange;
         }
 
         // Handles the edit type change
@@ -90,6 +109,16 @@ namespace Managers
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value), value, null);
             }
+        }
+        
+        private void HandleObjectSelected(ObjectBase obj)
+        {
+            TooltipManager.DisplayTooltip(objectTooltipText, tooltipAnchor.position);
+        }
+        
+        private void HandleObjectDeselected()
+        {
+            TooltipManager.RemoveTooltip();
         }
 
         // Handles the map status change
