@@ -11488,8 +11488,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 568.31, y: -158.6}
-  m_SizeDelta: {x: 518.31, y: 58.6}
+  m_AnchoredPosition: {x: 727.74, y: -158.6}
+  m_SizeDelta: {x: 677.74, y: 58.6}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &850867073
 MonoBehaviour:
@@ -11511,7 +11511,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: dwwwwwwww wwwww
+  m_text: dwwwwwwww wwwww wwww
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -14995,7 +14995,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: POV SWITCH
+  m_text: 'VIEW POINT SWITCH '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -16979,7 +16979,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -798, y: 350}
-  m_SizeDelta: {x: 628.31, y: 208.6}
+  m_SizeDelta: {x: 827.74, y: 208.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1259797548
 MonoBehaviour:
@@ -17033,7 +17033,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 50
-    m_Right: 60
+    m_Right: 100
     m_Top: 100
     m_Bottom: 50
   m_ChildAlignment: 1
@@ -17335,6 +17335,7 @@ GameObject:
   - component: {fileID: 1337349066}
   - component: {fileID: 1337349068}
   - component: {fileID: 1337349067}
+  - component: {fileID: 1337349069}
   m_Layer: 5
   m_Name: Correct_toggle
   m_TagString: Untagged
@@ -17361,7 +17362,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 40}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1337349067
@@ -17402,6 +17403,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1337349065}
   m_CullTransparentMesh: 1
+--- !u!114 &1337349069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337349065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: 'Toggle if the interaction object is correct or incorrect '
+  displayAtMousePosition: 1
+  tooltipPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1338951448
 GameObject:
   m_ObjectHideFlags: 0
@@ -24830,7 +24846,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textToDisplay: Enable map background
+  textToDisplay: Enable/disable map background
   displayAtMousePosition: 1
   tooltipPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1923562697
@@ -25388,8 +25404,9 @@ GameObject:
   - component: {fileID: 1934395265}
   - component: {fileID: 1934395263}
   - component: {fileID: 1934395262}
+  - component: {fileID: 1934395266}
   m_Layer: 5
-  m_Name: Delete_btn
+  m_Name: Leave_btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25523,6 +25540,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonSounds: 1
+--- !u!114 &1934395266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934395260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: Back to menu
+  displayAtMousePosition: 1
+  tooltipPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1944456459
 GameObject:
   m_ObjectHideFlags: 0
@@ -28139,6 +28171,7 @@ GameObject:
   - component: {fileID: 2079488516}
   - component: {fileID: 2079488518}
   - component: {fileID: 2079488517}
+  - component: {fileID: 2079488519}
   m_Layer: 5
   m_Name: Timing
   m_TagString: Untagged
@@ -28166,7 +28199,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 40}
   m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &2079488517
@@ -28207,6 +28240,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2079488515}
   m_CullTransparentMesh: 1
+--- !u!114 &2079488519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079488515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: 'Set the start and end times for the interaction '
+  displayAtMousePosition: 1
+  tooltipPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &2083104782
 GameObject:
   m_ObjectHideFlags: 0
