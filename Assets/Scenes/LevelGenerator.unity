@@ -738,7 +738,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textToDisplay: wololoo 2 electric boogaloo<br>yeet
+  textToDisplay: 'Objects that can be animated and interacted with '
   displayAtMousePosition: 1
   tooltipPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &66240054
@@ -5637,6 +5637,7 @@ GameObject:
   - component: {fileID: 423073647}
   - component: {fileID: 423073650}
   - component: {fileID: 423073651}
+  - component: {fileID: 423073652}
   m_Layer: 5
   m_Name: Button - Map Mode
   m_TagString: Untagged
@@ -5786,6 +5787,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4f22bbbeb3cb242b5003064e5c7a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &423073652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423073645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: 'Switch to Map Mode
+
+    Maps needs to be enabled'
+  displayAtMousePosition: 1
+  tooltipPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &446353109
 GameObject:
   m_ObjectHideFlags: 0
@@ -7484,6 +7502,7 @@ GameObject:
   - component: {fileID: 555288793}
   - component: {fileID: 555288792}
   - component: {fileID: 555288797}
+  - component: {fileID: 555288798}
   m_Layer: 5
   m_Name: Preview_btn
   m_TagString: Untagged
@@ -7646,6 +7665,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4f22bbbeb3cb242b5003064e5c7a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &555288798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555288790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: 'Switch to First Person Mode
+
+    Press ESC to leave'
+  displayAtMousePosition: 1
+  tooltipPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &566216379
 GameObject:
   m_ObjectHideFlags: 0
@@ -9093,8 +9129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textToDisplay: wololoo
-  displayAtMousePosition: 0
+  textToDisplay: 'Objects that can be animated and played as '
+  displayAtMousePosition: 1
   tooltipPosition: {x: 300, y: 300, z: 0}
 --- !u!1 &653686492
 GameObject:
@@ -11452,8 +11488,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 513.13, y: -61.1}
-  m_SizeDelta: {x: 473.13, y: 21.1}
+  m_AnchoredPosition: {x: 568.31, y: -158.6}
+  m_SizeDelta: {x: 518.31, y: 58.6}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &850867073
 MonoBehaviour:
@@ -11475,7 +11511,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: dwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+  m_text: dwwwwwwww wwwww
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -11502,8 +11538,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -11579,6 +11615,7 @@ GameObject:
   - component: {fileID: 851505119}
   - component: {fileID: 851505118}
   - component: {fileID: 851505120}
+  - component: {fileID: 851505121}
   m_Layer: 5
   m_Name: Addroad_toggle
   m_TagString: Untagged
@@ -11720,6 +11757,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4f22bbbeb3cb242b5003064e5c7a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &851505121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851505115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: 'Add road waypoints
+
+    Add at least 3 waypoints to display road '
+  displayAtMousePosition: 1
+  tooltipPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &853760989
 GameObject:
   m_ObjectHideFlags: 0
@@ -11734,6 +11788,7 @@ GameObject:
   - component: {fileID: 853760991}
   - component: {fileID: 853760994}
   - component: {fileID: 853760995}
+  - component: {fileID: 853760996}
   m_Layer: 5
   m_Name: Button - Edit Mode
   m_TagString: Untagged
@@ -11883,6 +11938,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4f22bbbeb3cb242b5003064e5c7a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &853760996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853760989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: Switch to Edit Mode
+  displayAtMousePosition: 1
+  tooltipPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &859436874
 GameObject:
   m_ObjectHideFlags: 0
@@ -14258,6 +14328,7 @@ GameObject:
   - component: {fileID: 1023536295}
   - component: {fileID: 1023536298}
   - component: {fileID: 1023536300}
+  - component: {fileID: 1023536301}
   m_Layer: 5
   m_Name: Undo_btn
   m_TagString: Untagged
@@ -14420,6 +14491,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4f22bbbeb3cb242b5003064e5c7a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1023536301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023536293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: 'Undo last action '
+  displayAtMousePosition: 1
+  tooltipPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1033774407
 GameObject:
   m_ObjectHideFlags: 0
@@ -16611,6 +16697,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <TooltipManager>k__BackingField: {fileID: 88738861}
   canvas: {fileID: 1797212726}
+  <SaveModal>k__BackingField: {fileID: 4532283848497636644}
   objectsDrawerBlanket: {fileID: 514268987}
   objectDetailsBlanket: {fileID: 1359427243}
   objectPathBlanket: {fileID: 663624959}
@@ -16623,7 +16710,6 @@ MonoBehaviour:
   objectPanel: {fileID: 1385414022}
   editPathButton: {fileID: 1863562468}
   stopEditPathButton: {fileID: 1945291360}
-  <SaveModal>k__BackingField: {fileID: 4532283848497636644}
   mapToggle: {fileID: 1906704895}
 --- !u!1 &1231447009
 GameObject:
@@ -16878,7 +16964,7 @@ RectTransform:
   m_GameObject: {fileID: 1259797546}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 850867072}
@@ -16887,8 +16973,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -576, y: 396.86166}
-  m_SizeDelta: {x: 533.13, y: 71.1}
+  m_AnchoredPosition: {x: -798, y: 350}
+  m_SizeDelta: {x: 628.31, y: 208.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1259797548
 MonoBehaviour:
@@ -16910,7 +16996,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: db790511c4c49864f80eaedd0bc58a5f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 73ec8f7fbfb8a3f4d814c26856c19003, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -16919,7 +17005,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 3
 --- !u!222 &1259797549
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16941,11 +17027,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 40
-    m_Right: 20
-    m_Top: 40
-    m_Bottom: 10
-  m_ChildAlignment: 7
+    m_Left: 50
+    m_Right: 60
+    m_Top: 100
+    m_Bottom: 50
+  m_ChildAlignment: 1
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
@@ -16967,7 +17053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
-  m_VerticalFit: 2
+  m_VerticalFit: 1
 --- !u!1 &1266190094
 GameObject:
   m_ObjectHideFlags: 0
@@ -19764,6 +19850,7 @@ GameObject:
   - component: {fileID: 1499647901}
   - component: {fileID: 1499647898}
   - component: {fileID: 1499647897}
+  - component: {fileID: 1499647902}
   m_Layer: 5
   m_Name: Decorations_btn
   m_TagString: Untagged
@@ -19899,6 +19986,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonSounds: 0
+--- !u!114 &1499647902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499647896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: 'Objects that can''t be interacted with '
+  displayAtMousePosition: 1
+  tooltipPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1501873792
 GameObject:
   m_ObjectHideFlags: 0
@@ -22325,6 +22427,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 1
   m_VerticalFit: 0
+--- !u!1 &1706810999
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1706811000}
+  m_Layer: 5
+  m_Name: Tooltip Anchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1706811000
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706810999}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 2142890755}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -798, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1723354886
 GameObject:
   m_ObjectHideFlags: 0
@@ -24573,6 +24711,7 @@ GameObject:
   - component: {fileID: 1906704894}
   - component: {fileID: 1906704895}
   - component: {fileID: 1906704896}
+  - component: {fileID: 1906704897}
   m_Layer: 5
   m_Name: Map_toggle
   m_TagString: Untagged
@@ -24674,6 +24813,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4f22bbbeb3cb242b5003064e5c7a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1906704897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1906704893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: Enable map background
+  displayAtMousePosition: 1
+  tooltipPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1923562697
 GameObject:
   m_ObjectHideFlags: 0
@@ -26162,6 +26316,7 @@ GameObject:
   - component: {fileID: 1990205551}
   - component: {fileID: 1990205554}
   - component: {fileID: 1990205555}
+  - component: {fileID: 1990205556}
   m_Layer: 5
   m_Name: Button - Preview Mode
   m_TagString: Untagged
@@ -26311,6 +26466,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4f22bbbeb3cb242b5003064e5c7a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1990205556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990205549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee0f52308f04579b7001bfbccf64487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToDisplay: Switch to Preview Mode
+  displayAtMousePosition: 1
+  tooltipPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &2012177665
 GameObject:
   m_ObjectHideFlags: 0
@@ -28872,6 +29042,7 @@ RectTransform:
   - {fileID: 1817146107}
   - {fileID: 1082258955838586453}
   - {fileID: 1259797547}
+  - {fileID: 1706811000}
   m_Father: {fileID: 1797212731}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
