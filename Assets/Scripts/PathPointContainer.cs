@@ -1,27 +1,28 @@
 ﻿using System;
-using Actions;
 using Interfaces;
-using Objects;
 using UnityEngine;
 
 public class PathPointContainer : MonoBehaviour, IEditorInteractable
 {
+    // Reference to path point data
     public PathPoint PathPoint;
 
+    // References to the materials
     public Material defaultMaterial;
     public Material selectedMaterial;
     
     private Renderer _renderer;
-
     public event Action OnObjectDeleted;
     public bool IsSelected { get; private set; }
     
 
+    // Get reference to renderer
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
     }
 
+    // Set path point data reference
     public void SetNode(PathPoint pathPoint)
     {
         PathPoint = pathPoint;
@@ -32,12 +33,14 @@ public class PathPointContainer : MonoBehaviour, IEditorInteractable
         }
     }
     
+    // Change material on hover
     public void OnPointerEnter()
     {
         if (IsSelected || PathPoint.Owner.Path.Highlighted) return;
         _renderer.material = selectedMaterial;
     }
 
+    // Change material on stop hovering
     public void OnPointerExit()
     {
         if (IsSelected || PathPoint.Owner.Path.Highlighted) return;

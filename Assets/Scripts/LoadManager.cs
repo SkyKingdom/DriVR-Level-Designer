@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.IO;
 using Saving;
@@ -10,12 +9,14 @@ public class LoadManager : MonoBehaviour
     private void Start()
     {
         FileBrowser.SetFilters(true, new FileBrowser.Filter("JSON Levels", ".json"));
-        FileBrowser.AddQuickLink( "Users", "C:\\Users", null );
+        FileBrowser.AddQuickLink( "Users", "C:\\Users" );
         FileBrowser.SetDefaultFilter(".json");
     }
     
+    // Handles pressing the load button
     public void LoadLevel() => StartCoroutine(ShowLoadDialogCoroutine());
     
+    // Coroutine for load level dialog
     IEnumerator ShowLoadDialogCoroutine()
     {
         yield return FileBrowser.WaitForLoadDialog( FileBrowser.PickMode.Files, false, null, null, "Load Level", "Load" );

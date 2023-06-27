@@ -1,8 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+/// <summary>
+/// Spins the gears in the main menu
+/// </summary>
 public class DoSpin : MonoBehaviour
 {
     public float duration;

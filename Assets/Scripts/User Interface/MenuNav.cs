@@ -12,26 +12,26 @@ namespace User_Interface
     {
         public Animator hammer;
 
-        [Header("Tutorial")] 
-        public TextMeshProUGUI tutorialText;
-        public List<GameObject> tutorialMasks;
+        [Header("Tutorial")]
         public GameObject tutorialPanel;
 
         private int _tutorialCounter = 0;
 
-        private bool _animRunning = false;
+        private bool _animRunning;
 
         private void Start()
         {
+            // Start hammer animations
             InvokeRepeating(nameof(HandleAnimationTrigger), 3f, 5f);
         }
 
+        // Start new level
         public void NewLevelButton()
         {
             SceneManager.LoadScene(1);
         }
     
-        //animations
+        // Main menu hammer animations
         private void HandleAnimationTrigger()
         {
             if (_animRunning)
@@ -53,6 +53,7 @@ namespace User_Interface
             _animRunning = false;
         }
 
+        // Tutorial
         public void GuideButtonPress()
         {
             tutorialPanel.SetActive(true);

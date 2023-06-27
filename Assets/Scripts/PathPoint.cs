@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class PathPoint : IDisposable
 {
-    public ObjectBase Owner { get; private set; }
-    public PathPointContainer Container { get; private set; }
+    public ObjectBase Owner { get; }
+    public PathPointContainer Container { get; }
     public Vector3 Position { get; private set; }
     
     private bool _disposed;
-
+    
     public PathPoint(PathPointContainer container, ObjectBase owner, Vector3 position)
     {
         Container = container;
@@ -35,7 +35,7 @@ public class PathPoint : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    protected virtual void Dispose(bool disposing)
+    private void Dispose(bool disposing)
     {
         if (!_disposed)
         {

@@ -1,29 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
+/// <summary>
+/// Sneak class for sneaking presented by Sneako and Sfadi
+/// </summary>
 public class Sneak : MonoBehaviour
 {
     public GameObject SneakoWrap;
     public GameObject SfadiWrap;
 
-    private Vector3 sneakPos = new Vector3(-8.5f, 0, -6);
-    private Vector3 sfadiPos = new Vector3(8.25f, 0, 6);
+    private Vector3 sneakPos = new(-8.5f, 0, -6);
+    private Vector3 sfadiPos = new(8.25f, 0, 6);
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.S))
-            if (Input.GetKey(KeyCode.N))
-                if (Input.GetKey(KeyCode.E))
-                    if (Input.GetKey(KeyCode.A))
-                        if (Input.GetKey(KeyCode.K))
-                            if (Input.GetKey(KeyCode.O))
-                            {
-                                Sneako();
-                                Sfadi();
-                            }
+        if (!Input.GetKey(KeyCode.S)) return;
+        if (!Input.GetKey(KeyCode.N)) return;
+        if (!Input.GetKey(KeyCode.E)) return;
+        if (!Input.GetKey(KeyCode.A)) return;
+        if (!Input.GetKey(KeyCode.K)) return;
+        if (!Input.GetKey(KeyCode.O)) return;
+        Sneako();
+        Sfadi();
     }
 
     private void Sneako()

@@ -5,7 +5,9 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-
+/// <summary>
+/// Details panel UI controller
+/// </summary>
 public class InspectorPanel : MonoBehaviour
 {
     [SerializeField] private int activeMode;
@@ -32,6 +34,9 @@ public class InspectorPanel : MonoBehaviour
     public List<GameObject> modePanels;
     [SerializeField] private GameObject roadModePanel;
 
+    /// <summary>
+    /// Subscribe to events and set up mode buttons UI
+    /// </summary>
     private void Start()
     {
         DesignerManager.Instance.OnModeChange += HandleModeChange;
@@ -39,22 +44,21 @@ public class InspectorPanel : MonoBehaviour
         
         for (int i = 0; i < modeButtons.Count; i++)
         {
-            if (activeMode == i)
-            {
-                modeButtons[i].GetComponent<Image>().color = activeButtonColor;
-            }
-            else
-            {
-                modeButtons[i].GetComponent<Image>().color = inactiveButtonColor;
-            }
+            modeButtons[i].GetComponent<Image>().color = activeMode == i ? activeButtonColor : inactiveButtonColor;
         }
     }
 
+    /// <summary>
+    /// Hide objects panel when in road mode
+    /// </summary>
     private void HandleEditModeChange(EditMode arg1, EditMode arg2)
     {
         roadModePanel.SetActive(arg2 == EditMode.Road);
     }
 
+    /// <summary>
+    /// Switches inspector panel
+    /// </summary>
     private void HandleModeChange(Mode oldValue, Mode value)
     {
         if (value != Mode.FirstPerson)
@@ -84,7 +88,7 @@ public class InspectorPanel : MonoBehaviour
     }
     #endregion
     
-    //Map Modes
+    // Handles inspector panel mode change
     private void OpenModePanel(int target)
     {
         var move = target - activeMode;
@@ -100,11 +104,9 @@ public class InspectorPanel : MonoBehaviour
         activeMode = target;
     }
 
-    private void SetOpacity(GameObject element, float opacity, float time)
-    {
-        element.GetComponent<Image>().DOFade(opacity, time);
-    }
-
+    /// <summary>
+    /// Sets the color of a UI element
+    /// </summary>
     private void SetColor(GameObject element, Color color)
     {
         element.GetComponent<Image>().color = color;
@@ -148,6 +150,9 @@ public class InspectorPanel : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Moves a UI element to a destination over time
+    /// </summary>
     private void MoveObj(GameObject element, Vector2 destination, float time)
     {
         foreach (var b in modeButtons)

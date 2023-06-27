@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class RoadPointContainer : MonoBehaviour, IEditorInteractable
 {
-    private RoadPoint _roadPoint;
-    public RoadPoint RoadPoint => _roadPoint;
+    
+    public RoadPoint RoadPoint { get; private set; }
 
     [SerializeField] private Material defaultMaterial;
     [SerializeField] private Material hoverMaterial;
@@ -20,8 +20,8 @@ public class RoadPointContainer : MonoBehaviour, IEditorInteractable
 
     public void SetRoadPoint(RoadPoint roadPoint)
     {
-        _roadPoint = roadPoint;
-        _roadPoint.SetOwner(this);
+        RoadPoint = roadPoint;
+        RoadPoint.SetOwner(this);
     }
 
     public event Action OnObjectDeleted;

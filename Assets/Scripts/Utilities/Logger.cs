@@ -3,7 +3,9 @@ using Object = UnityEngine.Object;
 
 namespace Utilities
 {
-    [AddComponentMenu("RehabRevolution/Helpers/Logger")]
+    /// <summary>
+    /// Custom logger class
+    /// </summary>
     public class Logger : MonoBehaviour
     {
         [Header("Settings")] 

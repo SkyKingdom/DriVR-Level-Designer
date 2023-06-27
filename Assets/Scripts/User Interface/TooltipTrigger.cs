@@ -6,15 +6,22 @@ namespace User_Interface
 {
     public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {      
-        private const float HoverTime = 2f;
+        private const float HoverTime = 2f; // Time before tooltip is displayed
         
-        [SerializeField, TextArea(3, 6)] private string textToDisplay;
-        [Header("Positioning"), SerializeField] private bool displayAtMousePosition;
-        [SerializeField] private Vector3 tooltipPosition;
+        [SerializeField, TextArea(3, 6)] private string textToDisplay; // Text to display in tooltip
         
+        [Header("Positioning"), SerializeField] private bool displayAtMousePosition; // If true, tooltip will display at mouse position
+        
+        [SerializeField] private Vector3 tooltipPosition; // Position to display tooltip at if displayAtMousePosition is false
+        
+        // Stores screen width and height
         private int _screenWidth;
         private int _screenHeight;
+        
+        // Stores time since mouse entered trigger
         private float _timer;
+        
+        // Stores whether mouse is hovering over trigger
         private bool _isHovering;
         private void Start()
         {
@@ -24,10 +31,11 @@ namespace User_Interface
         
         private void Update()
         {
-            if (!_isHovering) return;
+            if (!_isHovering) return; // If mouse is not hovering over trigger, do nothing
             
-            _timer += Time.deltaTime;
+            _timer += Time.deltaTime; // Increment timer
             
+            // If mouse has been hovering over trigger for HoverTime, display tooltip
             if (_timer >= HoverTime)
             {
                 if (displayAtMousePosition)
@@ -44,17 +52,20 @@ namespace User_Interface
             }
         }
         
+        // Start timer when mouse enters trigger
         public void OnPointerEnter(PointerEventData eventData)
         {
             _isHovering = true;
         }
 
+        // Reset timer when mouse exits trigger
         public void OnPointerExit(PointerEventData eventData)
         {
             _isHovering = false;
             DesignerManager.Instance.DesignerUIManager.TooltipManager.RemoveTooltip();
         }
 
+        // Get mouse position relative to screen
         private bool[] GetMousePosition()
         {
             bool[] mouseCoords = new bool[2];
