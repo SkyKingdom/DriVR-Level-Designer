@@ -122,6 +122,7 @@ public class LevelLoader : MonoBehaviour
     /// </summary>
     private void SpawnObjectPath(ObjectBase objBase, Vector3[] pathPoints)
     {
+        // Skips first point as it is the object's position
         for (var index = 1; index < pathPoints.Length; index++)
         {
             var point = pathPoints[index];
