@@ -35,7 +35,7 @@ public class RoadTool : StaticInstance<RoadTool>
     // returns if road mesh is active
     public bool HasRoad => points.Count >= 3;
     
-    private float _roadWidth = 1f;
+    private float _roadWidth = 0.25f;
 
     // Subscribe to edit mode change event
     private void OnEnable()

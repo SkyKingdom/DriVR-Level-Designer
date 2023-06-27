@@ -8,9 +8,11 @@ namespace Managers
 {
     public class DesignerInterfaceManager : MonoBehaviour
     {
-    
-        [field: SerializeField] public TooltipManager TooltipManager { get; private set; }
+        [field: SerializeField, Header("Dependencies")] public TooltipManager TooltipManager { get; private set; }
+        
+        [Space(20)]
         [SerializeField] private GameObject canvas;
+        [field: SerializeField] public LevelSaveModal SaveModal { get; private set; }
         
         #region Blankets
 
@@ -34,27 +36,29 @@ namespace Managers
 
         #endregion
 
-        [SerializeField] private GameObject objectButtons;
+        [Header("Objects"), SerializeField] private GameObject objectButtons;
         [SerializeField] private GameObject objectPanel;
 
         #region Path Buttons
 
+        [Header("Path Edit Buttons")]
         [SerializeField] private GameObject editPathButton;
         [SerializeField] private GameObject stopEditPathButton;
 
         #endregion
         
-        [field: SerializeField, Space(20)] public LevelSaveModal SaveModal { get; private set; }
-        [SerializeField] private Toggle mapToggle;
+        [Header("Map"), SerializeField] private Toggle mapToggle;
         
 
         private void Start()
         {
+            // Subscribe to events
             DesignerManager.Instance.OnModeChange += HandleModeChange;
             DesignerManager.Instance.MapManager.OnMapStatusChange += HandleMapStatusChange;
             DesignerManager.Instance.OnEditTypeChange += HandleEditTypeChange;
         }
 
+        // Handles the edit type change
         private void HandleEditTypeChange(EditMode oldValue, EditMode value)
         {
             switch (oldValue)
@@ -88,6 +92,7 @@ namespace Managers
             }
         }
 
+        // Handles the map status change
         private void HandleMapStatusChange(bool value)
         {
             mapModeButton.interactable = value;
@@ -123,7 +128,6 @@ namespace Managers
         /// <summary>
         /// Updates the details panel based on the selected object.
         /// </summary>
-        /// <param name="selectedObject"></param>
         public void UpdateDetailsPanelBlankets(ObjectBase selectedObject)
         {
             objectDetailsBlanket.SetActive(!selectedObject);

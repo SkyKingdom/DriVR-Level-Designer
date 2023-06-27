@@ -70,7 +70,7 @@ namespace ObjectInputHandlers
             if (SelectedObject == null) return;
             // Unsubscribe from event
             SelectedObject.OnObjectDeleted -= ClearObject;
-            SelectedObject.Deselect();
+            SelectedObject?.Deselect();
             SelectedObject = null;
         }
 

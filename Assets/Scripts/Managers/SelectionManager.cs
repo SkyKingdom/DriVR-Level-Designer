@@ -6,43 +6,59 @@ using UnityEngine;
 
 namespace Managers
 {
+    /// <summary>
+    /// Handles the selection of objects and the creation of the transform handle.
+    /// </summary>
     public class SelectionManager : MonoBehaviour
     {
         #region Depenedencies
-
+        
         private TransformHandleManager _transformHandleManager;
 
         #endregion
         
+        // Object references
         public ObjectBase SelectedObject { get; private set; }
         public ObjectBase LastSelectedObject { get; private set; }
+        
+        // Road reference
         public RoadPointContainer SelectedRoadPoint { get; private set; }
         
+        // Object path reference
         public PathPointContainer SelectedPathPoint { get; private set; }
 
+        // Selected transform reference
         private Transform _targetTransform;
         
+        // Events
         public event Action<ObjectBase> OnObjectSelected;
         public event Action OnObjectDeselected;
 
+        // Current handle
         private Handle _handle;
+        
+        // Transform data on selection start
         private TransformActionData _startTransform;
 
+        // Interaction delegates
         private Action<Handle> _onInteractionStart;
         private Action<Handle> _onInteractionEnd;
 
         private void Start()
         {
+            // Get dependencies
             _transformHandleManager = DesignerManager.Instance.TransformHandleManager;
         }
 
         private void OnEnable()
         {
+            // Subscribe to events
             DesignerManager.Instance.OnEditTypeChange += OnEditTypeChange;
         }
 
         private void OnDisable()
         {
+            // Unsubscribe from events
             DesignerManager.Instance.OnEditTypeChange -= OnEditTypeChange;
         }
 
@@ -51,9 +67,12 @@ namespace Managers
             switch (oldValue)
             {
                 case EditMode.Object:
+                    // Save last selected object when switching from object mode
                     LastSelectedObject = SelectedObject;
+                    SelectedObject = null;
                     break;
                 case EditMode.Path:
+                    // Select last selected object when switching from path mode
                     if (LastSelectedObject)
                     {
                         SelectedObject = LastSelectedObject;
@@ -64,10 +83,14 @@ namespace Managers
                 default:
                     throw new ArgumentOutOfRangeException(nameof(oldValue), oldValue, null);
             }
+            
+            // Remove handle
             if (_handle != null)
                 RemoveHandle();
+            
             switch (value)
             {
+                // Setup delegates based on edit mode
                 case EditMode.Object:
                     _onInteractionStart = OnObjectInteractionStart;
                     _onInteractionEnd = OnObjectInteractionEnd;
@@ -98,8 +121,11 @@ namespace Managers
         
         public void DeselectObject()
         {
+            LastSelectedObject = null;
             RemoveHandle();
-            SelectedObject.transform.tag = "Untagged";
+            
+            if (SelectedObject != null)
+                SelectedObject.transform.tag = "Untagged";
             SelectedObject = null;
             _targetTransform = null;
             OnObjectDeselected?.Invoke();
@@ -107,11 +133,13 @@ namespace Managers
         
         private void OnObjectInteractionStart(Handle obj)
         {
+            // Save transform data on interaction start
             _startTransform = new TransformActionData(SelectedObject.transform.position, SelectedObject.transform.eulerAngles);
         }
 
         private void OnObjectInteractionEnd(Handle obj)
         {
+            // Create transform action and record it
             var endTransform = new TransformActionData(SelectedObject.transform.position, SelectedObject.transform.eulerAngles);
             var action = new ObjectTransformAction(_startTransform, endTransform, SelectedObject);
             ActionRecorder.Instance.Record(action);

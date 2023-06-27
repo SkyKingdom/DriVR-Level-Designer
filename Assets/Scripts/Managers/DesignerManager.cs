@@ -29,6 +29,7 @@ public enum EditMode
 [DefaultExecutionOrder(-100)]
 public class DesignerManager : StaticInstance<DesignerManager>
 {
+    // References to all the managers
     #region Managers
 
     [field: SerializeField, Header("Dependencies")] public DesignerInterfaceManager DesignerUIManager { get; private set; }
@@ -98,6 +99,7 @@ public class DesignerManager : StaticInstance<DesignerManager>
         SetMode((int)Mode.FirstPerson);
     }
 
+    // Toggles road edit mode
     public void ToggleRoadEdit(bool value)
     {
         if (value)
@@ -109,6 +111,7 @@ public class DesignerManager : StaticInstance<DesignerManager>
         SetEditMode((int) EditMode.Object);
     }
     
+    // Toggles path edit mode
     public void TogglePathMode(bool value)
     {
         if (value)
@@ -120,6 +123,7 @@ public class DesignerManager : StaticInstance<DesignerManager>
         SetEditMode((int) EditMode.Object);
     }
     
+    // Returns whether the current mode is the given mode
     public bool InEditType(EditMode editMode)
     {
         return CurrentEditMode == editMode;

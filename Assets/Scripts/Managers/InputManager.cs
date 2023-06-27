@@ -16,11 +16,13 @@ namespace Managers
         [Header("Input")] 
         [SerializeField] private InputActionAsset inputActionAsset;
 
+        // Input actions
         private InputAction _lmb;
         private InputAction _rmb;
         private InputAction _move;
         private InputAction _shift;
     
+        // All events
         #region Events
 
         public event Action<IEditorInteractable, Vector3> OnMouseMove;
@@ -54,6 +56,7 @@ namespace Managers
             _move.Enable();
             _shift.Enable();
         
+            // Add callbacks
             _move.performed += OnMove;
 
             _lmb.started += OnLMBDown;
@@ -102,11 +105,13 @@ namespace Managers
                 editorObj = hit.transform.GetComponent<IEditorInteractable>();
             }
             pos = GetGroundHitPosition(ray);
+            // Invokes event with the object that is hovered and position on the ground
             OnMouseMove?.Invoke(editorObj, pos);
         }
 
         private void OnLMBDown(InputAction.CallbackContext obj)
         {
+            // If mouse is over handle, don't invoke event
             if (IsOverHandle()) return;
             OnLmbDown?.Invoke();
         }

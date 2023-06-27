@@ -51,6 +51,7 @@ namespace Objects
         public void RemovePathPoint(PathPoint pathPoint)
         {
             PathPoints.Remove(pathPoint);
+            pathPoint.Container.Delete();
             pathPoint.Dispose();
             UpdatePath();
         }

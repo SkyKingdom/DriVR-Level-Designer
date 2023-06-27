@@ -27,7 +27,7 @@ namespace Actions
         {
             // If the object is selected, deselect it.
             var selectionManager = DesignerManager.Instance.SelectionManager;
-            if (selectionManager.SelectedObject == _spawnedObject)
+            if (selectionManager.SelectedObject == _spawnedObject || selectionManager.LastSelectedObject == _spawnedObject)
                 selectionManager.DeselectObject();
             
             // Destroys the object.
